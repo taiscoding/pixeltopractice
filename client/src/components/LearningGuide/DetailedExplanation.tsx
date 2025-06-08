@@ -62,7 +62,31 @@ interface DetailedExplanationProps {
 
 export default function DetailedExplanation({ selectedNode, onBackToConstellation, caseData }: DetailedExplanationProps) {
   const framework = caseData?.case?.framework;
+  const caseName = caseData?.case?.caseName || "Case Study";
   const [knowledgeLevel, setKnowledgeLevel] = useState<0 | 1 | 2>(1); // 0=Focused, 1=Clinical, 2=Comprehensive
+
+  // Return early if no case data is provided
+  if (!framework) {
+    return (
+      <section className="py-16 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <Button 
+              onClick={onBackToConstellation}
+              variant="ghost" 
+              className="mb-4 text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Constellation
+            </Button>
+            <div className="text-center py-12">
+              <p className="text-lg text-gray-600">Please select a case to view detailed explanations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const getKnowledgeLevelLabel = (level: number) => {
     switch (level) {
@@ -95,10 +119,10 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
             Back to Constellation
           </Button>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Gas Bubbles on SWI - Detailed Framework
+            {caseName} - Detailed Framework
           </h2>
           <p className="text-lg text-gray-600 mb-6">
-            Comprehensive analysis of the Technical, Clinical, and Anatomical frameworks for understanding gas bubbles on Susceptibility-Weighted Imaging.
+            Comprehensive analysis of the Technical, Clinical, and Anatomical frameworks for understanding this case.
           </p>
           
           {/* Knowledge Level Selector */}

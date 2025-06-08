@@ -17,7 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
 import CustomNode from './CustomNode';
-import { gasBubblesSWICase, nodePositions, nodeColors } from '@/data/curated-cases/gasBubblesSWI';
+import { availableCases } from '@/data/curated-cases';
 
 // Helper function to format text with markdown-like syntax
 const formatText = (text: string) => {
@@ -479,16 +479,16 @@ function ConstellationFlow({
               </div>
 
               <div className="space-y-4">
-                {selectedNode === 'technical' && (
+                {selectedNode === 'technical' && caseInfo && (
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-white font-medium mb-2">
-                        {gasBubblesSWICase.framework.TECHNICAL.primaryConcept}
+                        {caseInfo.framework.TECHNICAL.primaryConcept}
                       </h3>
                       <div className="bg-blue-950/30 rounded-lg p-3 mb-3">
                         <p className="text-blue-200 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
-                          {gasBubblesSWICase.framework.TECHNICAL.discoveryInsight}
+                          {caseInfo.framework.TECHNICAL.discoveryInsight}
                         </p>
                       </div>
                     </div>
@@ -497,9 +497,9 @@ function ConstellationFlow({
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
                       <div className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.TECHNICAL.focusedLearning)}
-                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.TECHNICAL.clinicalApplication)}
-                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.TECHNICAL.comprehensiveAnalysis)}
+                        {knowledgeDepth[0] === 0 && formatText(caseInfo.framework.TECHNICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(caseInfo.framework.TECHNICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(caseInfo.framework.TECHNICAL.comprehensiveAnalysis)}
                       </div>
                     </div>
                   </div>
@@ -581,88 +581,147 @@ export default function ImmersiveConstellationViewer({
 
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
-  const initialNodes: Node[] = [
-    {
-      id: 'central',
-      type: 'custom',
-      position: nodePositions.central,
-      data: { 
-        label: 'Gas Bubbles\nSWI',
-        type: 'central',
-        icon: 'brain',
-        color: nodeColors.central
-      },
-    },
-    {
-      id: 'technical',
-      type: 'custom',
-      position: nodePositions.technical,
-      data: { 
-        label: 'TECHNICAL\nSusceptibility-Weighted Imaging',
-        type: 'technical',
-        icon: 'settings',
-        color: nodeColors.technical,
-        framework: gasBubblesSWICase.framework.TECHNICAL
-      },
-    },
-    {
-      id: 'clinical',
-      type: 'custom',
-      position: nodePositions.clinical,
-      data: { 
-        label: 'CLINICAL\nTimeline-Dependent Significance',
-        type: 'clinical',
-        icon: 'stethoscope',
-        color: nodeColors.clinical,
-        framework: gasBubblesSWICase.framework.CLINICAL
-      },
-    },
-    {
-      id: 'anatomical',
-      type: 'custom',
-      position: nodePositions.anatomical,
-      data: { 
-        label: 'ANATOMICAL\nLocation Suggests Etiology',
-        type: 'anatomical',
-        icon: 'search',
-        color: nodeColors.anatomical,
-        framework: gasBubblesSWICase.framework.ANATOMICAL
-      },
-    },
-  ];
+  // Get current case data
+  const currentCaseData = availableCases[selectedCase];
+  const caseInfo = currentCaseData?.case;
+  const nodePositions = currentCaseData?.nodePositions;
+  const nodeColors = currentCaseData?.nodeColors;
 
-  const initialEdges: Edge[] = [
-    {
-      id: 'central-technical',
-      source: 'central',
-      sourceHandle: 'top',
-      target: 'technical',
-      targetHandle: 'target',
-      type: 'smoothstep',
-      style: { stroke: nodeColors.technical, strokeWidth: 4, strokeDasharray: '12,6' },
-      animated: true,
-    },
-    {
-      id: 'central-clinical',
-      source: 'central',
-      sourceHandle: 'right',
-      target: 'clinical',
-      targetHandle: 'target',
-      type: 'smoothstep',
-      style: { stroke: nodeColors.clinical, strokeWidth: 4, strokeDasharray: '12,6' },
-      animated: true,
-    },
-    {
-      id: 'central-anatomical',
-      source: 'central',
-      sourceHandle: 'left',
-      target: 'anatomical',
-      targetHandle: 'target',
-      type: 'smoothstep',
-      style: { stroke: nodeColors.anatomical, strokeWidth: 4, strokeDasharray: '12,6' },
-      animated: true,
-    },
-  ];
+  // Helper functions for labels
+  const getCentralLabel = (caseName: string) => {
+    switch (caseName) {
+      case 'Gas Bubbles on SWI':
+        return 'Gas Bubbles\nSWI';
+      case 'Trauma Gas':
+        return 'Trauma Gas\nEmergency';
+      default:
+        return 'Case\nStudy';
+    }
+  };
+
+  const getTechnicalLabel = (caseName: string) => {
+    switch (caseName) {
+      case 'Gas Bubbles on SWI':
+        return 'TECHNICAL\nSusceptibility-Weighted Imaging';
+      case 'Trauma Gas':
+        return 'TECHNICAL\nVacuum Phenomenon';
+      default:
+        return 'TECHNICAL\nImaging Method';
+    }
+  };
+
+  const getClinicalLabel = (caseName: string) => {
+    switch (caseName) {
+      case 'Gas Bubbles on SWI':
+        return 'CLINICAL\nTimeline-Dependent Significance';
+      case 'Trauma Gas':
+        return 'CLINICAL\nEmergency Management';
+      default:
+        return 'CLINICAL\nPatient Impact';
+    }
+  };
+
+  const getAnatomicalLabel = (caseName: string) => {
+    switch (caseName) {
+      case 'Gas Bubbles on SWI':
+        return 'ANATOMICAL\nLocation Suggests Etiology';
+      case 'Trauma Gas':
+        return 'ANATOMICAL\nVenous Drainage System';
+      default:
+        return 'ANATOMICAL\nStructural Context';
+    }
+  };
+
+  const initialNodes: Node[] = useMemo(() => {
+    if (!currentCaseData) return [];
+    
+    return [
+      {
+        id: 'central',
+        type: 'custom',
+        position: nodePositions.central,
+        data: { 
+          label: getCentralLabel(caseInfo.caseName),
+          type: 'central',
+          icon: 'brain',
+          color: nodeColors.central
+        },
+      },
+      {
+        id: 'technical',
+        type: 'custom',
+        position: nodePositions.technical,
+        data: { 
+          label: getTechnicalLabel(caseInfo.caseName),
+          type: 'technical',
+          icon: 'settings',
+          color: nodeColors.technical,
+          framework: caseInfo.framework.TECHNICAL
+        },
+      },
+      {
+        id: 'clinical',
+        type: 'custom',
+        position: nodePositions.clinical,
+        data: { 
+          label: getClinicalLabel(caseInfo.caseName),
+          type: 'clinical',
+          icon: 'stethoscope',
+          color: nodeColors.clinical,
+          framework: caseInfo.framework.CLINICAL
+        },
+      },
+      {
+        id: 'anatomical',
+        type: 'custom',
+        position: nodePositions.anatomical,
+        data: { 
+          label: getAnatomicalLabel(caseInfo.caseName),
+          type: 'anatomical',
+          icon: 'search',
+          color: nodeColors.anatomical,
+          framework: caseInfo.framework.ANATOMICAL
+        },
+      },
+    ];
+  }, [currentCaseData]);
+
+  const initialEdges: Edge[] = useMemo(() => {
+    if (!currentCaseData) return [];
+    
+    return [
+      {
+        id: 'central-technical',
+        source: 'central',
+        sourceHandle: 'top',
+        target: 'technical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.technical, strokeWidth: 4, strokeDasharray: '12,6' },
+        animated: true,
+      },
+      {
+        id: 'central-clinical',
+        source: 'central',
+        sourceHandle: 'right',
+        target: 'clinical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.clinical, strokeWidth: 4, strokeDasharray: '12,6' },
+        animated: true,
+      },
+      {
+        id: 'central-anatomical',
+        source: 'central',
+        sourceHandle: 'left',
+        target: 'anatomical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.anatomical, strokeWidth: 4, strokeDasharray: '12,6' },
+        animated: true,
+      },
+    ];
+  }, [currentCaseData]);
 
   const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
     setSelectedNode(node.id === selectedNode ? null : node.id);
