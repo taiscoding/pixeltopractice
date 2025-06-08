@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactFlow, {
   Background,
+  Controls,
   NodeTypes,
   useNodesState,
   useEdgesState,
@@ -9,16 +10,12 @@ import ReactFlow, {
   Edge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { X, ArrowLeft, Maximize2, Minimize2, Brain, Settings, Stethoscope, Search } from 'lucide-react';
+import { X, ArrowLeft, Brain, Settings, Stethoscope, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import CustomNode from './CustomNode';
 import { gasBubblesSWICase, nodePositions, nodeColors } from '@/data/curated-cases/gasBubblesSWI';
-
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-};
 
 interface ImmersiveConstellationViewerProps {
   isOpen: boolean;
@@ -33,8 +30,13 @@ export default function ImmersiveConstellationViewer({
 }: ImmersiveConstellationViewerProps) {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [knowledgeDepth, setKnowledgeDepth] = useState([2]);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [explorationMode, setExplorationMode] = useState<'standalone' | 'comparison'>('standalone');
+  const [explorationMode, setExplorationMode] = useState<'free' | 'guided'>('free');
+  const [explorationProgress, setExplorationProgress] = useState(33);
+  const [showTopUI, setShowTopUI] = useState(false);
+  const [showLeftUI, setShowLeftUI] = useState(false);
+  const [showBottomUI, setShowBottomUI] = useState(false);
+
+  const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
   const initialNodes: Node[] = [
     {
@@ -93,8 +95,8 @@ export default function ImmersiveConstellationViewer({
       sourceHandle: 'top',
       target: 'technical',
       targetHandle: 'target',
-      type: 'straight',
-      style: { stroke: nodeColors.technical, strokeWidth: 3, strokeDasharray: '5,5' },
+      type: 'smoothstep',
+      style: { stroke: nodeColors.technical, strokeWidth: 4, strokeDasharray: '12,6' },
       animated: true,
     },
     {
@@ -103,8 +105,8 @@ export default function ImmersiveConstellationViewer({
       sourceHandle: 'right',
       target: 'clinical',
       targetHandle: 'target',
-      type: 'straight',
-      style: { stroke: nodeColors.clinical, strokeWidth: 3, strokeDasharray: '5,5' },
+      type: 'smoothstep',
+      style: { stroke: nodeColors.clinical, strokeWidth: 4, strokeDasharray: '12,6' },
       animated: true,
     },
     {
@@ -113,8 +115,8 @@ export default function ImmersiveConstellationViewer({
       sourceHandle: 'left',
       target: 'anatomical',
       targetHandle: 'target',
-      type: 'straight',
-      style: { stroke: nodeColors.anatomical, strokeWidth: 3, strokeDasharray: '5,5' },
+      type: 'smoothstep',
+      style: { stroke: nodeColors.anatomical, strokeWidth: 4, strokeDasharray: '12,6' },
       animated: true,
     },
   ];
@@ -122,308 +124,337 @@ export default function ImmersiveConstellationViewer({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const handleNodeClick = useCallback((event: React.MouseEvent, node: any) => {
-    const nodeId = node.id === selectedNode ? null : node.id;
-    setSelectedNode(nodeId);
-    
-    // Smooth zoom and highlight effect
-    setNodes((nds) =>
-      nds.map((n) => ({
-        ...n,
-        style: {
-          ...n.style,
-          opacity: nodeId === null || n.id === nodeId || n.id === 'central' ? 1 : 0.4,
-          transform: n.id === nodeId ? 'scale(1.15)' : 'scale(1)',
-          transition: 'all 0.5s ease-in-out',
-        },
-      }))
-    );
-  }, [selectedNode, setNodes]);
-
-  const getKnowledgeContent = (nodeId: string, depth: number) => {
-    const framework = gasBubblesSWICase.framework[nodeId.toUpperCase() as keyof typeof gasBubblesSWICase.framework];
-    if (!framework) return null;
-
-    switch (depth) {
-      case 1: // Focused Learning
-        return {
-          title: framework.primaryConcept,
-          content: (framework as any).explanation || (framework as any).timeline || (framework as any).significance,
-        };
-      case 2: // Clinical Application
-        return {
-          title: framework.primaryConcept,
-          content: (framework as any).whyItMatters || (framework as any).context || (framework as any).considerations,
-          details: (framework as any).keyPhysics || (framework as any).urgency,
-        };
-      case 3: // Comprehensive Analysis
-        return {
-          title: framework.primaryConcept,
-          content: (framework as any).explanation || (framework as any).timeline || (framework as any).significance,
-          details: (framework as any).whyItMatters || (framework as any).context || (framework as any).considerations,
-          advanced: (framework as any).keyPhysics || (framework as any).urgency,
-        };
-      default:
-        return null;
+  const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+    setSelectedNode(node.id === selectedNode ? null : node.id);
+    if (node.id !== selectedNode) {
+      setExplorationProgress(prev => Math.min(prev + 20, 100));
     }
+  }, [selectedNode]);
+
+  const getRecommendedNode = () => {
+    if (explorationMode === 'guided') {
+      if (!selectedNode) return 'technical';
+      if (selectedNode === 'technical') return 'clinical';
+      if (selectedNode === 'clinical') return 'anatomical';
+      return 'central';
+    }
+    return null;
   };
 
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className={`fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 ${
-          isFullscreen ? '' : 'p-4'
-        }`}
+    <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+      {/* True Full-Screen React Flow */}
+      <ReactFlow
+        nodes={nodes.map(node => ({
+          ...node,
+          selected: node.id === selectedNode,
+          style: {
+            ...node.style,
+            filter: node.id === getRecommendedNode() && explorationMode === 'guided' 
+              ? 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))' 
+              : undefined
+          }
+        }))}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onNodeClick={handleNodeClick}
+        nodeTypes={nodeTypes}
+        fitView
+        className="w-full h-full"
+        attributionPosition="bottom-left"
       >
-        {/* Animated background stars */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(100)].map((_, i) => (
+        <Background 
+          color="rgba(148, 163, 184, 0.1)" 
+          gap={64} 
+          size={2}
+          variant="dots"
+        />
+        <Controls 
+          className="!bg-white/10 !backdrop-blur-xl !border-white/20 !shadow-2xl !rounded-2xl opacity-60 hover:opacity-100 transition-opacity"
+          showInteractive={false}
+        />
+      </ReactFlow>
+
+      {/* Top Hover Area - Case Selection */}
+      <div
+        className="absolute top-0 left-0 right-0 h-16 z-40"
+        onMouseEnter={() => setShowTopUI(true)}
+        onMouseLeave={() => setShowTopUI(false)}
+      >
+        <AnimatePresence>
+          {showTopUI && (
             <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-70"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0.3, 1, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Header Controls */}
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="relative z-10 flex items-center justify-between p-6"
-        >
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="text-white hover:bg-white/10"
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-6 py-4 border border-white/20 shadow-2xl"
             >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="text-white">
-              <h1 className="text-2xl font-bold">Constellation Explorer</h1>
-              <p className="text-gray-300">Gas Bubbles on SWI - Immersive Learning</p>
-            </div>
-          </div>
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClose}
+                  className="text-white/70 hover:text-white hover:bg-white/10"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Exit Immersive Mode
+                </Button>
+                <div className="h-6 w-px bg-white/20" />
+                <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
+                  Gas Bubbles on SWI
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClose}
+                  className="text-white/70 hover:text-white hover:bg-white/10"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-          <div className="flex items-center space-x-4">
-            {/* Case Selection */}
-            <div className="flex space-x-2">
-              <Badge variant="secondary" className="bg-blue-600 text-white">
-                📋 Gas Bubbles (65M)
-              </Badge>
-              <Badge variant="outline" className="text-gray-300 border-gray-500">
-                🔄 Compare Cases
-              </Badge>
-              <Badge variant="outline" className="text-gray-300 border-gray-500">
-                ⚠️ Trauma Gas (20M)
-              </Badge>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="text-white hover:bg-white/10"
+      {/* Left Hover Area - Knowledge Depth */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-16 z-40"
+        onMouseEnter={() => setShowLeftUI(true)}
+        onMouseLeave={() => setShowLeftUI(false)}
+      >
+        <AnimatePresence>
+          {showLeftUI && (
+            <motion.div
+              initial={{ x: -200, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -200, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl min-w-[280px]"
             >
-              {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Knowledge Depth Slider */}
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          className="absolute left-6 top-1/2 transform -translate-y-1/2 z-10"
-        >
-          <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-            <h3 className="text-white font-semibold mb-4 text-center">Knowledge Depth</h3>
-            <div className="space-y-4">
-              <div className="flex flex-col items-center space-y-3">
-                <span className="text-gray-300 text-sm">🔬 Comprehensive</span>
-                <Slider
-                  value={knowledgeDepth}
-                  onValueChange={setKnowledgeDepth}
-                  max={3}
-                  min={1}
-                  step={1}
-                  orientation="vertical"
-                  className="h-32"
-                />
-                <span className="text-gray-300 text-sm">🎯 Focused</span>
-              </div>
-              <div className="text-center">
-                <div className="text-white text-xs">
-                  {knowledgeDepth[0] === 1 && "Focused Learning"}
-                  {knowledgeDepth[0] === 2 && "Clinical Application"}
-                  {knowledgeDepth[0] === 3 && "Comprehensive Analysis"}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-white font-medium mb-3">Knowledge Depth</h3>
+                  <div className="space-y-4">
+                    <Slider
+                      value={knowledgeDepth}
+                      onValueChange={setKnowledgeDepth}
+                      max={5}
+                      min={1}
+                      step={1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-white/60">
+                      <span>Basic</span>
+                      <span>Expert</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Main Constellation View */}
-        <div className="relative h-full">
-          <ReactFlow
-            nodes={nodes.map(node => ({
-              ...node,
-              selected: node.id === selectedNode
-            }))}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onNodeClick={handleNodeClick}
-            nodeTypes={nodeTypes}
-            fitView
-            className="constellation-space"
-          >
-            <Background 
-              color="rgba(255,255,255,0.1)" 
-              gap={60} 
-              size={2}
-            />
-            <Controls 
-              className="!bg-black/30 !border-white/10 !shadow-2xl !rounded-xl !backdrop-blur-sm"
-              showInteractive={false}
-            />
-          </ReactFlow>
-
-          {/* Exploration Panel */}
-          <AnimatePresence>
-            {selectedNode && selectedNode !== 'central' && (
-              <motion.div
-                initial={{ x: 400, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 400, opacity: 0 }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute right-6 top-6 bottom-6 w-96 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 p-6 overflow-y-auto"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-white">
-                    {selectedNode.charAt(0).toUpperCase() + selectedNode.slice(1)} Framework
-                  </h2>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setSelectedNode(null)}
-                    className="text-white hover:bg-white/10"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {(() => {
-                  const content = getKnowledgeContent(selectedNode, knowledgeDepth[0]);
-                  if (!content) return null;
-
-                  return (
-                    <motion.div
-                      key={`${selectedNode}-${knowledgeDepth[0]}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-6"
+                <div className="h-px bg-white/20" />
+                <div>
+                  <h3 className="text-white font-medium mb-3">Learning Mode</h3>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={explorationMode === 'free' ? 'default' : 'ghost'}
+                      size="sm"
+                      onClick={() => setExplorationMode('free')}
+                      className={explorationMode === 'free' 
+                        ? 'bg-blue-600 hover:bg-blue-700' 
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                      }
                     >
-                      <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                        <h3 className="text-lg font-semibold text-white mb-3">
-                          {content.title}
-                        </h3>
-                        <p className="text-gray-200 leading-relaxed">
-                          {content.content}
-                        </p>
-                      </div>
+                      Free
+                    </Button>
+                    <Button
+                      variant={explorationMode === 'guided' ? 'default' : 'ghost'}
+                      size="sm"
+                      onClick={() => setExplorationMode('guided')}
+                      className={explorationMode === 'guided' 
+                        ? 'bg-blue-600 hover:bg-blue-700' 
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                      }
+                    >
+                      Guided
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-                      {content.details && (
-                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                          <h4 className="text-md font-semibold text-white mb-2">
-                            Key Details
-                          </h4>
-                          {Array.isArray(content.details) ? (
-                            <ul className="text-gray-200 space-y-1">
-                              {content.details.map((detail, index) => (
-                                <li key={index} className="flex items-start">
-                                  <span className="text-blue-400 mr-2">•</span>
-                                  {detail}
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-gray-200">{content.details}</p>
-                          )}
-                        </div>
-                      )}
+      {/* Bottom Hover Area - Exploration Progress */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-16 z-40"
+        onMouseEnter={() => setShowBottomUI(true)}
+        onMouseLeave={() => setShowBottomUI(false)}
+      >
+        <AnimatePresence>
+          {showBottomUI && (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/20 shadow-2xl"
+            >
+              <div className="flex items-center gap-6">
+                <div className="text-white/70 text-sm">
+                  Exploration Progress
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-48 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${explorationProgress}%` }}
+                      className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                    />
+                  </div>
+                  <span className="text-white text-sm font-medium min-w-[3rem]">
+                    {explorationProgress}%
+                  </span>
+                </div>
+                {explorationMode === 'guided' && getRecommendedNode() && (
+                  <div className="flex items-center gap-2 text-blue-400 text-sm">
+                    {getRecommendedNode() === 'technical' && <Settings className="h-4 w-4" />}
+                    {getRecommendedNode() === 'clinical' && <Stethoscope className="h-4 w-4" />}
+                    {getRecommendedNode() === 'anatomical' && <Search className="h-4 w-4" />}
+                    {getRecommendedNode() === 'central' && <Brain className="h-4 w-4" />}
+                    Next: {getRecommendedNode()}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-                      {content.advanced && (
-                        <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl p-4 border border-purple-400/20">
-                          <h4 className="text-md font-semibold text-white mb-2">
-                            Advanced Insights
-                          </h4>
-                          {Array.isArray(content.advanced) ? (
-                            <ul className="text-gray-200 space-y-1">
-                              {content.advanced.map((insight, index) => (
-                                <li key={index} className="flex items-start">
-                                  <span className="text-purple-400 mr-2">•</span>
-                                  {insight}
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-gray-200">{content.advanced}</p>
-                          )}
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })()}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      {/* Selected Node Detail Panel */}
+      <AnimatePresence>
+        {selectedNode && selectedNode !== 'central' && (
+          <motion.div
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="absolute right-0 top-0 bottom-0 w-96 bg-black/90 backdrop-blur-xl border-l border-white/20 p-6 overflow-y-auto z-50"
+          >
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {selectedNode === 'technical' && (
+                    <div className="bg-blue-600 rounded-lg p-2">
+                      <Settings className="h-5 w-5 text-white" />
+                    </div>
+                  )}
+                  {selectedNode === 'clinical' && (
+                    <div className="bg-green-600 rounded-lg p-2">
+                      <Stethoscope className="h-5 w-5 text-white" />
+                    </div>
+                  )}
+                  {selectedNode === 'anatomical' && (
+                    <div className="bg-amber-600 rounded-lg p-2">
+                      <Search className="h-5 w-5 text-white" />
+                    </div>
+                  )}
+                  <h2 className="text-xl font-semibold text-white capitalize">
+                    {selectedNode} Framework
+                  </h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedNode(null)}
+                  className="text-white/70 hover:text-white hover:bg-white/10"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
 
-        {/* Bottom Progress Indicator */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
-        >
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/10">
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300 text-sm">Exploration Progress:</span>
-              <div className="flex space-x-2">
-                {['central', 'technical', 'clinical', 'anatomical'].map((nodeId) => (
-                  <div
-                    key={nodeId}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      selectedNode === nodeId || (nodeId === 'central' && selectedNode)
-                        ? 'bg-blue-400 scale-125'
-                        : 'bg-gray-600'
-                    }`}
-                  />
-                ))}
+              <div className="space-y-4">
+                {selectedNode === 'technical' && (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-white font-medium mb-2">
+                        {gasBubblesSWICase.framework.TECHNICAL.primaryConcept}
+                      </h3>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        {gasBubblesSWICase.framework.TECHNICAL.explanation}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-2">Key Physics</h4>
+                      <ul className="space-y-1">
+                        {gasBubblesSWICase.framework.TECHNICAL.keyPhysics.map((concept, i) => (
+                          <li key={i} className="text-white/70 text-sm">• {concept}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-blue-950/50 rounded-lg p-4 border border-blue-800/30">
+                      <p className="text-blue-200 text-sm">
+                        {gasBubblesSWICase.framework.TECHNICAL.whyItMatters}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {selectedNode === 'clinical' && (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-white font-medium mb-2">
+                        {gasBubblesSWICase.framework.CLINICAL.primaryConcept}
+                      </h3>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        Timeline: {gasBubblesSWICase.framework.CLINICAL.timeline}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-2">Clinical Context</h4>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        {gasBubblesSWICase.framework.CLINICAL.context}
+                      </p>
+                    </div>
+                    <div className="bg-green-950/50 rounded-lg p-4 border border-green-800/30">
+                      <p className="text-green-200 text-sm">
+                        Urgency: {gasBubblesSWICase.framework.CLINICAL.urgency}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {selectedNode === 'anatomical' && (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-white font-medium mb-2">
+                        {gasBubblesSWICase.framework.ANATOMICAL.primaryConcept}
+                      </h3>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        {gasBubblesSWICase.framework.ANATOMICAL.significance}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-2">Key Considerations</h4>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        {gasBubblesSWICase.framework.ANATOMICAL.considerations}
+                      </p>
+                    </div>
+                    <div className="bg-amber-950/50 rounded-lg p-4 border border-amber-800/30">
+                      <p className="text-amber-200 text-sm">
+                        Location and volume determine whether surgical evacuation or medical management is indicated.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
