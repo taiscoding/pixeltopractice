@@ -505,16 +505,16 @@ function ConstellationFlow({
                   </div>
                 )}
 
-                {selectedNode === 'clinical' && (
+                {selectedNode === 'clinical' && caseInfo && (
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-white font-medium mb-2">
-                        {gasBubblesSWICase.framework.CLINICAL.primaryConcept}
+                        {caseInfo.framework.CLINICAL.primaryConcept}
                       </h3>
                       <div className="bg-green-950/30 rounded-lg p-3 mb-3">
                         <p className="text-green-200 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
-                          {gasBubblesSWICase.framework.CLINICAL.discoveryInsight}
+                          {caseInfo.framework.CLINICAL.discoveryInsight}
                         </p>
                       </div>
                     </div>
@@ -523,24 +523,24 @@ function ConstellationFlow({
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
                       <div className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.CLINICAL.focusedLearning)}
-                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.CLINICAL.clinicalApplication)}
-                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.CLINICAL.comprehensiveAnalysis)}
+                        {knowledgeDepth[0] === 0 && formatText(caseInfo.framework.CLINICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(caseInfo.framework.CLINICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(caseInfo.framework.CLINICAL.comprehensiveAnalysis)}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {selectedNode === 'anatomical' && (
+                {selectedNode === 'anatomical' && caseInfo && (
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-white font-medium mb-2">
-                        {gasBubblesSWICase.framework.ANATOMICAL.primaryConcept}
+                        {caseInfo.framework.ANATOMICAL.primaryConcept}
                       </h3>
                       <div className="bg-amber-950/30 rounded-lg p-3 mb-3">
                         <p className="text-amber-200 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
-                          {gasBubblesSWICase.framework.ANATOMICAL.discoveryInsight}
+                          {caseInfo.framework.ANATOMICAL.discoveryInsight}
                         </p>
                       </div>
                     </div>
@@ -549,9 +549,9 @@ function ConstellationFlow({
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
                       <div className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.ANATOMICAL.focusedLearning)}
-                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.ANATOMICAL.clinicalApplication)}
-                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.ANATOMICAL.comprehensiveAnalysis)}
+                        {knowledgeDepth[0] === 0 && formatText(caseInfo.framework.ANATOMICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(caseInfo.framework.ANATOMICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(caseInfo.framework.ANATOMICAL.comprehensiveAnalysis)}
                       </div>
                     </div>
                   </div>
