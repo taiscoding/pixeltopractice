@@ -16,6 +16,8 @@ interface CustomNodeProps {
     icon: keyof typeof iconMap;
     color: string;
     framework?: any;
+    caseName?: string;
+    subtext?: string;
   };
   selected?: boolean;
 }
@@ -73,17 +75,15 @@ export default function CustomNode({ data, selected }: CustomNodeProps) {
         
         {isCentral ? (
           <div className="text-center">
-            <div className="text-sm font-semibold">Gas Bubbles</div>
-            <div className="text-xs opacity-90">SWI</div>
+            <div className="text-sm font-semibold">{data.label.split('\n')[0]}</div>
+            <div className="text-xs opacity-90">{data.label.split('\n')[1]}</div>
           </div>
         ) : (
           <div className="text-sm opacity-90">
             <div className="font-medium mb-1">{data.label.split('\n')[1]}</div>
-            {data.framework && (
+            {data.framework && data.subtext && (
               <div className="text-xs">
-                {data.type === 'technical' && 'T2* effects, blooming artifacts'}
-                {data.type === 'clinical' && '<1 week normal post-op'}
-                {data.type === 'anatomical' && 'Surgical site vs remote location'}
+                {data.subtext}
               </div>
             )}
           </div>

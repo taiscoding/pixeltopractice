@@ -655,7 +655,7 @@ export default function ImmersiveConstellationViewer({
 
 
 
-  // Helper functions for labels
+  // Helper functions for labels and subtext
   const getCentralLabel = (caseName: string) => {
     switch (caseName) {
       case 'Gas Bubbles on SWI':
@@ -665,6 +665,33 @@ export default function ImmersiveConstellationViewer({
       default:
         return 'Case\nStudy';
     }
+  };
+
+  const getSubtext = (nodeType: string, caseName: string) => {
+    if (caseName === 'Gas Bubbles on SWI') {
+      switch (nodeType) {
+        case 'technical':
+          return 'T2* effects, blooming artifacts';
+        case 'clinical':
+          return '<1 week normal post-op';
+        case 'anatomical':
+          return 'Surgical site vs remote location';
+        default:
+          return '';
+      }
+    } else if (caseName === 'Trauma Gas') {
+      switch (nodeType) {
+        case 'technical':
+          return 'CT shows intrasinus gas + thrombosis';
+        case 'clinical':
+          return 'Skull fracture = emergency thrombosis risk';
+        case 'anatomical':
+          return 'Lambdoid fracture → venous pathway damage';
+        default:
+          return '';
+      }
+    }
+    return '';
   };
 
   const getTechnicalLabel = (caseName: string) => {
@@ -724,7 +751,9 @@ export default function ImmersiveConstellationViewer({
           type: 'technical',
           icon: 'settings',
           color: nodeColors.technical,
-          framework: caseInfo.framework.TECHNICAL
+          framework: caseInfo.framework.TECHNICAL,
+          caseName: caseInfo.caseName,
+          subtext: getSubtext('technical', caseInfo.caseName)
         },
       },
       {
@@ -736,7 +765,9 @@ export default function ImmersiveConstellationViewer({
           type: 'clinical',
           icon: 'stethoscope',
           color: nodeColors.clinical,
-          framework: caseInfo.framework.CLINICAL
+          framework: caseInfo.framework.CLINICAL,
+          caseName: caseInfo.caseName,
+          subtext: getSubtext('clinical', caseInfo.caseName)
         },
       },
       {
@@ -748,7 +779,9 @@ export default function ImmersiveConstellationViewer({
           type: 'anatomical',
           icon: 'search',
           color: nodeColors.anatomical,
-          framework: caseInfo.framework.ANATOMICAL
+          framework: caseInfo.framework.ANATOMICAL,
+          caseName: caseInfo.caseName,
+          subtext: getSubtext('anatomical', caseInfo.caseName)
         },
       },
     ];
