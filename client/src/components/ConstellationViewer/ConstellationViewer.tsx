@@ -3,7 +3,8 @@ import ReactFlow, {
   Background,
   Controls,
   MiniMap,
-  NodeTypes,
+  Node,
+  Edge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useConstellation } from '@/hooks/useConstellation';

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ReactFlow, {
   Background,
   Controls,
-  NodeTypes,
   useNodesState,
   useEdgesState,
   Node,
@@ -357,21 +356,21 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {gasBubblesSWICase.framework.TECHNICAL.primaryConcept}
                       </h3>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        {gasBubblesSWICase.framework.TECHNICAL.explanation}
-                      </p>
+                      <div className="bg-blue-950/30 rounded-lg p-3 mb-3">
+                        <p className="text-blue-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                        <p className="text-white/80 text-sm">
+                          {gasBubblesSWICase.framework.TECHNICAL.discoveryInsight}
+                        </p>
+                      </div>
                     </div>
                     <div>
-                      <h4 className="text-white font-medium mb-2">Key Physics</h4>
-                      <ul className="space-y-1">
-                        {gasBubblesSWICase.framework.TECHNICAL.keyPhysics.map((concept, i) => (
-                          <li key={i} className="text-white/70 text-sm">• {concept}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="bg-blue-950/50 rounded-lg p-4 border border-blue-800/30 shadow-inner">
-                      <p className="text-blue-200 text-sm">
-                        {gasBubblesSWICase.framework.TECHNICAL.whyItMatters}
+                      <h4 className="text-white font-medium mb-2">
+                        {getKnowledgeDepthLabel(knowledgeDepth[0])}
+                      </h4>
+                      <p className="text-white/70 text-sm leading-relaxed">
+                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.TECHNICAL.focusedLearning}
+                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.TECHNICAL.clinicalApplication}
+                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.TECHNICAL.comprehensiveAnalysis}
                       </p>
                     </div>
                   </div>
@@ -383,19 +382,21 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {gasBubblesSWICase.framework.CLINICAL.primaryConcept}
                       </h3>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        Timeline: {gasBubblesSWICase.framework.CLINICAL.timeline}
-                      </p>
+                      <div className="bg-green-950/30 rounded-lg p-3 mb-3">
+                        <p className="text-green-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                        <p className="text-white/80 text-sm">
+                          {gasBubblesSWICase.framework.CLINICAL.discoveryInsight}
+                        </p>
+                      </div>
                     </div>
                     <div>
-                      <h4 className="text-white font-medium mb-2">Clinical Context</h4>
+                      <h4 className="text-white font-medium mb-2">
+                        {getKnowledgeDepthLabel(knowledgeDepth[0])}
+                      </h4>
                       <p className="text-white/70 text-sm leading-relaxed">
-                        {gasBubblesSWICase.framework.CLINICAL.context}
-                      </p>
-                    </div>
-                    <div className="bg-green-950/50 rounded-lg p-4 border border-green-800/30 shadow-inner">
-                      <p className="text-green-200 text-sm">
-                        Urgency: {gasBubblesSWICase.framework.CLINICAL.urgency}
+                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.CLINICAL.focusedLearning}
+                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.CLINICAL.clinicalApplication}
+                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.CLINICAL.comprehensiveAnalysis}
                       </p>
                     </div>
                   </div>
