@@ -1,13 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Settings, Stethoscope, Search, AlertCircle, Clock, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Settings, Stethoscope, Search, AlertCircle, Clock, MapPin, ArrowLeft, X } from 'lucide-react';
 import { gasBubblesSWICase } from '@/data/curated-cases/gasBubblesSWI';
 
 interface DetailedExplanationProps {
   selectedNode: string | null;
+  onBackToConstellation: () => void;
 }
 
-export default function DetailedExplanation({ selectedNode }: DetailedExplanationProps) {
+export default function DetailedExplanation({ selectedNode, onBackToConstellation }: DetailedExplanationProps) {
   const framework = gasBubblesSWICase.framework;
 
   return (
@@ -21,9 +23,30 @@ export default function DetailedExplanation({ selectedNode }: DetailedExplanatio
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+              className="space-y-6"
             >
-              {/* Technical Details */}
+              {/* Back Navigation */}
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  onClick={onBackToConstellation}
+                  className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Constellation
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onBackToConstellation}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Technical Details */}
               <Card className={`${selectedNode === 'technical' ? 'border-l-4 border-l-blue-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
@@ -128,6 +151,7 @@ export default function DetailedExplanation({ selectedNode }: DetailedExplanatio
                   </div>
                 </CardContent>
               </Card>
+              </div>
             </motion.div>
           ) : (
             <motion.div

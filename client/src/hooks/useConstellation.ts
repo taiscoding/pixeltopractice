@@ -59,8 +59,8 @@ const initialEdges: Edge[] = [
     sourceHandle: 'top',
     target: 'technical',
     targetHandle: 'target',
-    type: 'straight',
-    style: { stroke: nodeColors.technical, strokeWidth: 2, strokeDasharray: '5,5' },
+    type: 'smoothstep',
+    style: { stroke: nodeColors.technical, strokeWidth: 3, strokeDasharray: '8,4' },
     animated: true,
   },
   {
@@ -69,8 +69,8 @@ const initialEdges: Edge[] = [
     sourceHandle: 'right',
     target: 'clinical',
     targetHandle: 'target',
-    type: 'straight',
-    style: { stroke: nodeColors.clinical, strokeWidth: 2, strokeDasharray: '5,5' },
+    type: 'smoothstep',
+    style: { stroke: nodeColors.clinical, strokeWidth: 3, strokeDasharray: '8,4' },
     animated: true,
   },
   {
@@ -79,8 +79,8 @@ const initialEdges: Edge[] = [
     sourceHandle: 'left',
     target: 'anatomical',
     targetHandle: 'target',
-    type: 'straight',
-    style: { stroke: nodeColors.anatomical, strokeWidth: 2, strokeDasharray: '5,5' },
+    type: 'smoothstep',
+    style: { stroke: nodeColors.anatomical, strokeWidth: 3, strokeDasharray: '8,4' },
     animated: true,
   },
 ];
