@@ -6,6 +6,54 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Settings, Stethoscope, Search, AlertCircle, Clock, MapPin } from 'lucide-react';
 import { gasBubblesSWICase } from '@/data/curated-cases/gasBubblesSWI';
 
+// Helper function to format text with markdown-like syntax
+const formatText = (text: string) => {
+  return text.split('\n').map((line, lineIndex) => {
+    // Handle bullet points
+    if (line.trim().startsWith('•')) {
+      const content = line.trim().substring(1).trim();
+      return (
+        <div key={lineIndex} className="flex items-start gap-2 mb-1">
+          <span className="text-gray-500 mt-1">•</span>
+          <span dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        </div>
+      );
+    }
+    
+    // Handle navigation arrows
+    if (line.trim().startsWith('→')) {
+      const content = line.trim().substring(1).trim();
+      return (
+        <div key={lineIndex} className="mt-3 pt-3 border-t border-gray-200">
+          <span className="text-blue-600 text-sm italic" dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        </div>
+      );
+    }
+    
+    // Regular paragraphs
+    if (line.trim()) {
+      return (
+        <p key={lineIndex} className="mb-2" dangerouslySetInnerHTML={{ __html: formatInlineText(line) }} />
+      );
+    }
+    
+    // Empty lines
+    return <div key={lineIndex} className="mb-2" />;
+  });
+};
+
+// Helper function to format inline text (bold, italic, etc.)
+const formatInlineText = (text: string) => {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>')
+    .replace(/CO₂/g, '<span class="font-medium text-blue-600">CO₂</span>')
+    .replace(/N₂/g, '<span class="font-medium text-blue-600">N₂</span>')
+    .replace(/T2\*/g, '<span class="font-medium text-purple-600">T2*</span>')
+    .replace(/SWI/g, '<span class="font-medium text-green-600">SWI</span>')
+    .replace(/CSF/g, '<span class="font-medium text-amber-600">CSF</span>');
+};
+
 interface DetailedExplanationProps {
   selectedNode: string | null;
   onBackToConstellation: () => void;
@@ -103,9 +151,9 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {getContentForLevel(framework.TECHNICAL, knowledgeLevel)}
-                      </p>
+                      <div className="text-sm text-gray-700 leading-relaxed">
+                        {formatText(getContentForLevel(framework.TECHNICAL, knowledgeLevel))}
+                      </div>
                     </div>
                   </div>
                 </CardContent>

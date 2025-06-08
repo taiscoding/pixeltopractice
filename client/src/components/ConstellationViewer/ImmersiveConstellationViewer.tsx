@@ -19,6 +19,54 @@ import { Progress } from '@/components/ui/progress';
 import CustomNode from './CustomNode';
 import { gasBubblesSWICase, nodePositions, nodeColors } from '@/data/curated-cases/gasBubblesSWI';
 
+// Helper function to format text with markdown-like syntax
+const formatText = (text: string) => {
+  return text.split('\n').map((line, lineIndex) => {
+    // Handle bullet points
+    if (line.trim().startsWith('•')) {
+      const content = line.trim().substring(1).trim();
+      return (
+        <div key={lineIndex} className="flex items-start gap-2 mb-1">
+          <span className="text-white/60 mt-1">•</span>
+          <span dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        </div>
+      );
+    }
+    
+    // Handle navigation arrows
+    if (line.trim().startsWith('→')) {
+      const content = line.trim().substring(1).trim();
+      return (
+        <div key={lineIndex} className="mt-3 pt-3 border-t border-white/10">
+          <span className="text-blue-400 text-sm italic" dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        </div>
+      );
+    }
+    
+    // Regular paragraphs
+    if (line.trim()) {
+      return (
+        <p key={lineIndex} className="mb-2" dangerouslySetInnerHTML={{ __html: formatInlineText(line) }} />
+      );
+    }
+    
+    // Empty lines
+    return <div key={lineIndex} className="mb-2" />;
+  });
+};
+
+// Helper function to format inline text (bold, italic, etc.)
+const formatInlineText = (text: string) => {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic text-white/90">$1</em>')
+    .replace(/CO₂/g, '<span class="font-medium text-blue-300">CO₂</span>')
+    .replace(/N₂/g, '<span class="font-medium text-blue-300">N₂</span>')
+    .replace(/T2\*/g, '<span class="font-medium text-purple-300">T2*</span>')
+    .replace(/SWI/g, '<span class="font-medium text-green-300">SWI</span>')
+    .replace(/CSF/g, '<span class="font-medium text-amber-300">CSF</span>');
+};
+
 interface ImmersiveConstellationViewerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -319,6 +367,95 @@ function ConstellationFlow({
         </AnimatePresence>
       </div>
 
+      {/* Central Node Detail Panel */}
+      <AnimatePresence>
+        {selectedNode === 'central' && (
+          <motion.div
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-white/20 p-6 z-50 shadow-2xl"
+          >
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="bg-purple-600 rounded-lg p-2 shadow-lg">
+                    <Brain className="h-5 w-5 text-white" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-white">
+                    Gas Bubbles on SWI - Patient Context
+                  </h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedNode(null)}
+                  className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-blue-950/30 rounded-lg p-4">
+                  <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                  <p className="text-white text-lg font-semibold">65-year-old male</p>
+                </div>
+                
+                <div className="bg-green-950/30 rounded-lg p-4">
+                  <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                  <p className="text-white/80 text-sm">Post-operative examination immediately following excision of posterior fossa mass</p>
+                </div>
+                
+                <div className="bg-amber-950/30 rounded-lg p-4">
+                  <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                  <p className="text-white/80 text-sm">Multiple low signal intensity rounded filling defects in subarachnoid space and lateral ventricles</p>
+                </div>
+                
+                <div className="bg-purple-950/30 rounded-lg p-4">
+                  <h3 className="text-purple-200 font-medium mb-2">Clinical Significance</h3>
+                  <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-white/5 rounded-lg p-4">
+                <h3 className="text-white font-medium mb-3">Explore the Frameworks</h3>
+                <p className="text-white/70 text-sm mb-4">
+                  Click on the Technical, Clinical, or Anatomical nodes to understand different aspects of gas bubbles on SWI.
+                </p>
+                <div className="flex gap-3 flex-wrap">
+                  <Button
+                    onClick={() => setSelectedNode('technical')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                    size="sm"
+                  >
+                    <Settings className="h-4 w-4" />
+                    Technical Framework
+                  </Button>
+                  <Button
+                    onClick={() => setSelectedNode('clinical')}
+                    className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+                    size="sm"
+                  >
+                    <Stethoscope className="h-4 w-4" />
+                    Clinical Framework
+                  </Button>
+                  <Button
+                    onClick={() => setSelectedNode('anatomical')}
+                    className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2"
+                    size="sm"
+                  >
+                    <Search className="h-4 w-4" />
+                    Anatomical Framework
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Enhanced Selected Node Detail Panel */}
       <AnimatePresence>
         {selectedNode && selectedNode !== 'central' && (
@@ -379,11 +516,11 @@ function ConstellationFlow({
                       <h4 className="text-white font-medium mb-2">
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.TECHNICAL.focusedLearning}
-                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.TECHNICAL.clinicalApplication}
-                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.TECHNICAL.comprehensiveAnalysis}
-                      </p>
+                      <div className="text-white/70 text-sm leading-relaxed">
+                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.TECHNICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.TECHNICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.TECHNICAL.comprehensiveAnalysis)}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -405,11 +542,11 @@ function ConstellationFlow({
                       <h4 className="text-white font-medium mb-2">
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.CLINICAL.focusedLearning}
-                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.CLINICAL.clinicalApplication}
-                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.CLINICAL.comprehensiveAnalysis}
-                      </p>
+                      <div className="text-white/70 text-sm leading-relaxed">
+                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.CLINICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.CLINICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.CLINICAL.comprehensiveAnalysis)}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -431,11 +568,11 @@ function ConstellationFlow({
                       <h4 className="text-white font-medium mb-2">
                         {getKnowledgeDepthLabel(knowledgeDepth[0])}
                       </h4>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.ANATOMICAL.focusedLearning}
-                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.ANATOMICAL.clinicalApplication}
-                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.ANATOMICAL.comprehensiveAnalysis}
-                      </p>
+                      <div className="text-white/70 text-sm leading-relaxed">
+                        {knowledgeDepth[0] === 0 && formatText(gasBubblesSWICase.framework.ANATOMICAL.focusedLearning)}
+                        {knowledgeDepth[0] === 1 && formatText(gasBubblesSWICase.framework.ANATOMICAL.clinicalApplication)}
+                        {knowledgeDepth[0] === 2 && formatText(gasBubblesSWICase.framework.ANATOMICAL.comprehensiveAnalysis)}
+                      </div>
                     </div>
                   </div>
                 )}
