@@ -1,0 +1,27 @@
+**"Excellent formatting improvements! The professional text style makes a huge difference. Let's complete the educational story by adding the Trauma Gas constellation first:
+TRAUMA GAS CONSTELLATION - Complete Implementation:
+Patient Context (Central Node):
+
+Patient: 20-year-old male
+Presentation: Fall from bike
+Key Finding: Single locule of gas within left transverse sinus + hyperdensity of left sigmoid sinus
+Clinical Context: Subtle diastasis of left lambdoid suture, small volume fluid in left mastoid air cells
+Clinical Significance: EMERGENCY - skull fracture crossing suture = major thrombosis risk factor
+
+TECHNICAL Node (Blue) - "How We See It":
+
+Discovery Insight: "CT shows intrasinus gas = Traumatic vacuum phenomenon"
+Focused Learning: "Trauma creates intrasinus gas through a 'vacuum phenomenon' - like cracking your knuckles. When the skull fractures, especially across sutures, it creates negative pressure that sucks gas into blood vessels. Unlike post-operative gas in fluid spaces, this is real gas inside a blood vessel."
+Clinical Application: "Traumatic vacuum phenomenon occurs when fractures disrupt venous sinus integrity. CT shows hyperdense thrombosis in sigmoid sinus plus gas bubbles in transverse sinus. Unlike post-operative pneumocephalus in CSF spaces, intrasinus gas indicates vascular injury with high thrombosis risk."
+Comprehensive Analysis: "Vacuum phenomenon increases thrombosis risk because gas-blood interface promotes platelet aggregation and coagulation cascade activation. CT findings: Hyperdense acute thrombus plus intrasinus gas bubbles. CT venography confirms filling defect."
+
+CLINICAL Node (Green) - "Why It Matters":
+
+Discovery Insight: "20M trauma + Skull fracture crossing suture = Emergency thrombosis risk"
+Focused Learning: "When skull fractures cross sutures, it creates the highest risk for blood clot formation in brain drainage veins. Gas bubbles inside blood vessels increase clotting risk. Unlike surgical patients where gas is expected and harmless, trauma gas signals immediate danger."
+
+ANATOMICAL Node (Orange) - "Where It Matters":
+
+Discovery Insight: "Lambdoid suture fracture → Transverse sinus gas → Sigmoid sinus thrombosis"
+
+Make case selection functional so users can switch between Gas Bubbles and Trauma Gas constellations. Then we'll add full-screen case presentation with medical images next."**
