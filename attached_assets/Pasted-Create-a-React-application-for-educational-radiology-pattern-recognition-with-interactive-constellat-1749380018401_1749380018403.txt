@@ -1,0 +1,70 @@
+Create a React application for educational radiology pattern recognition with interactive constellation visualization. 
+
+PROJECT NAME: radiology-constellation
+TECH STACK: React + React Flow + Tailwind CSS + Framer Motion
+DEPLOYMENT: Optimized for Netlify/Vercel (NOT Replit hosting)
+VERSION CONTROL: GitHub integration required
+
+CORE FEATURES:
+- Interactive constellation viewer using React Flow
+- Gas Bubbles (SWI) case as starting implementation
+- TECHNICAL→CLINICAL→ANATOMICAL learning framework
+- Mobile-responsive design
+- Professional medical education interface
+
+STARTING CASE DATA STRUCTURE:
+{
+  "caseName": "Gas Bubbles on SWI",
+  "framework": {
+    "TECHNICAL": {
+      "primaryConcept": "Susceptibility-Weighted Imaging (SWI)",
+      "explanation": "Magnetic susceptibility differences create signal dropout",
+      "keyPhysics": ["T2* effects", "blooming artifacts", "phase information"],
+      "whyItMatters": "Exquisitely sensitive to gas bubbles"
+    },
+    "CLINICAL": {
+      "primaryConcept": "Timeline-Dependent Significance", 
+      "timeline": "Under 1 week normal post-op, after 1 week concerning",
+      "context": "Post-operative vs traumatic gas",
+      "urgency": "Timeline-dependent - recent surgery vs remote trauma"
+    },
+    "ANATOMICAL": {
+      "primaryConcept": "Location Suggests Etiology",
+      "significance": "Surgical site vs remote location",
+      "considerations": "Mass effect potential, intervention thresholds"
+    }
+  }
+}
+
+MVP REQUIREMENTS:
+1. Landing page with professional medical interface
+2. Interactive constellation with draggable/zoomable nodes
+3. Click nodes to reveal detailed explanations
+4. Guided learning flow with visual cues
+5. Responsive design for demo sharing
+6. Clean, professional styling suitable for medical faculty
+
+FILE STRUCTURE:
+src/
+├── components/
+│   ├── ConstellationViewer/
+│   ├── CaseSelector/
+│   └── LearningGuide/
+├── data/curated-cases/
+└── utils/
+public/
+├── index.html
+└── favicon.ico
+package.json (with proper build scripts)
+netlify.toml (deployment config)
+
+DEPLOYMENT REQUIREMENTS:
+- Optimize build output for Netlify/Vercel
+- Include proper package.json build scripts
+- Add netlify.toml with SPA redirect rules
+- Ensure GitHub repo is public for easy Netlify connection
+- Build command: "npm run build"
+- Publish directory: "dist" or "build"
+- Include environment variables setup for future API integration
+
+Create this project with GitHub integration from start and optimize for external deployment.
