@@ -1,4 +1,16 @@
-export const imageData = {
+export interface ImageModalities {
+  [modality: string]: {
+    [view: string]: string;
+  };
+}
+
+export interface CaseImageData {
+  modalities: ImageModalities;
+  defaultModality: string;
+  defaultView: string;
+}
+
+export const imageData: Record<string, CaseImageData> = {
   gasbubbles: {
     modalities: {
       "MRI": {

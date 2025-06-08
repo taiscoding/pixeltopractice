@@ -645,6 +645,7 @@ export default function ImmersiveConstellationViewer({
   const [showTopUI, setShowTopUI] = useState(false);
   const [showLeftUI, setShowLeftUI] = useState(false);
   const [showBottomUI, setShowBottomUI] = useState(false);
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
 
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
@@ -826,9 +827,13 @@ export default function ImmersiveConstellationViewer({
   }, [currentCaseData]);
 
   const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node.id === selectedNode ? null : node.id);
-    if (node.id !== selectedNode) {
-      setExplorationProgress(prev => Math.min(prev + 20, 100));
+    if (node.id === 'central') {
+      setIsImageViewerOpen(true);
+    } else {
+      setSelectedNode(node.id === selectedNode ? null : node.id);
+      if (node.id !== selectedNode) {
+        setExplorationProgress(prev => Math.min(prev + 20, 100));
+      }
     }
   }, [selectedNode]);
 
@@ -883,6 +888,13 @@ export default function ImmersiveConstellationViewer({
           caseInfo={caseInfo}
           selectedCase={selectedCase}
           onCaseSelect={onCaseSelect}
+        />
+        
+        {/* Medical Image Viewer */}
+        <MedicalImageViewer
+          isOpen={isImageViewerOpen}
+          onClose={() => setIsImageViewerOpen(false)}
+          selectedCase={selectedCase}
         />
       </div>
     </ReactFlowProvider>

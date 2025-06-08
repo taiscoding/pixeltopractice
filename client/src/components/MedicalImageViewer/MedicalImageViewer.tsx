@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { imageData, getCaseKey } from '@/data/imageData';
+import { imageData, getCaseKey, type CaseImageData } from '@/data/imageData';
 import { availableCases } from '@/data/curated-cases';
 
 interface MedicalImageViewerProps {
@@ -33,7 +33,7 @@ export default function MedicalImageViewer({ isOpen, onClose, selectedCase }: Me
   const handleModalityChange = (modality: string) => {
     setCurrentModality(modality);
     // Set first view of the new modality as default
-    const modalityData = (caseImageData.modalities as any)[modality];
+    const modalityData = caseImageData?.modalities[modality];
     if (modalityData) {
       const firstView = Object.keys(modalityData)[0];
       setCurrentView(firstView);
@@ -53,18 +53,22 @@ export default function MedicalImageViewer({ isOpen, onClose, selectedCase }: Me
 
   // Get current image path
   const getCurrentImagePath = () => {
-    if (!currentModality || !currentView || !caseImageData.modalities[currentModality]) {
+    if (!currentModality || !currentView || !caseImageData) {
       return '';
     }
-    return caseImageData.modalities[currentModality][currentView] || '';
+    const modalityData = caseImageData.modalities[currentModality];
+    if (!modalityData) return '';
+    return modalityData[currentView] || '';
   };
 
   // Get available views for current modality
   const getAvailableViews = () => {
-    if (!currentModality || !caseImageData.modalities[currentModality]) {
+    if (!currentModality || !caseImageData) {
       return [];
     }
-    return Object.keys(caseImageData.modalities[currentModality]);
+    const modalityData = caseImageData.modalities[currentModality];
+    if (!modalityData) return [];
+    return Object.keys(modalityData);
   };
 
   // Handle keyboard navigation
