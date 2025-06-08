@@ -330,35 +330,15 @@ function ConstellationFlow({
                   <Button
                     variant="default"
                     size="sm"
+                    onClick={() => {
+                      if (confirm('Compare with Trauma Gas case for differential diagnosis?')) {
+                        // Future implementation for case comparison
+                        alert('Trauma Gas case comparison coming soon! This will highlight key differences in patient context, timing, and imaging findings.');
+                      }
+                    }}
                     className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-all duration-200 hover:scale-105"
                   >
                     Gas Bubbles SWI
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      if (confirm('Would you like to compare with Trauma Gas?')) {
-                        // Future implementation for case comparison
-                        alert('Trauma Gas case comparison coming soon!');
-                      }
-                    }}
-                    className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
-                  >
-                    Compare Cases
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      if (confirm('Would you like to compare with Trauma Gas?')) {
-                        // Future implementation for trauma gas case
-                        alert('Trauma Gas case coming soon!');
-                      }
-                    }}
-                    className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
-                  >
-                    Trauma Gas
                   </Button>
                 </div>
               </div>

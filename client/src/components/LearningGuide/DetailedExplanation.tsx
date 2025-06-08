@@ -178,9 +178,9 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {getContentForLevel(framework.CLINICAL, knowledgeLevel)}
-                      </p>
+                      <div className="text-sm text-gray-700 leading-relaxed">
+                        {formatText(getContentForLevel(framework.CLINICAL, knowledgeLevel))}
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -205,9 +205,9 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {getContentForLevel(framework.ANATOMICAL, knowledgeLevel)}
-                      </p>
+                      <div className="text-sm text-gray-700 leading-relaxed">
+                        {formatText(getContentForLevel(framework.ANATOMICAL, knowledgeLevel))}
+                      </div>
                     </div>
                   </div>
                 </CardContent>
