@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --background: hsl(0, 0%, 100%);
@@ -158,4 +158,46 @@
 
 .react-flow__background {
   @apply bg-gray-50;
+}
+
+/* Immersive Constellation Styles */
+.constellation-space {
+  background: linear-gradient(135deg, #1e293b 0%, #3730a3 50%, #1e293b 100%);
+}
+
+.constellation-space .react-flow__background {
+  background: transparent;
+}
+
+.constellation-space .react-flow__controls {
+  background: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px;
+}
+
+.constellation-space .react-flow__controls-button {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.constellation-space .react-flow__controls-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+/* Animated constellation connections */
+.constellation-space .react-flow__edge-path {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* Node glow effects */
+.constellation-space .react-flow__node {
+  filter: drop-shadow(0 0 20px rgba(147, 197, 253, 0.3));
+}
+
+.constellation-space .react-flow__node.selected {
+  filter: drop-shadow(0 0 30px rgba(147, 197, 253, 0.6));
 }

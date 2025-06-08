@@ -83,6 +83,13 @@ export default function Dashboard() {
       <CaseSelector />
 
       <Footer />
+
+      {/* Immersive Constellation Viewer */}
+      <ImmersiveConstellationViewer 
+        isOpen={isImmersiveMode}
+        onClose={() => setIsImmersiveMode(false)}
+        selectedCase="gasBubblesSWI"
+      />
     </div>
   );
 }
