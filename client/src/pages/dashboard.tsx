@@ -8,10 +8,15 @@ import CaseSelector from "@/components/CaseSelector/CaseSelector";
 import { Button } from "@/components/ui/button";
 import { Brain, Play, Maximize2 } from "lucide-react";
 import { scrollToElement } from "@/lib/utils";
+import { availableCases } from "@/data/curated-cases";
 
 export default function Dashboard() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [isImmersiveMode, setIsImmersiveMode] = useState(false);
+  const [selectedCase, setSelectedCase] = useState<string>("gas-bubbles-swi");
+
+  const currentCaseData = availableCases[selectedCase];
+  const currentCaseName = currentCaseData?.case?.caseName || "Unknown Case";
 
   const handleStartLearning = () => {
     scrollToElement("constellation-viewer");
@@ -19,6 +24,12 @@ export default function Dashboard() {
 
   const handleImmersiveLearning = () => {
     setIsImmersiveMode(true);
+  };
+
+  const handleCaseSelect = (caseId: string) => {
+    setSelectedCase(caseId);
+    setSelectedNode(null); // Reset selected node when switching cases
+    scrollToElement("constellation-viewer");
   };
 
   return (
@@ -59,11 +70,17 @@ export default function Dashboard() {
         </div>
       </section>
 
+      {/* Case Selector Section */}
+      <CaseSelector 
+        selectedCase={selectedCase}
+        onCaseSelect={handleCaseSelect}
+      />
+
       {/* Constellation Viewer Section */}
-      <section id="constellation-viewer" className="py-16 bg-white">
+      <section id="constellation-viewer" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Gas Bubbles on SWI - Interactive Learning</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{currentCaseName} - Interactive Learning</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Click on the constellation nodes to explore the Technical, Clinical, and Anatomical aspects of this case.
             </p>
@@ -71,7 +88,8 @@ export default function Dashboard() {
           
           <ConstellationViewer 
             selectedNode={selectedNode} 
-            onNodeSelect={setSelectedNode} 
+            onNodeSelect={setSelectedNode}
+            caseData={currentCaseData}
           />
         </div>
       </section>
@@ -80,10 +98,8 @@ export default function Dashboard() {
       <DetailedExplanation 
         selectedNode={selectedNode} 
         onBackToConstellation={() => setSelectedNode(null)}
+        caseData={currentCaseData}
       />
-
-      {/* Case Selector Section */}
-      <CaseSelector />
 
       <Footer />
 
@@ -91,7 +107,7 @@ export default function Dashboard() {
       <ImmersiveConstellationViewer 
         isOpen={isImmersiveMode}
         onClose={() => setIsImmersiveMode(false)}
-        selectedCase="gasBubblesSWI"
+        selectedCase={selectedCase}
       />
     </div>
   );
