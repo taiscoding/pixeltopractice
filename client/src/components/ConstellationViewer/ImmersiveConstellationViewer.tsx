@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactFlow, {
   Background,
@@ -106,6 +106,16 @@ function ConstellationFlow({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { zoomIn, zoomOut, fitView } = useReactFlow();
+
+  // Update nodes when initialNodes change (case switching)
+  useEffect(() => {
+    setNodes(initialNodes);
+  }, [initialNodes, setNodes]);
+
+  // Update edges when initialEdges change (case switching)
+  useEffect(() => {
+    setEdges(initialEdges);
+  }, [initialEdges, setEdges]);
 
   const handleZoomIn = () => zoomIn();
   const handleZoomOut = () => zoomOut();
@@ -691,7 +701,7 @@ export default function ImmersiveConstellationViewer({
   };
 
   const initialNodes: Node[] = useMemo(() => {
-    if (!currentCaseData) return [];
+    if (!currentCaseData || !caseInfo) return [];
     
     return [
       {
@@ -742,7 +752,7 @@ export default function ImmersiveConstellationViewer({
         },
       },
     ];
-  }, [currentCaseData]);
+  }, [currentCaseData, selectedCase, caseInfo, nodePositions, nodeColors]);
 
   const initialEdges: Edge[] = useMemo(() => {
     if (!currentCaseData) return [];
