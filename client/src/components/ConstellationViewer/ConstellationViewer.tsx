@@ -11,20 +11,22 @@ import { useConstellation } from '@/hooks/useConstellation';
 import CustomNode from './CustomNode';
 import { ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CaseData } from '@/data/curated-cases';
 
 interface ConstellationViewerProps {
   selectedNode: string | null;
   onNodeSelect: (nodeId: string | null) => void;
+  caseData?: CaseData;
 }
 
-export default function ConstellationViewer({ selectedNode, onNodeSelect }: ConstellationViewerProps) {
+export default function ConstellationViewer({ selectedNode, onNodeSelect, caseData }: ConstellationViewerProps) {
   const {
     nodes,
     edges,
     onNodesChange,
     onEdgesChange,
     onNodeClick,
-  } = useConstellation();
+  } = useConstellation(caseData);
 
   const memoizedNodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 

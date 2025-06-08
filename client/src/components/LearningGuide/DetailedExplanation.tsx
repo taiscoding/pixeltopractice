@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Settings, Stethoscope, Search, AlertCircle, Clock, MapPin } from 'lucide-react';
-import { gasBubblesSWICase } from '@/data/curated-cases/gasBubblesSWI';
+import { CaseData } from '@/data/curated-cases';
 
 // Helper function to format text with markdown-like syntax
 const formatText = (text: string) => {
@@ -57,10 +57,11 @@ const formatInlineText = (text: string) => {
 interface DetailedExplanationProps {
   selectedNode: string | null;
   onBackToConstellation: () => void;
+  caseData?: CaseData;
 }
 
-export default function DetailedExplanation({ selectedNode, onBackToConstellation }: DetailedExplanationProps) {
-  const framework = gasBubblesSWICase.framework;
+export default function DetailedExplanation({ selectedNode, onBackToConstellation, caseData }: DetailedExplanationProps) {
+  const framework = caseData?.case?.framework;
   const [knowledgeLevel, setKnowledgeLevel] = useState<0 | 1 | 2>(1); // 0=Focused, 1=Clinical, 2=Comprehensive
 
   const getKnowledgeLevelLabel = (level: number) => {

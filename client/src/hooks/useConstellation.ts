@@ -1,91 +1,145 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Node, Edge, useNodesState, useEdgesState } from 'reactflow';
-import { gasBubblesSWICase, nodePositions, nodeColors } from '@/data/curated-cases/gasBubblesSWI';
+import { CaseData } from '@/data/curated-cases';
 
-const initialNodes: Node[] = [
-  {
-    id: 'central',
-    type: 'custom',
-    position: nodePositions.central,
-    data: { 
-      label: 'Gas Bubbles\nSWI',
-      type: 'central',
-      icon: 'brain',
-      color: nodeColors.central
-    },
-  },
-  {
-    id: 'technical',
-    type: 'custom',
-    position: nodePositions.technical,
-    data: { 
-      label: 'TECHNICAL\nSusceptibility-Weighted Imaging',
-      type: 'technical',
-      icon: 'settings',
-      color: nodeColors.technical,
-      framework: gasBubblesSWICase.framework.TECHNICAL
-    },
-  },
-  {
-    id: 'clinical',
-    type: 'custom',
-    position: nodePositions.clinical,
-    data: { 
-      label: 'CLINICAL\nTimeline-Dependent Significance',
-      type: 'clinical',
-      icon: 'stethoscope',
-      color: nodeColors.clinical,
-      framework: gasBubblesSWICase.framework.CLINICAL
-    },
-  },
-  {
-    id: 'anatomical',
-    type: 'custom',
-    position: nodePositions.anatomical,
-    data: { 
-      label: 'ANATOMICAL\nLocation Suggests Etiology',
-      type: 'anatomical',
-      icon: 'search',
-      color: nodeColors.anatomical,
-      framework: gasBubblesSWICase.framework.ANATOMICAL
-    },
-  },
-];
+const getCentralLabel = (caseName: string) => {
+  switch (caseName) {
+    case 'Gas Bubbles on SWI':
+      return 'Gas Bubbles\nSWI';
+    case 'Trauma Gas':
+      return 'Trauma Gas\nEmergency';
+    default:
+      return 'Case\nStudy';
+  }
+};
 
-const initialEdges: Edge[] = [
-  {
-    id: 'central-technical',
-    source: 'central',
-    sourceHandle: 'top',
-    target: 'technical',
-    targetHandle: 'target',
-    type: 'smoothstep',
-    style: { stroke: nodeColors.technical, strokeWidth: 3, strokeDasharray: '8,4' },
-    animated: true,
-  },
-  {
-    id: 'central-clinical',
-    source: 'central',
-    sourceHandle: 'right',
-    target: 'clinical',
-    targetHandle: 'target',
-    type: 'smoothstep',
-    style: { stroke: nodeColors.clinical, strokeWidth: 3, strokeDasharray: '8,4' },
-    animated: true,
-  },
-  {
-    id: 'central-anatomical',
-    source: 'central',
-    sourceHandle: 'left',
-    target: 'anatomical',
-    targetHandle: 'target',
-    type: 'smoothstep',
-    style: { stroke: nodeColors.anatomical, strokeWidth: 3, strokeDasharray: '8,4' },
-    animated: true,
-  },
-];
+const getTechnicalLabel = (caseName: string) => {
+  switch (caseName) {
+    case 'Gas Bubbles on SWI':
+      return 'TECHNICAL\nSusceptibility-Weighted Imaging';
+    case 'Trauma Gas':
+      return 'TECHNICAL\nVacuum Phenomenon';
+    default:
+      return 'TECHNICAL\nImaging Method';
+  }
+};
 
-export function useConstellation() {
+const getClinicalLabel = (caseName: string) => {
+  switch (caseName) {
+    case 'Gas Bubbles on SWI':
+      return 'CLINICAL\nTimeline-Dependent Significance';
+    case 'Trauma Gas':
+      return 'CLINICAL\nEmergency Management';
+    default:
+      return 'CLINICAL\nPatient Impact';
+  }
+};
+
+const getAnatomicalLabel = (caseName: string) => {
+  switch (caseName) {
+    case 'Gas Bubbles on SWI':
+      return 'ANATOMICAL\nLocation Suggests Etiology';
+    case 'Trauma Gas':
+      return 'ANATOMICAL\nVenous Drainage System';
+    default:
+      return 'ANATOMICAL\nStructural Context';
+  }
+};
+
+export function useConstellation(caseData?: CaseData) {
+  const { initialNodes, initialEdges } = useMemo(() => {
+    if (!caseData) {
+      return { initialNodes: [], initialEdges: [] };
+    }
+
+    const { case: caseInfo, nodePositions, nodeColors } = caseData;
+    
+    const nodes: Node[] = [
+      {
+        id: 'central',
+        type: 'custom',
+        position: nodePositions.central,
+        data: { 
+          label: getCentralLabel(caseInfo.caseName),
+          type: 'central',
+          icon: 'brain',
+          color: nodeColors.central
+        },
+      },
+      {
+        id: 'technical',
+        type: 'custom',
+        position: nodePositions.technical,
+        data: { 
+          label: getTechnicalLabel(caseInfo.caseName),
+          type: 'technical',
+          icon: 'settings',
+          color: nodeColors.technical,
+          framework: caseInfo.framework.TECHNICAL
+        },
+      },
+      {
+        id: 'clinical',
+        type: 'custom',
+        position: nodePositions.clinical,
+        data: { 
+          label: getClinicalLabel(caseInfo.caseName),
+          type: 'clinical',
+          icon: 'stethoscope',
+          color: nodeColors.clinical,
+          framework: caseInfo.framework.CLINICAL
+        },
+      },
+      {
+        id: 'anatomical',
+        type: 'custom',
+        position: nodePositions.anatomical,
+        data: { 
+          label: getAnatomicalLabel(caseInfo.caseName),
+          type: 'anatomical',
+          icon: 'search',
+          color: nodeColors.anatomical,
+          framework: caseInfo.framework.ANATOMICAL
+        },
+      },
+    ];
+
+    const edges: Edge[] = [
+      {
+        id: 'central-technical',
+        source: 'central',
+        sourceHandle: 'top',
+        target: 'technical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.technical, strokeWidth: 3, strokeDasharray: '8,4' },
+        animated: true,
+      },
+      {
+        id: 'central-clinical',
+        source: 'central',
+        sourceHandle: 'right',
+        target: 'clinical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.clinical, strokeWidth: 3, strokeDasharray: '8,4' },
+        animated: true,
+      },
+      {
+        id: 'central-anatomical',
+        source: 'central',
+        sourceHandle: 'left',
+        target: 'anatomical',
+        targetHandle: 'target',
+        type: 'smoothstep',
+        style: { stroke: nodeColors.anatomical, strokeWidth: 3, strokeDasharray: '8,4' },
+        animated: true,
+      },
+    ];
+
+    return { initialNodes: nodes, initialEdges: edges };
+  }, [caseData]);
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
