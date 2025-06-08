@@ -108,6 +108,7 @@ export default function Dashboard() {
         isOpen={isImmersiveMode}
         onClose={() => setIsImmersiveMode(false)}
         selectedCase={selectedCase}
+        onCaseSelect={handleCaseSelect}
       />
     </div>
   );

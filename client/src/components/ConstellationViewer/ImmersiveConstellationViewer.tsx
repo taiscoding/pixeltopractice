@@ -71,6 +71,7 @@ interface ImmersiveConstellationViewerProps {
   isOpen: boolean;
   onClose: () => void;
   selectedCase: string;
+  onCaseSelect?: (caseId: string) => void;
 }
 
 // Inner component that has access to ReactFlow instance
@@ -329,17 +330,36 @@ function ConstellationFlow({
                 </div>
                 <div className="flex items-center gap-3">
                   <Button
-                    variant="default"
+                    variant={selectedCase === 'gas-bubbles-swi' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => {
-                      if (confirm('Compare with Trauma Gas case for differential diagnosis?')) {
-                        // Future implementation for case comparison
-                        alert('Trauma Gas case comparison coming soon! This will highlight key differences in patient context, timing, and imaging findings.');
+                      if (onCaseSelect && selectedCase !== 'gas-bubbles-swi') {
+                        onCaseSelect('gas-bubbles-swi');
                       }
                     }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-all duration-200 hover:scale-105"
+                    className={`transition-all duration-200 hover:scale-105 ${
+                      selectedCase === 'gas-bubbles-swi' 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 
+                        : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/40'
+                    }`}
                   >
                     Gas Bubbles SWI
+                  </Button>
+                  <Button
+                    variant={selectedCase === 'trauma-gas' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      if (onCaseSelect && selectedCase !== 'trauma-gas') {
+                        onCaseSelect('trauma-gas');
+                      }
+                    }}
+                    className={`transition-all duration-200 hover:scale-105 ${
+                      selectedCase === 'trauma-gas' 
+                        ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg' 
+                        : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/40'
+                    }`}
+                  >
+                    Trauma Gas
                   </Button>
                 </div>
               </div>
@@ -365,7 +385,7 @@ function ConstellationFlow({
                     <Brain className="h-5 w-5 text-white" />
                   </div>
                   <h2 className="text-xl font-semibold text-white">
-                    Gas Bubbles on SWI - Patient Context
+                    {caseInfo?.caseName} - Patient Context
                   </h2>
                 </div>
                 <Button
@@ -378,33 +398,65 @@ function ConstellationFlow({
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-blue-950/30 rounded-lg p-4">
-                  <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
-                  <p className="text-white text-lg font-semibold">65-year-old male</p>
+              {caseInfo?.caseName === 'Gas Bubbles on SWI' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-blue-950/30 rounded-lg p-4">
+                    <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                    <p className="text-white text-lg font-semibold">65-year-old male</p>
+                  </div>
+                  
+                  <div className="bg-green-950/30 rounded-lg p-4">
+                    <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                    <p className="text-white/80 text-sm">Post-operative examination immediately following excision of posterior fossa mass</p>
+                  </div>
+                  
+                  <div className="bg-amber-950/30 rounded-lg p-4">
+                    <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                    <p className="text-white/80 text-sm">Multiple low signal intensity rounded filling defects in subarachnoid space and lateral ventricles</p>
+                  </div>
+                  
+                  <div className="bg-purple-950/30 rounded-lg p-4">
+                    <h3 className="text-purple-200 font-medium mb-2">Clinical Significance</h3>
+                    <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
+                  </div>
                 </div>
-                
-                <div className="bg-green-950/30 rounded-lg p-4">
-                  <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
-                  <p className="text-white/80 text-sm">Post-operative examination immediately following excision of posterior fossa mass</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-blue-950/30 rounded-lg p-4">
+                    <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                    <p className="text-white text-lg font-semibold">20-year-old male</p>
+                  </div>
+                  
+                  <div className="bg-green-950/30 rounded-lg p-4">
+                    <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                    <p className="text-white/80 text-sm">Fall from bike</p>
+                  </div>
+                  
+                  <div className="bg-amber-950/30 rounded-lg p-4">
+                    <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                    <p className="text-white/80 text-sm">Single locule of gas within left transverse sinus + hyperdensity of left sigmoid sinus</p>
+                  </div>
+                  
+                  <div className="bg-red-950/30 rounded-lg p-4">
+                    <h3 className="text-red-200 font-medium mb-2">Clinical Significance</h3>
+                    <p className="text-white text-sm"><span className="font-semibold text-red-400">EMERGENCY</span> - skull fracture crossing suture = major thrombosis risk factor</p>
+                  </div>
                 </div>
-                
-                <div className="bg-amber-950/30 rounded-lg p-4">
-                  <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
-                  <p className="text-white/80 text-sm">Multiple low signal intensity rounded filling defects in subarachnoid space and lateral ventricles</p>
-                </div>
-                
-                <div className="bg-purple-950/30 rounded-lg p-4">
-                  <h3 className="text-purple-200 font-medium mb-2">Clinical Significance</h3>
-                  <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
-                </div>
-              </div>
+              )}
 
               <div className="mt-6 bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-medium mb-3">Explore the Frameworks</h3>
-                <p className="text-white/70 text-sm mb-4">
-                  Click on the Technical, Clinical, or Anatomical nodes to understand different aspects of gas bubbles on SWI.
-                </p>
+                <h3 className="text-white font-medium mb-3">Clinical Context</h3>
+                {caseInfo?.caseName === 'Trauma Gas' && (
+                  <p className="text-white/70 text-sm mb-4">
+                    Subtle diastasis of left lambdoid suture, small volume fluid in left mastoid air cells
+                  </p>
+                )}
+                <div className="mb-4">
+                  <h4 className="text-white font-medium text-sm mb-2">Explore the Frameworks</h4>
+                  <p className="text-white/70 text-sm mb-4">
+                    Click on the Technical, Clinical, or Anatomical nodes to understand different aspects of this case.
+                  </p>
+                </div>
                 <div className="flex gap-3 flex-wrap">
                   <Button
                     onClick={() => setSelectedNode('technical')}
@@ -569,7 +621,8 @@ function ConstellationFlow({
 export default function ImmersiveConstellationViewer({ 
   isOpen, 
   onClose, 
-  selectedCase 
+  selectedCase,
+  onCaseSelect 
 }: ImmersiveConstellationViewerProps) {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [knowledgeDepth, setKnowledgeDepth] = useState([1]); // 0=Focused, 1=Clinical, 2=Comprehensive
@@ -607,7 +660,7 @@ export default function ImmersiveConstellationViewer({
       case 'Gas Bubbles on SWI':
         return 'TECHNICAL\nSusceptibility-Weighted Imaging';
       case 'Trauma Gas':
-        return 'TECHNICAL\nVacuum Phenomenon';
+        return 'TECHNICAL\nIntrasinus Gas Detection';
       default:
         return 'TECHNICAL\nImaging Method';
     }
@@ -618,7 +671,7 @@ export default function ImmersiveConstellationViewer({
       case 'Gas Bubbles on SWI':
         return 'CLINICAL\nTimeline-Dependent Significance';
       case 'Trauma Gas':
-        return 'CLINICAL\nEmergency Management';
+        return 'CLINICAL\nEmergency Risk Stratification';
       default:
         return 'CLINICAL\nPatient Impact';
     }
@@ -629,7 +682,7 @@ export default function ImmersiveConstellationViewer({
       case 'Gas Bubbles on SWI':
         return 'ANATOMICAL\nLocation Suggests Etiology';
       case 'Trauma Gas':
-        return 'ANATOMICAL\nVenous Drainage System';
+        return 'ANATOMICAL\nVenous Thrombosis Pathway';
       default:
         return 'ANATOMICAL\nStructural Context';
     }
