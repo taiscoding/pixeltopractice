@@ -18,6 +18,7 @@ import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
 import CustomNode from './CustomNode';
 import { availableCases } from '@/data/curated-cases';
+import MedicalImageViewer from '../MedicalImageViewer/MedicalImageViewer';
 
 // Helper function to format text with markdown-like syntax
 const formatText = (text: string) => {
@@ -728,7 +729,7 @@ export default function ImmersiveConstellationViewer({
   };
 
   const initialNodes: Node[] = useMemo(() => {
-    if (!currentCaseData || !caseInfo) return [];
+    if (!currentCaseData || !caseInfo || !nodePositions || !nodeColors) return [];
     
     return [
       {
