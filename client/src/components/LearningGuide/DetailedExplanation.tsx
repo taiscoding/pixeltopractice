@@ -73,11 +73,11 @@ export default function DetailedExplanation({ selectedNode }: DetailedExplanatio
                       <h4 className="font-medium text-gray-900 mb-2">{framework.CLINICAL.primaryConcept}</h4>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-green-50 p-3 rounded-lg">
-                          <p className="text-sm font-medium text-green-800">< 1 Week Post-Op</p>
+                          <p className="text-sm font-medium text-green-800">&lt; 1 Week Post-Op</p>
                           <p className="text-xs text-green-700">Usually normal finding</p>
                         </div>
                         <div className="bg-red-50 p-3 rounded-lg">
-                          <p className="text-sm font-medium text-red-800">> 1 Week Post-Op</p>
+                          <p className="text-sm font-medium text-red-800">&gt; 1 Week Post-Op</p>
                           <p className="text-xs text-red-700">Concerning for infection</p>
                         </div>
                       </div>
