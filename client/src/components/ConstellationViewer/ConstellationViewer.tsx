@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -10,10 +10,6 @@ import { useConstellation } from '@/hooks/useConstellation';
 import CustomNode from './CustomNode';
 import { ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-};
 
 interface ConstellationViewerProps {
   selectedNode: string | null;
@@ -29,6 +25,8 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect }: Cons
     onNodeClick,
   } = useConstellation();
 
+  const memoizedNodeTypes = useMemo(() => ({ custom: CustomNode }), []);
+
   const handleNodeClick = useCallback((event: React.MouseEvent, node: any) => {
     const nodeId = node.id === selectedNode ? null : node.id;
     onNodeSelect(nodeId);
@@ -36,7 +34,7 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect }: Cons
   }, [selectedNode, onNodeSelect, onNodeClick]);
 
   return (
-    <div className="bg-gray-50 rounded-2xl p-4 h-[600px] relative overflow-hidden border border-gray-200">
+    <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-200 shadow-xl">
       <ReactFlow
         nodes={nodes.map(node => ({
           ...node,
@@ -46,20 +44,20 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect }: Cons
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeClick={handleNodeClick}
-        nodeTypes={nodeTypes}
+        nodeTypes={memoizedNodeTypes}
         fitView
         attributionPosition="bottom-left"
         className="constellation-grid"
       >
-        <Background color="#e2e8f0" gap={40} />
+        <Background color="#f1f5f9" gap={32} />
         <Controls 
-          className="!bg-white !border-gray-200 !shadow-lg !rounded-lg"
+          className="!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
           showInteractive={false}
         />
         <MiniMap 
-          className="!bg-white !border-gray-200 !shadow-lg !rounded-lg"
+          className="!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
           nodeColor={(node) => node.data.color}
-          maskColor="rgba(0, 0, 0, 0.1)"
+          maskColor="rgba(0, 0, 0, 0.05)"
         />
       </ReactFlow>
 

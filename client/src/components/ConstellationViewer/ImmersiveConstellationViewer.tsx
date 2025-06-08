@@ -1,8 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactFlow, {
   Background,
-  Controls,
   NodeTypes,
   useNodesState,
   useEdgesState,
@@ -10,7 +9,7 @@ import ReactFlow, {
   Edge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { X, ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
+import { X, ArrowLeft, Maximize2, Minimize2, Brain, Settings, Stethoscope, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';

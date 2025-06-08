@@ -77,7 +77,10 @@ export default function Dashboard() {
       </section>
 
       {/* Detailed Explanation Section */}
-      <DetailedExplanation selectedNode={selectedNode} />
+      <DetailedExplanation 
+        selectedNode={selectedNode} 
+        onBackToConstellation={() => setSelectedNode(null)}
+      />
 
       {/* Case Selector Section */}
       <CaseSelector />

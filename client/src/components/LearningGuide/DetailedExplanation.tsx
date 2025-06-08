@@ -47,7 +47,7 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Technical Details */}
-              <Card className={`${selectedNode === 'technical' ? 'border-l-4 border-l-blue-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
+                <Card className={`${selectedNode === 'technical' ? 'border-l-4 border-l-blue-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
                     <div className="bg-blue-600 rounded-lg p-3 mr-4">
