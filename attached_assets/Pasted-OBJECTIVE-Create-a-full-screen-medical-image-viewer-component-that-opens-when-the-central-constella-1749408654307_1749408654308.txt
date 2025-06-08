@@ -1,0 +1,89 @@
+OBJECTIVE: Create a full-screen medical image viewer component that opens when the central constellation node is clicked. Use the exact Radiopaedia-style interface with case-specific modality switching.
+TECHNICAL REQUIREMENTS:
+
+Image Data Structure:
+
+javascriptconst imageData = {
+  gasbubbles: {
+    modalities: {
+      "MRI": {
+        "FLAIR": "attached_assets/medical_images/gasbubbles_case/gasbubbles_mri_flair.jpg",
+        "T2": "attached_assets/medical_images/gasbubbles_case/gasbubbles_mri_t2.jpg", 
+        "SWI": "attached_assets/medical_images/gasbubbles_case/gasbubbles_mri_swi.jpg"
+      }
+    },
+    defaultModality: "MRI",
+    defaultView: "SWI"
+  },
+  trauma: {
+    modalities: {
+      "CT Head": {
+        "Axial non-contrast": "attached_assets/medical_images/trauma_case/trauma_ct_axial_noncontrast.jpg",
+        "Sagittal non-contrast": "attached_assets/medical_images/trauma_case/trauma_ct_sagittal_noncontrast.jpg",
+        "Coronal non-contrast": "attached_assets/medical_images/trauma_case/trauma_ct_coronal_noncontrast.jpg",
+        "Axial bone window": "attached_assets/medical_images/trauma_case/trauma_ct_axial_bone.jpg"
+      },
+      "CT Venogram": {
+        "Axial venogram": "attached_assets/medical_images/trauma_case/trauma_ctv_axial.jpg",
+        "Coronal venogram": "attached_assets/medical_images/trauma_case/trauma_ctv_coronal.jpg", 
+        "Sagittal venogram": "attached_assets/medical_images/trauma_case/trauma_ctv_sagittal.jpg"
+      }
+    },
+    defaultModality: "CT Head",
+    defaultView: "Axial non-contrast"
+  }
+}
+
+Component Structure:
+
+
+Full-screen modal overlay (z-index high, dark background)
+Top bar: Case title, modality label (top-right), close button
+Tab bar: Sequence/view switching with orange highlight for active tab
+Main image area: Large medical image display with professional styling
+Right panel: Patient context + educational content from existing data structure
+
+
+Styling Requirements:
+
+
+Dark medical theme: Match Radiopaedia's black/dark gray color scheme
+Professional typography: Clean, medical-grade fonts
+Orange accent color: For active tabs and highlights (#ff6b35 or similar)
+Smooth transitions: Fade between images, hover effects on tabs
+Responsive design: Works on different screen sizes
+
+
+Functionality:
+
+
+Case-specific modalities: Only show modalities available for selected case
+Dynamic tab generation: Generate tabs based on current case's available views
+Image preloading: Load images smoothly without flickering
+Keyboard navigation: ESC to close, arrow keys to navigate (optional)
+Integration: Trigger from existing central node click handler
+
+
+Integration Points:
+
+
+Maintain existing constellation functionality: Don't break case switching or educational content
+Use existing patient context data: Pull from current case data structure
+Cohesive design: Match existing constellation color scheme and aesthetics
+State management: Use React useState for current modality, view, and visibility
+
+IMPLEMENTATION NOTES:
+
+Create new ImageViewer.jsx component
+Import and integrate into main constellation component
+Add state management for image viewer visibility and current selections
+Ensure smooth transitions and professional medical appearance
+Test with all 10 medical images to verify correct loading
+
+SUCCESS CRITERIA:
+
+Full-screen professional medical image viewer opens on central node click
+Case-specific modality switching works correctly (MRI for gas bubbles, CT variants for trauma)
+Default images load correctly (SWI for gas bubbles, Axial non-contrast for trauma)
+Professional Radiopaedia-style dark interface with orange highlights
+Smooth transitions between images and seamless integration with existing functionality
