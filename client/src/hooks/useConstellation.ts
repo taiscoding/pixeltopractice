@@ -56,7 +56,9 @@ const initialEdges: Edge[] = [
   {
     id: 'central-technical',
     source: 'central',
+    sourceHandle: 'top',
     target: 'technical',
+    targetHandle: 'target',
     type: 'straight',
     style: { stroke: nodeColors.technical, strokeWidth: 2, strokeDasharray: '5,5' },
     animated: true,
@@ -64,7 +66,9 @@ const initialEdges: Edge[] = [
   {
     id: 'central-clinical',
     source: 'central',
+    sourceHandle: 'right',
     target: 'clinical',
+    targetHandle: 'target',
     type: 'straight',
     style: { stroke: nodeColors.clinical, strokeWidth: 2, strokeDasharray: '5,5' },
     animated: true,
@@ -72,7 +76,9 @@ const initialEdges: Edge[] = [
   {
     id: 'central-anatomical',
     source: 'central',
+    sourceHandle: 'left',
     target: 'anatomical',
+    targetHandle: 'target',
     type: 'straight',
     style: { stroke: nodeColors.anatomical, strokeWidth: 2, strokeDasharray: '5,5' },
     animated: true,

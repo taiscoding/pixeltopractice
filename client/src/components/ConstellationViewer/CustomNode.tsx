@@ -32,10 +32,17 @@ export default function CustomNode({ data, selected }: CustomNodeProps) {
       transition={{ duration: 0.5, delay: isCentral ? 0 : 0.2 }}
       whileHover={{ scale: 1.05 }}
     >
-      {!isCentral && (
+      {isCentral ? (
         <>
-          <Handle type="target" position={Position.Top} className="opacity-0" />
-          <Handle type="source" position={Position.Bottom} className="opacity-0" />
+          <Handle type="source" position={Position.Top} id="top" className="opacity-0" />
+          <Handle type="source" position={Position.Right} id="right" className="opacity-0" />
+          <Handle type="source" position={Position.Bottom} id="bottom" className="opacity-0" />
+          <Handle type="source" position={Position.Left} id="left" className="opacity-0" />
+        </>
+      ) : (
+        <>
+          <Handle type="target" position={Position.Top} id="target" className="opacity-0" />
+          <Handle type="source" position={Position.Bottom} id="source" className="opacity-0" />
         </>
       )}
       

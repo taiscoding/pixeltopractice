@@ -2,17 +2,23 @@ import { useState } from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ConstellationViewer from "@/components/ConstellationViewer/ConstellationViewer";
+import ImmersiveConstellationViewer from "@/components/ConstellationViewer/ImmersiveConstellationViewer";
 import DetailedExplanation from "@/components/LearningGuide/DetailedExplanation";
 import CaseSelector from "@/components/CaseSelector/CaseSelector";
 import { Button } from "@/components/ui/button";
-import { Brain, Play } from "lucide-react";
+import { Brain, Play, Maximize2 } from "lucide-react";
 import { scrollToElement } from "@/lib/utils";
 
 export default function Dashboard() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [isImmersiveMode, setIsImmersiveMode] = useState(false);
 
   const handleStartLearning = () => {
     scrollToElement("constellation-viewer");
+  };
+
+  const handleImmersiveLearning = () => {
+    setIsImmersiveMode(true);
   };
 
   return (
@@ -41,11 +47,12 @@ export default function Dashboard() {
                 Start Learning
               </Button>
               <Button 
-                variant="outline" 
+                onClick={handleImmersiveLearning}
                 size="lg"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg transition-all duration-200"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg transform hover:scale-105 transition-all duration-200"
               >
-                View Demo
+                <Maximize2 className="mr-2 h-5 w-5" />
+                Immersive Explorer
               </Button>
             </div>
           </div>
