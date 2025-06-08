@@ -289,6 +289,12 @@ function ConstellationFlow({
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={() => {
+                      if (confirm('Would you like to compare with Trauma Gas?')) {
+                        // Future implementation for case comparison
+                        alert('Trauma Gas case comparison coming soon!');
+                      }
+                    }}
                     className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
                   >
                     Compare Cases
@@ -296,6 +302,12 @@ function ConstellationFlow({
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={() => {
+                      if (confirm('Would you like to compare with Trauma Gas?')) {
+                        // Future implementation for trauma gas case
+                        alert('Trauma Gas case coming soon!');
+                      }
+                    }}
                     className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200"
                   >
                     Trauma Gas
@@ -408,19 +420,21 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {gasBubblesSWICase.framework.ANATOMICAL.primaryConcept}
                       </h3>
-                      <p className="text-white/70 text-sm leading-relaxed">
-                        {gasBubblesSWICase.framework.ANATOMICAL.significance}
-                      </p>
+                      <div className="bg-amber-950/30 rounded-lg p-3 mb-3">
+                        <p className="text-amber-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                        <p className="text-white/80 text-sm">
+                          {gasBubblesSWICase.framework.ANATOMICAL.discoveryInsight}
+                        </p>
+                      </div>
                     </div>
                     <div>
-                      <h4 className="text-white font-medium mb-2">Key Considerations</h4>
+                      <h4 className="text-white font-medium mb-2">
+                        {getKnowledgeDepthLabel(knowledgeDepth[0])}
+                      </h4>
                       <p className="text-white/70 text-sm leading-relaxed">
-                        {gasBubblesSWICase.framework.ANATOMICAL.considerations}
-                      </p>
-                    </div>
-                    <div className="bg-amber-950/50 rounded-lg p-4 border border-amber-800/30 shadow-inner">
-                      <p className="text-amber-200 text-sm">
-                        Location and volume determine whether surgical evacuation or medical management is indicated.
+                        {knowledgeDepth[0] === 0 && gasBubblesSWICase.framework.ANATOMICAL.focusedLearning}
+                        {knowledgeDepth[0] === 1 && gasBubblesSWICase.framework.ANATOMICAL.clinicalApplication}
+                        {knowledgeDepth[0] === 2 && gasBubblesSWICase.framework.ANATOMICAL.comprehensiveAnalysis}
                       </p>
                     </div>
                   </div>
