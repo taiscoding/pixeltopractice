@@ -99,7 +99,9 @@ function ConstellationFlow({
   getRecommendedNode,
   getKnowledgeDepthLabel,
   handleNodeClick,
-  caseInfo
+  caseInfo,
+  selectedCase,
+  onCaseSelect
 }: any) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -835,6 +837,8 @@ export default function ImmersiveConstellationViewer({
           getKnowledgeDepthLabel={getKnowledgeDepthLabel}
           handleNodeClick={handleNodeClick}
           caseInfo={caseInfo}
+          selectedCase={selectedCase}
+          onCaseSelect={onCaseSelect}
         />
       </div>
     </ReactFlowProvider>
