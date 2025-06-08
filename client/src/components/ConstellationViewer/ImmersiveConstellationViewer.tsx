@@ -8,12 +8,14 @@ import ReactFlow, {
   useEdgesState,
   Node,
   Edge,
+  ReactFlowProvider,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { X, ArrowLeft, Brain, Settings, Stethoscope, Search } from 'lucide-react';
+import { X, ArrowLeft, Brain, Settings, Stethoscope, Search, Plus, Minus, Maximize, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
+import { Progress } from '@/components/ui/progress';
 import CustomNode from './CustomNode';
 import { gasBubblesSWICase, nodePositions, nodeColors } from '@/data/curated-cases/gasBubblesSWI';
 
@@ -29,9 +31,10 @@ export default function ImmersiveConstellationViewer({
   selectedCase 
 }: ImmersiveConstellationViewerProps) {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [knowledgeDepth, setKnowledgeDepth] = useState([2]);
+  const [knowledgeDepth, setKnowledgeDepth] = useState([1]); // 0=Focused, 1=Clinical, 2=Comprehensive
   const [explorationMode, setExplorationMode] = useState<'free' | 'guided'>('free');
   const [explorationProgress, setExplorationProgress] = useState(33);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [showTopUI, setShowTopUI] = useState(false);
   const [showLeftUI, setShowLeftUI] = useState(false);
   const [showBottomUI, setShowBottomUI] = useState(false);
@@ -141,85 +144,156 @@ export default function ImmersiveConstellationViewer({
     return null;
   };
 
+  const getKnowledgeDepthLabel = (value: number) => {
+    switch (value) {
+      case 0: return 'Focused Learning';
+      case 1: return 'Clinical Application';
+      case 2: return 'Comprehensive Analysis';
+      default: return 'Clinical Application';
+    }
+  };
+
+  const handleZoomIn = () => {
+    // Will be implemented with ReactFlow instance
+  };
+
+  const handleZoomOut = () => {
+    // Will be implemented with ReactFlow instance
+  };
+
+  const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-      {/* True Full-Screen React Flow */}
-      <ReactFlow
-        nodes={nodes.map(node => ({
-          ...node,
-          selected: node.id === selectedNode,
-          style: {
-            ...node.style,
-            filter: node.id === getRecommendedNode() && explorationMode === 'guided' 
-              ? 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))' 
-              : undefined
-          }
-        }))}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={handleNodeClick}
-        nodeTypes={nodeTypes}
-        fitView
-        className="w-full h-full"
-        attributionPosition="bottom-left"
-      >
-        <Background 
-          color="rgba(148, 163, 184, 0.1)" 
-          gap={64} 
-          size={2}
-          variant="dots"
-        />
-        <Controls 
-          className="!bg-white/10 !backdrop-blur-xl !border-white/20 !shadow-2xl !rounded-2xl opacity-60 hover:opacity-100 transition-opacity"
-          showInteractive={false}
-        />
-      </ReactFlow>
-
-      {/* Top Hover Area - Case Selection */}
-      <div
-        className="absolute top-0 left-0 right-0 h-16 z-40"
-        onMouseEnter={() => setShowTopUI(true)}
-        onMouseLeave={() => setShowTopUI(false)}
-      >
-        <AnimatePresence>
-          {showTopUI && (
-            <motion.div
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -100, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-6 py-4 border border-white/20 shadow-2xl"
+    <ReactFlowProvider>
+      <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+        {/* True Full-Screen React Flow */}
+        <ReactFlow
+          nodes={nodes.map(node => ({
+            ...node,
+            selected: node.id === selectedNode,
+            style: {
+              ...node.style,
+              filter: node.id === getRecommendedNode() && explorationMode === 'guided' 
+                ? 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.8))' 
+                : undefined
+            }
+          }))}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onNodeClick={handleNodeClick}
+          nodeTypes={nodeTypes}
+          fitView
+          className="w-full h-full"
+          attributionPosition="bottom-left"
+        >
+          <Background 
+            color="rgba(148, 163, 184, 0.1)" 
+            gap={64} 
+            size={2}
+          />
+          
+          {/* Custom Controls with Enhanced Functionality */}
+          <div className="absolute bottom-4 right-4 z-30 flex flex-col gap-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleZoomIn}
+              className="bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl"
             >
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClose}
-                  className="text-white/70 hover:text-white hover:bg-white/10"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Exit Immersive Mode
-                </Button>
-                <div className="h-6 w-px bg-white/20" />
-                <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
-                  Gas Bubbles on SWI
-                </Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClose}
-                  className="text-white/70 hover:text-white hover:bg-white/10"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              <Plus className="h-4 w-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleZoomOut}
+              className="bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl"
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleFullscreen}
+              className="bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl"
+            >
+              <Maximize className="h-4 w-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl"
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+          </div>
+        </ReactFlow>
+
+        {/* Top Hover Area - Exit + Exploration Progress */}
+        <div
+          className="absolute top-0 left-0 right-0 h-16 z-40"
+          onMouseEnter={() => setShowTopUI(true)}
+          onMouseLeave={() => setShowTopUI(false)}
+        >
+          <AnimatePresence>
+            {showTopUI && (
+              <motion.div
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -100, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/20 shadow-2xl"
+              >
+                <div className="flex items-center gap-6">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onClose}
+                    className="text-white/70 hover:text-white hover:bg-white/10"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Exit Immersive Mode
+                  </Button>
+                  
+                  <div className="h-6 w-px bg-white/20" />
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="text-white/70 text-sm">
+                      Exploration Progress
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Progress 
+                        value={explorationProgress} 
+                        className="w-32 h-2 bg-white/20"
+                      />
+                      <span className="text-white text-sm font-medium min-w-[3rem]">
+                        {explorationProgress}%
+                      </span>
+                    </div>
+                    {explorationMode === 'guided' && getRecommendedNode() && (
+                      <div className="flex items-center gap-2 text-blue-400 text-sm">
+                        {getRecommendedNode() === 'technical' && <Settings className="h-4 w-4" />}
+                        {getRecommendedNode() === 'clinical' && <Stethoscope className="h-4 w-4" />}
+                        {getRecommendedNode() === 'anatomical' && <Search className="h-4 w-4" />}
+                        {getRecommendedNode() === 'central' && <Brain className="h-4 w-4" />}
+                        Next: {getRecommendedNode()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
       {/* Left Hover Area - Knowledge Depth */}
       <div
@@ -455,6 +529,7 @@ export default function ImmersiveConstellationViewer({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </ReactFlowProvider>
   );
 }
