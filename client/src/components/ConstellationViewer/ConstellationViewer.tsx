@@ -37,7 +37,7 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
   }, [selectedNode, onNodeSelect, onNodeClick]);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-200 shadow-xl">
+    <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-800 shadow-xl">
       <ReactFlow
         nodes={nodes.map(node => ({
           ...node,
@@ -52,25 +52,25 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
         attributionPosition="bottom-left"
         className="constellation-grid"
       >
-        <Background color="#f1f5f9" gap={32} />
+        <Background color="#1f2937" gap={32} />
         <Controls 
-          className="!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
+          className="!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl"
           showInteractive={false}
         />
         <MiniMap 
-          className="!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
+          className="!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl"
           nodeColor={(node) => node.data.color}
-          maskColor="rgba(0, 0, 0, 0.05)"
+          maskColor="rgba(0, 0, 0, 0.3)"
         />
       </ReactFlow>
 
       {/* Learning Progress Indicator */}
-      <div className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-md border border-gray-200">
-        <div className="text-sm font-medium text-gray-700 mb-2">Learning Progress</div>
+      <div className="absolute bottom-4 left-4 bg-gray-900/80 backdrop-blur-xl rounded-lg p-3 shadow-md border border-gray-700">
+        <div className="text-sm font-medium text-gray-300 mb-2">Learning Progress</div>
         <div className="flex space-x-2">
-          <div className={`w-3 h-3 rounded-full ${selectedNode ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-          <div className={`w-3 h-3 rounded-full ${selectedNode === 'technical' || selectedNode === 'clinical' || selectedNode === 'anatomical' ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-          <div className={`w-3 h-3 rounded-full ${selectedNode === 'anatomical' ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+          <div className={`w-3 h-3 rounded-full ${selectedNode ? 'bg-orange-500' : 'bg-gray-600'}`}></div>
+          <div className={`w-3 h-3 rounded-full ${selectedNode === 'technical' || selectedNode === 'clinical' || selectedNode === 'anatomical' ? 'bg-orange-500' : 'bg-gray-600'}`}></div>
+          <div className={`w-3 h-3 rounded-full ${selectedNode === 'anatomical' ? 'bg-orange-500' : 'bg-gray-600'}`}></div>
         </div>
       </div>
     </div>

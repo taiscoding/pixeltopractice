@@ -53,16 +53,16 @@ const upcomingCases = [
 
 export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelectorProps) {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gray-900/50 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Select a Case to Explore</h2>
-          <p className="text-lg text-gray-600">Master pattern recognition across various radiology scenarios</p>
+          <h2 className="text-3xl font-bold text-white mb-4">Select a Case to Explore</h2>
+          <p className="text-lg text-gray-300">Master pattern recognition across various radiology scenarios</p>
         </div>
 
         {/* Available Cases */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">Available Cases</h3>
+          <h3 className="text-xl font-semibold text-white mb-6 text-center">Available Cases</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {caseOptions.map((caseItem, index) => {
               const Icon = getCaseIcon(caseItem.id);
@@ -78,10 +78,10 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
                 >
                   <Card 
                     className={`
-                      border-2 transition-all duration-300 cursor-pointer group
+                      border-2 transition-all duration-300 cursor-pointer group backdrop-blur-xl
                       ${isSelected 
-                        ? 'border-blue-600 bg-blue-50 shadow-lg' 
-                        : 'border-gray-200 hover:border-blue-400 hover:shadow-md'
+                        ? 'border-orange-500 bg-gray-900/80 shadow-lg shadow-orange-500/20' 
+                        : 'border-gray-700 bg-gray-900/50 hover:border-orange-400 hover:shadow-md hover:bg-gray-800/60'
                       }
                     `}
                     onClick={() => onCaseSelect(caseItem.id)}
@@ -91,12 +91,12 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
                         <div className={`${colorClass} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                           <Icon className="h-8 w-8" />
                         </div>
-                        <h3 className={`font-semibold mb-2 transition-colors ${isSelected ? 'text-blue-700' : 'text-gray-700 group-hover:text-blue-600'}`}>
+                        <h3 className={`font-semibold mb-2 transition-colors ${isSelected ? 'text-orange-300' : 'text-white group-hover:text-orange-300'}`}>
                           {caseItem.name}
                         </h3>
-                        <p className="text-sm text-gray-500">{caseItem.description}</p>
+                        <p className="text-sm text-gray-400">{caseItem.description}</p>
                         {isSelected && (
-                          <div className="mt-3 text-xs font-medium text-blue-600">
+                          <div className="mt-3 text-xs font-medium text-orange-400">
                             Currently Selected
                           </div>
                         )}
@@ -111,7 +111,7 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
 
         {/* Coming Soon Cases */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">Coming Soon</h3>
+          <h3 className="text-xl font-semibold text-white mb-6 text-center">Coming Soon</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {upcomingCases.map((caseItem, index) => (
               <motion.div
@@ -120,16 +120,16 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: (caseOptions.length + index) * 0.1 }}
               >
-                <Card className="bg-gray-50 border-2 border-dashed border-gray-300 hover:border-blue-400 transition-all duration-300 cursor-not-allowed">
+                <Card className="bg-gray-900/30 border-2 border-dashed border-gray-600 hover:border-gray-500 transition-all duration-300 cursor-not-allowed backdrop-blur-xl">
                   <CardContent className="pt-6">
                     <div className="text-center">
                       <div className={`${caseItem.color} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 opacity-50`}>
                         <caseItem.icon className="h-8 w-8" />
                       </div>
-                      <h3 className="font-semibold text-gray-500 mb-2">
+                      <h3 className="font-semibold text-gray-400 mb-2">
                         {caseItem.title}
                       </h3>
-                      <p className="text-sm text-gray-400">{caseItem.description}</p>
+                      <p className="text-sm text-gray-500">{caseItem.description}</p>
                     </div>
                   </CardContent>
                 </Card>

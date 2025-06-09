@@ -14,7 +14,7 @@ const formatText = (text: string) => {
       const content = line.trim().substring(1).trim();
       return (
         <div key={lineIndex} className="flex items-start gap-2 mb-1">
-          <span className="text-gray-500 mt-1">•</span>
+          <span className="text-gray-400 mt-1">•</span>
           <span dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
         </div>
       );
@@ -24,8 +24,8 @@ const formatText = (text: string) => {
     if (line.trim().startsWith('→')) {
       const content = line.trim().substring(1).trim();
       return (
-        <div key={lineIndex} className="mt-3 pt-3 border-t border-gray-200">
-          <span className="text-blue-600 text-sm italic" dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        <div key={lineIndex} className="mt-3 pt-3 border-t border-gray-700">
+          <span className="text-orange-400 text-sm italic" dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
         </div>
       );
     }
@@ -45,13 +45,13 @@ const formatText = (text: string) => {
 // Helper function to format inline text (bold, italic, etc.)
 const formatInlineText = (text: string) => {
   return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>')
-    .replace(/CO₂/g, '<span class="font-medium text-blue-600">CO₂</span>')
-    .replace(/N₂/g, '<span class="font-medium text-blue-600">N₂</span>')
-    .replace(/T2\*/g, '<span class="font-medium text-purple-600">T2*</span>')
-    .replace(/SWI/g, '<span class="font-medium text-green-600">SWI</span>')
-    .replace(/CSF/g, '<span class="font-medium text-amber-600">CSF</span>');
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic text-gray-300">$1</em>')
+    .replace(/CO₂/g, '<span class="font-medium text-orange-400">CO₂</span>')
+    .replace(/N₂/g, '<span class="font-medium text-orange-400">N₂</span>')
+    .replace(/T2\*/g, '<span class="font-medium text-purple-400">T2*</span>')
+    .replace(/SWI/g, '<span class="font-medium text-green-400">SWI</span>')
+    .replace(/CSF/g, '<span class="font-medium text-amber-400">CSF</span>');
 };
 
 interface DetailedExplanationProps {
@@ -68,19 +68,19 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
   // Return early if no case data is provided
   if (!framework) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-900/50 backdrop-blur-xl min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <Button 
               onClick={onBackToConstellation}
               variant="ghost" 
-              className="mb-4 text-gray-600 hover:text-gray-900"
+              className="mb-4 text-gray-300 hover:text-white hover:bg-gray-800/50"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Constellation
             </Button>
             <div className="text-center py-12">
-              <p className="text-lg text-gray-600">Please select a case to view detailed explanations.</p>
+              <p className="text-lg text-gray-300">Please select a case to view detailed explanations.</p>
             </div>
           </div>
         </div>
@@ -107,27 +107,27 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
   };
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-900/50 backdrop-blur-xl min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Button 
             onClick={onBackToConstellation}
             variant="ghost" 
-            className="mb-4 text-gray-600 hover:text-gray-900"
+            className="mb-4 text-gray-300 hover:text-white hover:bg-gray-800/50"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Constellation
           </Button>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
             {caseName} - Detailed Framework
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-gray-300 mb-6">
             Comprehensive analysis of the Technical, Clinical, and Anatomical frameworks for understanding this case.
           </p>
           
           {/* Knowledge Level Selector */}
           <div className="flex items-center gap-4 mb-8">
-            <span className="text-sm font-medium text-gray-700">Knowledge Level:</span>
+            <span className="text-sm font-medium text-gray-300">Knowledge Level:</span>
             <div className="flex gap-2">
               {[0, 1, 2].map((level) => (
                 <Button
@@ -137,8 +137,8 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
                   size="sm"
                   className={`text-sm ${
                     knowledgeLevel === level 
-                      ? 'bg-blue-600 text-white' 
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-orange-500 hover:bg-orange-600 text-white' 
+                      : 'text-gray-300 hover:text-white border-gray-600 hover:bg-gray-800/50'
                   }`}
                 >
                   {getKnowledgeLevelLabel(level)}
