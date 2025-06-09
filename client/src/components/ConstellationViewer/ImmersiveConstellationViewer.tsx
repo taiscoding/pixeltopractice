@@ -193,25 +193,26 @@ function ConstellationFlow({
         </div>
       </ReactFlow>
 
-      {/* Top Hover Area - Small strip at very top */}
+      {/* Enhanced Top Hover Area - Exit + Exploration Progress */}
       <div
-        className="absolute top-0 left-0 right-0 h-8 z-40"
+        className="absolute top-0 left-0 right-0 h-16 z-40"
         onMouseEnter={() => setShowTopUI(true)}
         onMouseLeave={() => setShowTopUI(false)}
       >
+        {/* The actual UI panel content goes here and has higher z-index */}
       </div>
 
-      {/* Left Hover Area - Thin strip at very left edge */}
+      {/* Enhanced Left Hover Area - Learning Settings */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-8 z-40"
+        className="absolute left-0 top-0 bottom-0 w-16 z-40"
         onMouseEnter={() => setShowLeftUI(true)}
         onMouseLeave={() => setShowLeftUI(false)}
       >
       </div>
 
-      {/* Bottom Hover Area - Small strip at very bottom */}
+      {/* Enhanced Bottom Hover Area - Case Selection */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-8 z-40"
+        className="absolute bottom-0 left-0 right-0 h-16 z-40"
         onMouseEnter={() => setShowBottomUI(true)}
         onMouseLeave={() => setShowBottomUI(false)}
       >
@@ -224,7 +225,7 @@ function ConstellationFlow({
               initial={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
-              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl"
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl z-50"
             >
               <div className="flex items-center gap-6">
                 <Button
@@ -274,7 +275,7 @@ function ConstellationFlow({
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/90 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl min-w-[300px]"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/90 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl min-w-[300px] z-50"
             >
               <div className="space-y-6">
                 <div>
@@ -340,7 +341,7 @@ function ConstellationFlow({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl"
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl z-50"
             >
               <div className="flex items-center gap-6">
                 <div className="text-white/70 text-sm">
