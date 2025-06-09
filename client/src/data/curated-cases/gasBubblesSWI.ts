@@ -62,8 +62,8 @@ export const nodePositions = {
 };
 
 export const nodeColors = {
-  central: "#2563EB",
-  technical: "#2563EB",
-  clinical: "#059669",
-  anatomical: "#D97706"
+  central: "#8B5CF6",
+  technical: "#3B82F6",
+  clinical: "#10B981",
+  anatomical: "#F59E0B"
 };

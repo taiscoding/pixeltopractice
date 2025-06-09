@@ -118,13 +118,16 @@
   }
 
   .constellation-connection {
-    stroke-dasharray: 5, 5;
-    animation: dash 20s linear infinite;
+    stroke-dasharray: 8, 4;
+    animation: dash 3s linear infinite;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 6px currentColor);
+    opacity: 0.8;
   }
 
   @keyframes dash {
     to {
-      stroke-dashoffset: -100;
+      stroke-dashoffset: -24;
     }
   }
 
@@ -200,17 +203,46 @@
   color: white !important;
 }
 
-/* Animated constellation connections */
+/* Enhanced constellation connections */
 .constellation-space .react-flow__edge-path {
   stroke-width: 3;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 8px currentColor);
+  opacity: 0.8;
 }
 
-/* Node glow effects */
+.constellation-space .react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 8, 4;
+  animation: edge-flow 3s linear infinite;
+}
+
+@keyframes edge-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* Enhanced node glow effects */
 .constellation-space .react-flow__node {
-  filter: drop-shadow(0 0 20px rgba(147, 197, 253, 0.3));
+  filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.2));
 }
 
 .constellation-space .react-flow__node.selected {
-  filter: drop-shadow(0 0 30px rgba(147, 197, 253, 0.6));
+  filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.5));
+}
+
+/* Individual node type glows */
+.constellation-space .react-flow__node[data-id="technical"] {
+  filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.2));
+}
+
+.constellation-space .react-flow__node[data-id="clinical"] {
+  filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.2));
+}
+
+.constellation-space .react-flow__node[data-id="anatomical"] {
+  filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.2));
+}
+
+.constellation-space .react-flow__node[data-id="central"] {
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
 }
