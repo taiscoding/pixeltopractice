@@ -157,12 +157,13 @@ function ConstellationFlow({
         fitView
         className="w-full h-full"
         attributionPosition="bottom-left"
+        style={{ background: 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' }}
       >
         <Background 
           variant={BackgroundVariant.Dots}
-          color={isDarkMode ? "rgba(71, 85, 105, 0.4)" : "rgba(148, 163, 184, 0.1)"} 
+          color="rgba(148, 163, 184, 0.03)" 
           gap={64} 
-          size={isDarkMode ? 3 : 2}
+          size={2}
         />
         
         {/* Enhanced Custom Controls */}

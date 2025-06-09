@@ -51,8 +51,9 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
         fitView
         attributionPosition="bottom-left"
         className="constellation-grid"
+        style={{ background: 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' }}
       >
-        <Background color="#1f2937" gap={32} />
+        <Background color="rgba(148, 163, 184, 0.05)" gap={32} />
         <Controls 
           className="!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl"
           showInteractive={false}
