@@ -53,16 +53,16 @@ const upcomingCases = [
 
 export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelectorProps) {
   return (
-    <section className="py-16 bg-gray-900/50 backdrop-blur-xl">
+    <section className="py-16 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-xl transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Select a Case to Explore</h2>
-          <p className="text-lg text-gray-300">Master pattern recognition across various radiology scenarios</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">Select a Case to Explore</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 transition-colors">Master pattern recognition across various radiology scenarios</p>
         </div>
 
         {/* Available Cases */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold text-white mb-6 text-center">Available Cases</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center transition-colors">Available Cases</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {caseOptions.map((caseItem, index) => {
               const Icon = getCaseIcon(caseItem.id);
@@ -80,8 +80,8 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
                     className={`
                       border-2 transition-all duration-300 cursor-pointer group backdrop-blur-xl
                       ${isSelected 
-                        ? 'border-orange-500 bg-gray-900/80 shadow-lg shadow-orange-500/20' 
-                        : 'border-gray-700 bg-gray-900/50 hover:border-orange-400 hover:shadow-md hover:bg-gray-800/60'
+                        ? 'border-orange-500 bg-white/80 dark:bg-gray-900/80 shadow-lg shadow-orange-500/20' 
+                        : 'border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-900/50 hover:border-orange-400 hover:shadow-md hover:bg-white/80 dark:hover:bg-gray-800/60'
                       }
                     `}
                     onClick={() => onCaseSelect(caseItem.id)}
@@ -91,12 +91,12 @@ export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelecto
                         <div className={`${colorClass} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                           <Icon className="h-8 w-8" />
                         </div>
-                        <h3 className={`font-semibold mb-2 transition-colors ${isSelected ? 'text-orange-300' : 'text-white group-hover:text-orange-300'}`}>
+                        <h3 className={`font-semibold mb-2 transition-colors ${isSelected ? 'text-orange-600 dark:text-orange-300' : 'text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-300'}`}>
                           {caseItem.name}
                         </h3>
-                        <p className="text-sm text-gray-400">{caseItem.description}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{caseItem.description}</p>
                         {isSelected && (
-                          <div className="mt-3 text-xs font-medium text-orange-400">
+                          <div className="mt-3 text-xs font-medium text-orange-600 dark:text-orange-400">
                             Currently Selected
                           </div>
                         )}

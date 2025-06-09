@@ -88,7 +88,7 @@ function ConstellationFlow({
   explorationProgress,
   setExplorationProgress,
   isDarkMode,
-  setIsDarkMode,
+  toggleTheme,
   showTopUI,
   setShowTopUI,
   showLeftUI,
@@ -158,7 +158,11 @@ function ConstellationFlow({
         fitView
         className="w-full h-full"
         attributionPosition="bottom-left"
-        style={{ background: 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' }}
+        style={{ 
+          background: isDarkMode 
+            ? 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' 
+            : 'linear-gradient(to bottom right, #ffffff, #f8fafc, #ffffff)'
+        }}
       >
         <Background 
           variant={BackgroundVariant.Dots}
@@ -196,7 +200,7 @@ function ConstellationFlow({
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleTheme}
             className="bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl transition-all duration-200 hover:scale-105"
           >
             {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -871,7 +875,11 @@ export default function ImmersiveConstellationViewer({
 
   return (
     <ReactFlowProvider>
-      <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+      <div className={`fixed inset-0 z-50 transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-black' 
+          : 'bg-gradient-to-br from-gray-50 to-white'
+      }`}>
         <ConstellationFlow
           selectedNode={selectedNode}
           setSelectedNode={setSelectedNode}
