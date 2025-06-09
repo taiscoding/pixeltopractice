@@ -107,21 +107,21 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
   };
 
   return (
-    <section className="py-16 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-xl min-h-screen transition-colors duration-300">
+    <section className="py-16 bg-gray-900/50 backdrop-blur-xl min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Button 
             onClick={onBackToConstellation}
             variant="ghost" 
-            className="mb-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800/50 transition-all"
+            className="mb-4 text-gray-300 hover:text-white hover:bg-gray-800/50"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Constellation
           </Button>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors">
+          <h2 className="text-3xl font-bold text-white mb-4">
             {caseName} - Detailed Framework
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 transition-colors">
+          <p className="text-lg text-gray-300 mb-6">
             Comprehensive analysis of the Technical, Clinical, and Anatomical frameworks for understanding this case.
           </p>
           

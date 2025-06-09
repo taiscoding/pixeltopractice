@@ -5,70 +5,29 @@
 @tailwind utilities;
 
 :root {
-  /* Medical Light Theme - Clean Professional Medical Colors */
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(222, 16%, 15%);
-  --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(215, 16%, 47%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(222, 16%, 15%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(222, 16%, 15%);
-  --border: hsl(214, 32%, 91%);
-  --input: hsl(214, 32%, 91%);
-  --primary: hsl(24, 100%, 58%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(210, 40%, 96%);
-  --secondary-foreground: hsl(222, 16%, 15%);
-  --accent: hsl(210, 40%, 96%);
-  --accent-foreground: hsl(222, 16%, 15%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(0, 0%, 100%);
-  --ring: hsl(24, 100%, 58%);
-  --radius: 0.5rem;
-  
-  /* Medical Light theme colors */
-  --medical-orange: hsl(24, 100%, 58%);
-  --medical-orange-hover: hsl(24, 100%, 53%);
-  --medical-light-bg: hsl(0, 0%, 100%);
-  --medical-light-secondary: hsl(210, 40%, 98%);
-  --medical-light-muted: hsl(210, 40%, 96%);
-  --medical-light-border: hsl(214, 32%, 91%);
-  --medical-light-text: hsl(222, 16%, 15%);
-  --medical-light-text-muted: hsl(215, 16%, 47%);
-  --medical-bg-gradient: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(210, 40%, 98%) 50%, hsl(0, 0%, 100%) 100%);
-  
-  /* Constellation theme variables */
-  --constellation-bg: linear-gradient(to bottom right, hsl(0, 0%, 100%), hsl(210, 40%, 98%), hsl(0, 0%, 100%));
-  --constellation-node-shadow: rgba(24, 100, 171, 0.1);
-  --constellation-grid-color: rgba(107, 114, 128, 0.1);
-  --constellation-panel-bg: hsl(0, 0%, 100%);
-  --constellation-panel-border: hsl(214, 32%, 91%);
-}
-
-.dark {
   /* Medical Dark Theme - Professional Radiology Colors */
   --background: hsl(222, 84%, 4.9%);
   --foreground: hsl(210, 40%, 98%);
-  --muted: hsl(217, 32%, 17%);
+  --muted: hsl(215, 28%, 17%);
   --muted-foreground: hsl(215, 20%, 65%);
   --popover: hsl(222, 84%, 4.9%);
   --popover-foreground: hsl(210, 40%, 98%);
   --card: hsl(222, 84%, 4.9%);
   --card-foreground: hsl(210, 40%, 98%);
-  --border: hsl(217, 32%, 17%);
-  --input: hsl(217, 32%, 17%);
+  --border: hsl(215, 28%, 17%);
+  --input: hsl(215, 28%, 17%);
   --primary: hsl(24, 100%, 58%);
   --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(217, 32%, 17%);
+  --secondary: hsl(215, 28%, 17%);
   --secondary-foreground: hsl(210, 40%, 98%);
   --accent: hsl(24, 100%, 58%);
   --accent-foreground: hsl(210, 40%, 98%);
   --destructive: hsl(0, 62%, 30%);
   --destructive-foreground: hsl(210, 40%, 98%);
   --ring: hsl(24, 100%, 58%);
+  --radius: 0.5rem;
   
-  /* Medical Dark theme colors */
+  /* Medical theme colors */
   --medical-orange: hsl(24, 100%, 58%);
   --medical-orange-hover: hsl(24, 100%, 63%);
   --medical-dark: hsl(222, 84%, 4.9%);
@@ -79,13 +38,28 @@
   --medical-gray-400: hsl(215, 20%, 65%);
   --medical-gray-300: hsl(220, 9%, 46%);
   --medical-bg-gradient: linear-gradient(135deg, hsl(220, 13%, 18%) 0%, hsl(0, 0%, 0%) 50%, hsl(220, 13%, 18%) 100%);
-  
-  /* Constellation dark theme variables */
-  --constellation-bg: linear-gradient(to bottom right, hsl(222, 84%, 4.9%), hsl(0, 0%, 0%), hsl(220, 13%, 18%));
-  --constellation-node-shadow: rgba(139, 92, 246, 0.2);
-  --constellation-grid-color: rgba(148, 163, 184, 0.05);
-  --constellation-panel-bg: hsl(220, 13%, 18%);
-  --constellation-panel-border: hsl(217, 32%, 17%);
+}
+
+.dark {
+  --background: hsl(222, 84%, 4.9%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 32%, 17%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --popover: hsl(222, 84%, 4.9%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 4.9%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 32%, 17%);
+  --input: hsl(217, 32%, 17%);
+  --primary: hsl(221, 83%, 53%);
+  --primary-foreground: hsl(222, 84%, 4.9%);
+  --secondary: hsl(217, 32%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217, 32%, 17%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(221, 83%, 53%);
 }
 
 @layer base {

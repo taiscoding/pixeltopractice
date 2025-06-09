@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
-import { useTheme } from '@/lib/ThemeContext';
 import CustomNode from './CustomNode';
 import { availableCases } from '@/data/curated-cases';
 import MedicalImageViewer from '../MedicalImageViewer/MedicalImageViewer';
@@ -88,7 +87,7 @@ function ConstellationFlow({
   explorationProgress,
   setExplorationProgress,
   isDarkMode,
-  toggleTheme,
+  setIsDarkMode,
   showTopUI,
   setShowTopUI,
   showLeftUI,
@@ -158,11 +157,7 @@ function ConstellationFlow({
         fitView
         className="w-full h-full"
         attributionPosition="bottom-left"
-        style={{ 
-          background: isDarkMode 
-            ? 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' 
-            : 'linear-gradient(to bottom right, #ffffff, #f8fafc, #ffffff)'
-        }}
+        style={{ background: 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' }}
       >
         <Background 
           variant={BackgroundVariant.Dots}
@@ -200,7 +195,7 @@ function ConstellationFlow({
           <Button
             size="sm"
             variant="ghost"
-            onClick={toggleTheme}
+            onClick={() => setIsDarkMode(!isDarkMode)}
             className="bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 rounded-xl shadow-2xl transition-all duration-200 hover:scale-105"
           >
             {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -652,11 +647,11 @@ export default function ImmersiveConstellationViewer({
   selectedCase,
   onCaseSelect 
 }: ImmersiveConstellationViewerProps) {
-  const { isDarkMode, toggleTheme } = useTheme();
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [knowledgeDepth, setKnowledgeDepth] = useState([1]); // 0=Focused, 1=Clinical, 2=Comprehensive
   const [explorationMode, setExplorationMode] = useState<'free' | 'guided'>('free');
   const [explorationProgress, setExplorationProgress] = useState(33);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [showTopUI, setShowTopUI] = useState(false);
   const [showLeftUI, setShowLeftUI] = useState(false);
   const [showBottomUI, setShowBottomUI] = useState(false);
@@ -875,11 +870,7 @@ export default function ImmersiveConstellationViewer({
 
   return (
     <ReactFlowProvider>
-      <div className={`fixed inset-0 z-50 transition-colors duration-300 ${
-        isDarkMode 
-          ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-black' 
-          : 'bg-gradient-to-br from-gray-50 to-white'
-      }`}>
+      <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
         <ConstellationFlow
           selectedNode={selectedNode}
           setSelectedNode={setSelectedNode}
@@ -890,7 +881,7 @@ export default function ImmersiveConstellationViewer({
           explorationProgress={explorationProgress}
           setExplorationProgress={setExplorationProgress}
           isDarkMode={isDarkMode}
-          toggleTheme={toggleTheme}
+          setIsDarkMode={setIsDarkMode}
           showTopUI={showTopUI}
           setShowTopUI={setShowTopUI}
           showLeftUI={showLeftUI}

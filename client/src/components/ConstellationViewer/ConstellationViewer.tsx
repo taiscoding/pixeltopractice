@@ -8,7 +8,6 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useConstellation } from '@/hooks/useConstellation';
-import { useTheme } from '@/lib/ThemeContext';
 import CustomNode from './CustomNode';
 import { ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,6 @@ interface ConstellationViewerProps {
 }
 
 export default function ConstellationViewer({ selectedNode, onNodeSelect, caseData }: ConstellationViewerProps) {
-  const { isDarkMode } = useTheme();
   const {
     nodes,
     edges,
@@ -38,11 +36,8 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
     onNodeClick(event, node);
   }, [selectedNode, onNodeSelect, onNodeClick]);
 
-  const lightBg = 'linear-gradient(to bottom right, #ffffff, #f8fafc, #ffffff)';
-  const darkBg = 'linear-gradient(to bottom right, #0f172a, #000000, #111827)';
-
   return (
-    <div className="bg-white/80 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-300">
+    <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-800 shadow-xl">
       <ReactFlow
         nodes={nodes.map(node => ({
           ...node,
@@ -56,26 +51,17 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
         fitView
         attributionPosition="bottom-left"
         className="constellation-grid"
-        style={{ background: isDarkMode ? darkBg : lightBg }}
+        style={{ background: 'linear-gradient(to bottom right, #0f172a, #000000, #111827)' }}
       >
-        <Background 
-          color={isDarkMode ? "rgba(148, 163, 184, 0.05)" : "rgba(107, 114, 128, 0.1)"} 
-          gap={32} 
-        />
+        <Background color="rgba(148, 163, 184, 0.05)" gap={32} />
         <Controls 
-          className={isDarkMode ? 
-            "!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl" :
-            "!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
-          }
+          className="!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl"
           showInteractive={false}
         />
         <MiniMap 
-          className={isDarkMode ? 
-            "!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl" :
-            "!bg-white/90 !backdrop-blur-sm !border-gray-200 !shadow-2xl !rounded-xl"
-          }
+          className="!bg-gray-900/90 !backdrop-blur-sm !border-gray-700 !shadow-2xl !rounded-xl"
           nodeColor={(node) => node.data.color}
-          maskColor={isDarkMode ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.3)"}
+          maskColor="rgba(0, 0, 0, 0.3)"
         />
       </ReactFlow>
 
