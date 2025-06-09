@@ -22,11 +22,11 @@ const getCaseIcon = (caseId: string) => {
 const getCaseColor = (caseId: string) => {
   switch (caseId) {
     case 'gas-bubbles-swi':
-      return "bg-blue-100 text-blue-600";
+      return "bg-orange-500/20 text-orange-300";
     case 'trauma-gas':
-      return "bg-red-100 text-red-600";
+      return "bg-red-500/20 text-red-300";
     default:
-      return "bg-gray-100 text-gray-600";
+      return "bg-gray-500/20 text-gray-300";
   }
 };
 
@@ -35,19 +35,19 @@ const upcomingCases = [
     title: "Microbleeds on SWI",
     description: "Coming Soon",
     icon: Brain,
-    color: "bg-purple-100 text-purple-600"
+    color: "bg-purple-500/20 text-purple-300"
   },
   {
     title: "Ring Enhancement",
     description: "Coming Soon", 
     icon: Eye,
-    color: "bg-indigo-100 text-indigo-600"
+    color: "bg-indigo-500/20 text-indigo-300"
   },
   {
     title: "Diffusion Restriction",
     description: "Coming Soon",
     icon: Activity,
-    color: "bg-pink-100 text-pink-600"
+    color: "bg-pink-500/20 text-pink-300"
   }
 ];
 
