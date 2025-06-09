@@ -162,7 +162,7 @@
 
 /* Immersive Constellation Styles */
 .constellation-space {
-  background: linear-gradient(135deg, #1e293b 0%, #3730a3 50%, #1e293b 100%);
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
 }
 
 .constellation-space .react-flow__background {
@@ -170,7 +170,7 @@
 }
 
 .constellation-space .react-flow__controls {
-  background: rgba(0, 0, 0, 0.3) !important;
+  background: rgba(0, 0, 0, 0.8) !important;
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 12px;

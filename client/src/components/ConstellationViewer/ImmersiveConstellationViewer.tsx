@@ -206,7 +206,7 @@ function ConstellationFlow({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/20 shadow-2xl"
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl"
             >
               <div className="flex items-center gap-6">
                 <Button
@@ -263,7 +263,7 @@ function ConstellationFlow({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl min-w-[300px]"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/90 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl min-w-[300px]"
             >
               <div className="space-y-6">
                 <div>
@@ -278,7 +278,7 @@ function ConstellationFlow({
                           onClick={() => setKnowledgeDepth([level])}
                           className={`justify-start text-left transition-all duration-200 ${
                             knowledgeDepth[0] === level 
-                              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 
+                              ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-lg' 
                               : 'text-white/70 hover:text-white hover:bg-white/10'
                           }`}
                         >
@@ -297,7 +297,7 @@ function ConstellationFlow({
                       size="sm"
                       onClick={() => setExplorationMode('free')}
                       className={`transition-all duration-200 ${explorationMode === 'free' 
-                        ? 'bg-blue-600 hover:bg-blue-700 shadow-lg' 
+                        ? 'bg-orange-600 hover:bg-orange-700 shadow-lg' 
                         : 'text-white/70 hover:text-white hover:bg-white/10'
                       }`}
                     >
@@ -308,7 +308,7 @@ function ConstellationFlow({
                       size="sm"
                       onClick={() => setExplorationMode('guided')}
                       className={`transition-all duration-200 ${explorationMode === 'guided' 
-                        ? 'bg-blue-600 hover:bg-blue-700 shadow-lg' 
+                        ? 'bg-orange-600 hover:bg-orange-700 shadow-lg' 
                         : 'text-white/70 hover:text-white hover:bg-white/10'
                       }`}
                     >
@@ -335,7 +335,7 @@ function ConstellationFlow({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/20 shadow-2xl"
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl"
             >
               <div className="flex items-center gap-6">
                 <div className="text-white/70 text-sm">
@@ -352,7 +352,7 @@ function ConstellationFlow({
                     }}
                     className={`transition-all duration-200 hover:scale-105 ${
                       selectedCase === 'gas-bubbles-swi' 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 
+                        ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-lg' 
                         : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/40'
                     }`}
                   >
@@ -368,7 +368,7 @@ function ConstellationFlow({
                     }}
                     className={`transition-all duration-200 hover:scale-105 ${
                       selectedCase === 'trauma-gas' 
-                        ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg' 
+                        ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-lg' 
                         : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/40'
                     }`}
                   >
@@ -389,7 +389,7 @@ function ConstellationFlow({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-white/20 p-6 z-50 shadow-2xl"
+            className="absolute bottom-0 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-white/10 p-6 z-50 shadow-2xl"
           >
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center justify-between mb-6">
@@ -413,51 +413,51 @@ function ConstellationFlow({
 
               {caseInfo?.caseName === 'Gas Bubbles on SWI' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-blue-950/30 rounded-lg p-4">
-                    <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-orange-300 font-medium mb-2">Patient</h3>
                     <p className="text-white text-lg font-semibold">65-year-old male</p>
                   </div>
                   
-                  <div className="bg-green-950/30 rounded-lg p-4">
-                    <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-blue-300 font-medium mb-2">Presentation</h3>
                     <p className="text-white/80 text-sm">Post-operative examination immediately following excision of posterior fossa mass</p>
                   </div>
                   
-                  <div className="bg-amber-950/30 rounded-lg p-4">
-                    <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-amber-300 font-medium mb-2">Key Finding</h3>
                     <p className="text-white/80 text-sm">Multiple low signal intensity rounded filling defects in subarachnoid space and lateral ventricles</p>
                   </div>
                   
-                  <div className="bg-purple-950/30 rounded-lg p-4">
-                    <h3 className="text-purple-200 font-medium mb-2">Clinical Significance</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-green-300 font-medium mb-2">Clinical Significance</h3>
                     <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
                   </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-blue-950/30 rounded-lg p-4">
-                    <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-orange-300 font-medium mb-2">Patient</h3>
                     <p className="text-white text-lg font-semibold">20-year-old male</p>
                   </div>
                   
-                  <div className="bg-green-950/30 rounded-lg p-4">
-                    <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-blue-300 font-medium mb-2">Presentation</h3>
                     <p className="text-white/80 text-sm">Fall from bike</p>
                   </div>
                   
-                  <div className="bg-amber-950/30 rounded-lg p-4">
-                    <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-amber-300 font-medium mb-2">Key Finding</h3>
                     <p className="text-white/80 text-sm">Single locule of gas within left transverse sinus + hyperdensity of left sigmoid sinus</p>
                   </div>
                   
-                  <div className="bg-red-950/30 rounded-lg p-4">
-                    <h3 className="text-red-200 font-medium mb-2">Clinical Significance</h3>
-                    <p className="text-white text-sm"><span className="font-semibold text-red-400">EMERGENCY</span> - skull fracture crossing suture = major thrombosis risk factor</p>
+                  <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
+                    <h3 className="text-orange-400 font-medium mb-2">Clinical Significance</h3>
+                    <p className="text-white text-sm"><span className="font-semibold text-orange-400">EMERGENCY</span> - skull fracture crossing suture = major thrombosis risk factor</p>
                   </div>
                 </div>
               )}
 
-              <div className="mt-6 bg-white/5 rounded-lg p-4">
+              <div className="mt-6 bg-gray-900/30 rounded-lg p-4 border border-white/10">
                 <h3 className="text-white font-medium mb-3">Clinical Context</h3>
                 {caseInfo?.caseName === 'Trauma Gas' && (
                   <p className="text-white/70 text-sm mb-4">
@@ -510,7 +510,7 @@ function ConstellationFlow({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute right-0 top-0 bottom-0 w-96 bg-black/90 backdrop-blur-xl border-l border-white/20 p-6 overflow-y-auto z-50 shadow-2xl"
+            className="absolute right-0 top-0 bottom-0 w-96 bg-black/95 backdrop-blur-xl border-l border-white/10 p-6 overflow-y-auto z-50 shadow-2xl"
           >
             <div className="space-y-6">
               <div className="flex items-center justify-between">
@@ -551,8 +551,8 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {caseInfo.framework.TECHNICAL.primaryConcept}
                       </h3>
-                      <div className="bg-blue-950/30 rounded-lg p-3 mb-3">
-                        <p className="text-blue-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                      <div className="bg-gray-900/50 rounded-lg p-3 mb-3 border border-white/10">
+                        <p className="text-orange-300 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
                           {caseInfo.framework.TECHNICAL.discoveryInsight}
                         </p>
@@ -577,8 +577,8 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {caseInfo.framework.CLINICAL.primaryConcept}
                       </h3>
-                      <div className="bg-green-950/30 rounded-lg p-3 mb-3">
-                        <p className="text-green-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                      <div className="bg-gray-900/50 rounded-lg p-3 mb-3 border border-white/10">
+                        <p className="text-green-300 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
                           {caseInfo.framework.CLINICAL.discoveryInsight}
                         </p>
@@ -603,8 +603,8 @@ function ConstellationFlow({
                       <h3 className="text-white font-medium mb-2">
                         {caseInfo.framework.ANATOMICAL.primaryConcept}
                       </h3>
-                      <div className="bg-amber-950/30 rounded-lg p-3 mb-3">
-                        <p className="text-amber-200 text-sm font-medium mb-1">Discovery Insight:</p>
+                      <div className="bg-gray-900/50 rounded-lg p-3 mb-3 border border-white/10">
+                        <p className="text-amber-300 text-sm font-medium mb-1">Discovery Insight:</p>
                         <p className="text-white/80 text-sm">
                           {caseInfo.framework.ANATOMICAL.discoveryInsight}
                         </p>
@@ -860,7 +860,7 @@ export default function ImmersiveConstellationViewer({
 
   return (
     <ReactFlowProvider>
-      <div className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+      <div className="fixed inset-0 z-50 bg-gradient-to-br from-black via-gray-900 to-black">
         <ConstellationFlow
           selectedNode={selectedNode}
           setSelectedNode={setSelectedNode}
