@@ -33,7 +33,7 @@ const formatText = (text: string) => {
         </div>
       );
     }
-    
+
     // Handle navigation arrows
     if (line.trim().startsWith('→')) {
       const content = line.trim().substring(1).trim();
@@ -43,14 +43,14 @@ const formatText = (text: string) => {
         </div>
       );
     }
-    
+
     // Regular paragraphs
     if (line.trim()) {
       return (
         <p key={lineIndex} className="mb-2" dangerouslySetInnerHTML={{ __html: formatInlineText(line) }} />
       );
     }
-    
+
     // Empty lines
     return <div key={lineIndex} className="mb-2" />;
   });
@@ -155,7 +155,7 @@ function ConstellationFlow({
           gap={64} 
           size={2}
         />
-        
+
         {/* Enhanced Custom Controls */}
         <div className="absolute bottom-4 right-4 z-30 flex flex-col gap-2">
           <Button
@@ -193,19 +193,13 @@ function ConstellationFlow({
         </div>
       </ReactFlow>
 
-      {/* Enhanced Top Hover Area - Exit + Exploration Progress */}
-      <div
-        className="absolute top-0 left-0 right-0 h-16 z-40"
-        onMouseEnter={() => setShowTopUI(true)}
-        onMouseLeave={() => setShowTopUI(false)}
-      >
+      {/* Top UI Bar */}
         <AnimatePresence>
           {showTopUI && (
             <motion.div
               initial={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
               className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/90 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/10 shadow-2xl"
             >
               <div className="flex items-center gap-6">
@@ -218,9 +212,9 @@ function ConstellationFlow({
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Exit Immersive Mode
                 </Button>
-                
+
                 <div className="h-6 w-px bg-white/20" />
-                
+
                 <div className="flex items-center gap-4">
                   <div className="text-white/70 text-sm">
                     Exploration Progress
@@ -248,21 +242,14 @@ function ConstellationFlow({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
-      {/* Enhanced Left Hover Area - Learning Settings */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-16 z-40"
-        onMouseEnter={() => setShowLeftUI(true)}
-        onMouseLeave={() => setShowLeftUI(false)}
-      >
+        {/* Left Side Panel */}
         <AnimatePresence>
           {showLeftUI && (
             <motion.div
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/90 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl min-w-[300px]"
             >
               <div className="space-y-6">
@@ -320,14 +307,8 @@ function ConstellationFlow({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
-      {/* Enhanced Bottom Hover Area - Case Selection */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 z-40"
-        onMouseEnter={() => setShowBottomUI(true)}
-        onMouseLeave={() => setShowBottomUI(false)}
-      >
+        {/* Bottom UI Panel */}
         <AnimatePresence>
           {showBottomUI && (
             <motion.div
@@ -379,7 +360,6 @@ function ConstellationFlow({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
       {/* Central Node Detail Panel */}
       <AnimatePresence>
@@ -417,17 +397,17 @@ function ConstellationFlow({
                     <h3 className="text-orange-300 font-medium mb-2">Patient</h3>
                     <p className="text-white text-lg font-semibold">65-year-old male</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-blue-300 font-medium mb-2">Presentation</h3>
                     <p className="text-white/80 text-sm">Post-operative examination immediately following excision of posterior fossa mass</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-amber-300 font-medium mb-2">Key Finding</h3>
                     <p className="text-white/80 text-sm">Multiple low signal intensity rounded filling defects in subarachnoid space and lateral ventricles</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-green-300 font-medium mb-2">Clinical Significance</h3>
                     <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
@@ -439,17 +419,17 @@ function ConstellationFlow({
                     <h3 className="text-orange-300 font-medium mb-2">Patient</h3>
                     <p className="text-white text-lg font-semibold">20-year-old male</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-blue-300 font-medium mb-2">Presentation</h3>
                     <p className="text-white/80 text-sm">Fall from bike</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-amber-300 font-medium mb-2">Key Finding</h3>
                     <p className="text-white/80 text-sm">Single locule of gas within left transverse sinus + hyperdensity of left sigmoid sinus</p>
                   </div>
-                  
+
                   <div className="bg-gray-900/50 rounded-lg p-4 border border-white/10">
                     <h3 className="text-orange-400 font-medium mb-2">Clinical Significance</h3>
                     <p className="text-white text-sm"><span className="font-semibold text-orange-400">EMERGENCY</span> - skull fracture crossing suture = major thrombosis risk factor</p>
@@ -731,7 +711,7 @@ export default function ImmersiveConstellationViewer({
 
   const initialNodes: Node[] = useMemo(() => {
     if (!currentCaseData || !caseInfo || !nodePositions || !nodeColors) return [];
-    
+
     return [
       {
         id: 'central',
@@ -791,7 +771,7 @@ export default function ImmersiveConstellationViewer({
 
   const initialEdges: Edge[] = useMemo(() => {
     if (!currentCaseData) return [];
-    
+
     return [
       {
         id: 'central-technical',
@@ -889,7 +869,7 @@ export default function ImmersiveConstellationViewer({
           selectedCase={selectedCase}
           onCaseSelect={onCaseSelect}
         />
-        
+
         {/* Medical Image Viewer */}
         <MedicalImageViewer
           isOpen={isImageViewerOpen}

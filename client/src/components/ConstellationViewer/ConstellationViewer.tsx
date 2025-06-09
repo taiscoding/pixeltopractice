@@ -37,11 +37,18 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
   }, [selectedNode, onNodeSelect, onNodeClick]);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-200 shadow-xl">
+    <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 h-[600px] relative overflow-hidden border border-gray-200 shadow-xl"
       <ReactFlow
         nodes={nodes.map(node => ({
           ...node,
-          selected: node.id === selectedNode
+          selected: node.id === selectedNode,
+          style: {
+            ...node.style,
+            ...(node.id === selectedNode && {
+              filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.6))',
+              transform: 'scale(1.05)'
+            })
+          }
         }))}
         edges={edges}
         onNodesChange={onNodesChange}

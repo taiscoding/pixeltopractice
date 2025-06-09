@@ -52,21 +52,21 @@ export default function CustomNode({ data, selected }: CustomNodeProps) {
         className={`
           cursor-pointer transition-all duration-500 backdrop-blur-sm
           ${isCentral 
-            ? 'w-36 h-36 rounded-full shadow-2xl border-2 border-white/10' 
-            : 'w-56 rounded-2xl shadow-xl border border-white/10 p-5'}
+            ? 'w-36 h-36 rounded-full shadow-2xl border-2' 
+            : 'w-56 rounded-2xl shadow-xl border p-5'}
           ${selected 
-            ? 'ring-4 ring-orange-500/60 shadow-2xl scale-105 transform' 
-            : 'hover:scale-105 hover:shadow-2xl transform'}
+            ? 'ring-4 ring-orange-500/80 shadow-2xl scale-105 transform border-orange-500/60' 
+            : 'hover:scale-105 hover:shadow-2xl transform border-white/20 hover:border-white/40'}
         `}
         style={{
           background: isCentral 
             ? `linear-gradient(135deg, ${data.color}, ${data.color}dd)` 
-            : `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(26,26,26,0.9))`,
-          borderColor: selected ? '#f97316' : 'rgba(255,255,255,0.1)',
+            : `linear-gradient(135deg, rgba(0,0,0,0.85), rgba(26,26,26,0.95))`,
+          borderColor: selected ? '#f97316' : 'rgba(255,255,255,0.2)',
           color: 'white',
           boxShadow: selected 
-            ? `0 20px 40px rgba(249, 115, 22, 0.3), 0 0 0 1px rgba(249, 115, 22, 0.5)` 
-            : `0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)`,
+            ? `0 20px 40px rgba(249, 115, 22, 0.4), 0 0 20px rgba(249, 115, 22, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)` 
+            : `0 10px 30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.05)`,
         }}
       >
         <div className={`${isCentral ? 'text-center' : 'flex items-center mb-2'}`}>
