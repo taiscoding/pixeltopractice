@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactFlow, {
   Background,
+  BackgroundVariant,
   Controls,
   useNodesState,
   useEdgesState,
@@ -141,7 +142,14 @@ function ConstellationFlow({
               : undefined
           }
         }))}
-        edges={edges}
+        edges={edges.map(edge => ({
+          ...edge,
+          style: {
+            ...edge.style,
+            stroke: isDarkMode ? 'rgba(148, 163, 184, 0.4)' : 'rgba(148, 163, 184, 0.3)',
+            strokeWidth: 2,
+          }
+        }))}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeClick={handleNodeClick}
@@ -151,9 +159,10 @@ function ConstellationFlow({
         attributionPosition="bottom-left"
       >
         <Background 
-          color="rgba(148, 163, 184, 0.1)" 
+          variant={BackgroundVariant.Dots}
+          color={isDarkMode ? "rgba(71, 85, 105, 0.4)" : "rgba(148, 163, 184, 0.1)"} 
           gap={64} 
-          size={2}
+          size={isDarkMode ? 3 : 2}
         />
         
         {/* Enhanced Custom Controls */}
