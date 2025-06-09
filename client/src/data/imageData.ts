@@ -1,16 +1,4 @@
 
-// Import images
-import gasbubblesMriFlair from '@/assets/medical_images/gasbubbles_case/gasbubbles_mri_flair.jpg';
-import gasbubblesMriT2 from '@/assets/medical_images/gasbubbles_case/gasbubbles_mri_t2.jpg';
-import gasbubblesMriSwi from '@/assets/medical_images/gasbubbles_case/gasbubbles_mri_swi.jpg';
-import traumaCtAxialNoncontrast from '@/assets/medical_images/trauma_case/trauma_ct_axial_noncontrast.jpg';
-import traumaCtSagittalNoncontrast from '@/assets/medical_images/trauma_case/trauma_ct_sagittal_noncontrast.jpg';
-import traumaCtCoronalNoncontrast from '@/assets/medical_images/trauma_case/trauma_ct_coronal_noncontrast.jpg';
-import traumaCtAxialBone from '@/assets/medical_images/trauma_case/trauma_ct_axial_bone.jpg';
-import traumaCtvAxial from '@/assets/medical_images/trauma_case/trauma_ctv_axial.jpg';
-import traumaCtvCoronal from '@/assets/medical_images/trauma_case/trauma_ctv_coronal.jpg';
-import traumaCtvSagittal from '@/assets/medical_images/trauma_case/trauma_ctv_sagittal.jpg';
-
 export interface ImageModalities {
   [modality: string]: {
     [view: string]: string;
@@ -27,9 +15,9 @@ export const imageData: Record<string, CaseImageData> = {
   gasbubbles: {
     modalities: {
       "MRI": {
-        "FLAIR": gasbubblesMriFlair,
-        "T2": gasbubblesMriT2, 
-        "SWI": gasbubblesMriSwi
+        "FLAIR": "/medical_images/gasbubbles_case/gasbubbles_mri_flair.jpg",
+        "T2": "/medical_images/gasbubbles_case/gasbubbles_mri_t2.jpg", 
+        "SWI": "/medical_images/gasbubbles_case/gasbubbles_mri_swi.jpg"
       }
     },
     defaultModality: "MRI",
@@ -38,15 +26,15 @@ export const imageData: Record<string, CaseImageData> = {
   trauma: {
     modalities: {
       "CT Head": {
-        "Axial non-contrast": traumaCtAxialNoncontrast,
-        "Sagittal non-contrast": traumaCtSagittalNoncontrast,
-        "Coronal non-contrast": traumaCtCoronalNoncontrast,
-        "Axial bone window": traumaCtAxialBone
+        "Axial non-contrast": "/medical_images/trauma_case/trauma_ct_axial_noncontrast.jpg",
+        "Sagittal non-contrast": "/medical_images/trauma_case/trauma_ct_sagittal_noncontrast.jpg",
+        "Coronal non-contrast": "/medical_images/trauma_case/trauma_ct_coronal_noncontrast.jpg",
+        "Axial bone window": "/medical_images/trauma_case/trauma_ct_axial_bone.jpg"
       },
       "CT Venogram": {
-        "Axial venogram": traumaCtvAxial,
-        "Coronal venogram": traumaCtvCoronal, 
-        "Sagittal venogram": traumaCtvSagittal
+        "Axial venogram": "/medical_images/trauma_case/trauma_ctv_axial.jpg",
+        "Coronal venogram": "/medical_images/trauma_case/trauma_ctv_coronal.jpg", 
+        "Sagittal venogram": "/medical_images/trauma_case/trauma_ctv_sagittal.jpg"
       }
     },
     defaultModality: "CT Head",
