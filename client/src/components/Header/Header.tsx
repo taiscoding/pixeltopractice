@@ -26,6 +26,14 @@ export default function Header() {
           </nav>
           
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-gray-300 hover:text-white hover:bg-gray-800/50"
+              onClick={toggleTheme}
+            >
+              {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
             <Button className="bg-orange-500 hover:bg-orange-600 text-white hidden sm:inline-flex transition-all duration-200">
               Get Started
             </Button>
