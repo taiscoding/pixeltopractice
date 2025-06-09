@@ -193,25 +193,25 @@ function ConstellationFlow({
         </div>
       </ReactFlow>
 
-      {/* Enhanced Top Hover Area - Exit + Exploration Progress */}
+      {/* Top Hover Area - Small strip at very top */}
       <div
-        className="absolute top-0 left-0 right-0 h-16 z-40 pointer-events-none"
+        className="absolute top-0 left-0 right-0 h-8 z-40"
         onMouseEnter={() => setShowTopUI(true)}
         onMouseLeave={() => setShowTopUI(false)}
       >
       </div>
 
-      {/* Enhanced Left Hover Area - Learning Settings */}
+      {/* Left Hover Area - Thin strip at very left edge */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-16 z-40 pointer-events-none"
+        className="absolute left-0 top-0 bottom-0 w-8 z-40"
         onMouseEnter={() => setShowLeftUI(true)}
         onMouseLeave={() => setShowLeftUI(false)}
       >
       </div>
 
-      {/* Enhanced Bottom Hover Area - Case Selection */}
+      {/* Bottom Hover Area - Small strip at very bottom */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-16 z-40 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-8 z-40"
         onMouseEnter={() => setShowBottomUI(true)}
         onMouseLeave={() => setShowBottomUI(false)}
       >
