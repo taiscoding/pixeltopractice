@@ -176,6 +176,44 @@
   background: linear-gradient(to bottom right, #0f172a, #000000, #111827) !important;
 }
 
+/* Enhanced regular constellation viewer */
+.constellation-grid .react-flow__edge-path {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px currentColor);
+  opacity: 0.8;
+}
+
+.constellation-grid .react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 8, 4;
+  animation: edge-flow 3s linear infinite;
+}
+
+/* Node glow effects for regular viewer */
+.constellation-grid .react-flow__node {
+  filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.2));
+}
+
+.constellation-grid .react-flow__node.selected {
+  filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.5));
+}
+
+/* Individual node type glows for regular viewer */
+.constellation-grid .react-flow__node[data-id="technical"] {
+  filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.2));
+}
+
+.constellation-grid .react-flow__node[data-id="clinical"] {
+  filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.2));
+}
+
+.constellation-grid .react-flow__node[data-id="anatomical"] {
+  filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.2));
+}
+
+.constellation-grid .react-flow__node[data-id="central"] {
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
+}
+
 /* Immersive Constellation Styles */
 .constellation-space {
   background: linear-gradient(135deg, #1e293b 0%, #3730a3 50%, #1e293b 100%);

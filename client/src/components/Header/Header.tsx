@@ -1,9 +1,11 @@
-import { Brain, Menu } from "lucide-react";
+import { Brain, Menu, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/lib/ThemeContext";
 import { useState } from "react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <header className="bg-black/80 backdrop-blur-xl border-b border-gray-800 sticky top-0 z-50">
