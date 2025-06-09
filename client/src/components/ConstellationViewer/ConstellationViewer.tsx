@@ -41,14 +41,7 @@ export default function ConstellationViewer({ selectedNode, onNodeSelect, caseDa
       <ReactFlow
         nodes={nodes.map(node => ({
           ...node,
-          selected: node.id === selectedNode,
-          style: {
-            ...node.style,
-            ...(node.id === selectedNode && {
-              filter: 'drop-shadow(0 0 20px rgba(249, 115, 22, 0.6))',
-              transform: 'scale(1.05)'
-            })
-          }
+          selected: node.id === selectedNode
         }))}
         edges={edges}
         onNodesChange={onNodesChange}
