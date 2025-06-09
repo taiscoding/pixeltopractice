@@ -158,25 +158,25 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
             >
               <div className="space-y-8">
               {/* Technical Details */}
-              <Card className={`${selectedNode === 'technical' ? 'border-l-4 border-l-blue-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
+              <Card className={`bg-gray-900/50 backdrop-blur-xl border border-gray-700 ${selectedNode === 'technical' ? 'border-l-4 border-l-orange-500 shadow-lg shadow-orange-500/20' : 'opacity-50'} transition-all duration-300`}>
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
-                    <div className="bg-blue-600 rounded-lg p-3 mr-4">
+                    <div className="bg-orange-500 rounded-lg p-3 mr-4">
                       <Settings className="text-white h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Technical Framework</h3>
-                      <p className="text-sm text-gray-600">{framework.TECHNICAL.primaryConcept}</p>
+                      <h3 className="text-lg font-semibold text-white">Technical Framework</h3>
+                      <p className="text-sm text-gray-300">{framework.TECHNICAL.primaryConcept}</p>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="text-sm text-blue-800 font-medium mb-2">Discovery Insight:</p>
-                      <p className="text-sm text-blue-700">{framework.TECHNICAL.discoveryInsight}</p>
+                    <div className="bg-orange-500/20 border border-orange-500/30 p-4 rounded-lg">
+                      <p className="text-sm text-orange-300 font-medium mb-2">Discovery Insight:</p>
+                      <p className="text-sm text-orange-200">{framework.TECHNICAL.discoveryInsight}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <div className="text-sm text-gray-700 leading-relaxed">
+                      <h4 className="font-medium text-white mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
+                      <div className="text-sm text-gray-300 leading-relaxed">
                         {formatText(getContentForLevel(framework.TECHNICAL, knowledgeLevel))}
                       </div>
                     </div>
@@ -185,25 +185,25 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
               </Card>
 
               {/* Clinical Details */}
-              <Card className={`${selectedNode === 'clinical' ? 'border-l-4 border-l-green-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
+              <Card className={`bg-gray-900/50 backdrop-blur-xl border border-gray-700 ${selectedNode === 'clinical' ? 'border-l-4 border-l-green-500 shadow-lg shadow-green-500/20' : 'opacity-50'} transition-all duration-300`}>
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
-                    <div className="bg-green-600 rounded-lg p-3 mr-4">
+                    <div className="bg-green-500 rounded-lg p-3 mr-4">
                       <Stethoscope className="text-white h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Clinical Framework</h3>
-                      <p className="text-sm text-gray-600">{framework.CLINICAL.primaryConcept}</p>
+                      <h3 className="text-lg font-semibold text-white">Clinical Framework</h3>
+                      <p className="text-sm text-gray-300">{framework.CLINICAL.primaryConcept}</p>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-green-50 p-4 rounded-lg">
-                      <p className="text-sm text-green-800 font-medium mb-2">Discovery Insight:</p>
-                      <p className="text-sm text-green-700">{framework.CLINICAL.discoveryInsight}</p>
+                    <div className="bg-green-500/20 border border-green-500/30 p-4 rounded-lg">
+                      <p className="text-sm text-green-300 font-medium mb-2">Discovery Insight:</p>
+                      <p className="text-sm text-green-200">{framework.CLINICAL.discoveryInsight}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <div className="text-sm text-gray-700 leading-relaxed">
+                      <h4 className="font-medium text-white mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
+                      <div className="text-sm text-gray-300 leading-relaxed">
                         {formatText(getContentForLevel(framework.CLINICAL, knowledgeLevel))}
                       </div>
                     </div>
@@ -212,25 +212,25 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
               </Card>
 
               {/* Anatomical Details */}
-              <Card className={`${selectedNode === 'anatomical' ? 'border-l-4 border-l-amber-600 shadow-lg' : 'opacity-50'} transition-all duration-300`}>
+              <Card className={`bg-gray-900/50 backdrop-blur-xl border border-gray-700 ${selectedNode === 'anatomical' ? 'border-l-4 border-l-amber-500 shadow-lg shadow-amber-500/20' : 'opacity-50'} transition-all duration-300`}>
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
-                    <div className="bg-amber-600 rounded-lg p-3 mr-4">
+                    <div className="bg-amber-500 rounded-lg p-3 mr-4">
                       <Search className="text-white h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Anatomical Framework</h3>
-                      <p className="text-sm text-gray-600">{framework.ANATOMICAL.primaryConcept}</p>
+                      <h3 className="text-lg font-semibold text-white">Anatomical Framework</h3>
+                      <p className="text-sm text-gray-300">{framework.ANATOMICAL.primaryConcept}</p>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-amber-50 p-4 rounded-lg">
-                      <p className="text-sm text-amber-800 font-medium mb-2">Discovery Insight:</p>
-                      <p className="text-sm text-amber-700">{framework.ANATOMICAL.discoveryInsight}</p>
+                    <div className="bg-amber-500/20 border border-amber-500/30 p-4 rounded-lg">
+                      <p className="text-sm text-amber-300 font-medium mb-2">Discovery Insight:</p>
+                      <p className="text-sm text-amber-200">{framework.ANATOMICAL.discoveryInsight}</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
-                      <div className="text-sm text-gray-700 leading-relaxed">
+                      <h4 className="font-medium text-white mb-2">{getKnowledgeLevelLabel(knowledgeLevel)}</h4>
+                      <div className="text-sm text-gray-300 leading-relaxed">
                         {formatText(getContentForLevel(framework.ANATOMICAL, knowledgeLevel))}
                       </div>
                     </div>
@@ -246,10 +246,10 @@ export default function DetailedExplanation({ selectedNode, onBackToConstellatio
               className="text-center py-12"
             >
               <AlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Select a Constellation Node</h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <h3 className="text-xl font-semibold text-white mb-2">Select a Constellation Node</h3>
+              <p className="text-gray-300 max-w-2xl mx-auto">
                 Click on any node in the constellation above to explore detailed explanations of the Technical, 
-                Clinical, and Anatomical frameworks for Gas Bubbles on SWI.
+                Clinical, and Anatomical frameworks for this radiology case.
               </p>
             </motion.div>
           )}

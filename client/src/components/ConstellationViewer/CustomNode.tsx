@@ -50,22 +50,19 @@ export default function CustomNode({ data, selected }: CustomNodeProps) {
       
       <div
         className={`
-          cursor-pointer transition-all duration-500 backdrop-blur-sm
+          cursor-pointer transition-all duration-500 backdrop-blur-xl bg-gray-900/80 border
           ${isCentral 
-            ? 'w-36 h-36 rounded-full shadow-2xl border-2 border-white/20' 
-            : 'w-56 rounded-2xl shadow-xl border border-white/20 p-5'}
+            ? 'w-36 h-36 rounded-full shadow-2xl border-gray-700' 
+            : 'w-56 rounded-2xl shadow-xl border-gray-700 p-5'}
           ${selected 
-            ? 'ring-4 ring-white/60 shadow-2xl scale-105 transform' 
-            : 'hover:scale-105 hover:shadow-2xl transform'}
+            ? 'ring-4 ring-orange-500/60 shadow-2xl scale-105 transform border-orange-500/50' 
+            : 'hover:scale-105 hover:shadow-2xl transform hover:border-orange-400/50'}
         `}
         style={{
-          background: isCentral 
-            ? `linear-gradient(135deg, ${data.color}, ${data.color}dd)` 
-            : `linear-gradient(135deg, ${data.color}ee, ${data.color}dd)`,
           color: 'white',
           boxShadow: selected 
-            ? `0 20px 40px ${data.color}40, 0 0 0 1px ${data.color}30` 
-            : `0 10px 30px ${data.color}30, 0 0 0 1px ${data.color}20`,
+            ? `0 20px 40px rgba(251, 146, 60, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.2)` 
+            : `0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(107, 114, 128, 0.2)`,
         }}
       >
         <div className={`${isCentral ? 'text-center' : 'flex items-center mb-2'}`}>
