@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
+import { useTheme } from '@/lib/ThemeContext';
 import CustomNode from './CustomNode';
 import { availableCases } from '@/data/curated-cases';
 import MedicalImageViewer from '../MedicalImageViewer/MedicalImageViewer';
@@ -647,11 +648,11 @@ export default function ImmersiveConstellationViewer({
   selectedCase,
   onCaseSelect 
 }: ImmersiveConstellationViewerProps) {
+  const { isDarkMode, toggleTheme } = useTheme();
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [knowledgeDepth, setKnowledgeDepth] = useState([1]); // 0=Focused, 1=Clinical, 2=Comprehensive
   const [explorationMode, setExplorationMode] = useState<'free' | 'guided'>('free');
   const [explorationProgress, setExplorationProgress] = useState(33);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [showTopUI, setShowTopUI] = useState(false);
   const [showLeftUI, setShowLeftUI] = useState(false);
   const [showBottomUI, setShowBottomUI] = useState(false);
@@ -881,7 +882,7 @@ export default function ImmersiveConstellationViewer({
           explorationProgress={explorationProgress}
           setExplorationProgress={setExplorationProgress}
           isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
+          toggleTheme={toggleTheme}
           showTopUI={showTopUI}
           setShowTopUI={setShowTopUI}
           showLeftUI={showLeftUI}
