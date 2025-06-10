@@ -291,8 +291,19 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
             <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <span className="text-white font-medium">{currentModality}</span>
-                  {caseImageData && (
+                  <Select value={currentModality} onValueChange={setCurrentModality}>
+                    <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {caseImageData && Object.keys(caseImageData.modalities).map((modality) => (
+                        <SelectItem key={modality} value={modality}>
+                          {modality}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {caseImageData && currentModality && (
                     <Select value={currentView} onValueChange={setCurrentView}>
                       <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
                         <SelectValue />
@@ -341,29 +352,64 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
               <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <span className="text-white font-medium">
-                      {comparisonMode === 'sequences' ? currentModality2 : currentModality}
-                    </span>
-                    {(comparisonMode === 'sequences' ? caseImageData : comparisonImageData) && (
-                      <Select 
-                        value={comparisonMode === 'sequences' ? currentView2 : currentView} 
-                        onValueChange={comparisonMode === 'sequences' ? setCurrentView2 : setCurrentView}
-                      >
-                        <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.keys(
-                            (comparisonMode === 'sequences' ? caseImageData : comparisonImageData)?.modalities[
-                              comparisonMode === 'sequences' ? currentModality2 : currentModality
-                            ] || {}
-                          ).map((view) => (
-                            <SelectItem key={view} value={view}>
-                              {view}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {comparisonMode === 'sequences' ? (
+                      <>
+                        <Select value={currentModality2} onValueChange={setCurrentModality2}>
+                          <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {caseImageData && Object.keys(caseImageData.modalities).map((modality) => (
+                              <SelectItem key={modality} value={modality}>
+                                {modality}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {caseImageData && currentModality2 && (
+                          <Select value={currentView2} onValueChange={setCurrentView2}>
+                            <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.keys(caseImageData.modalities[currentModality2] || {}).map((view) => (
+                                <SelectItem key={view} value={view}>
+                                  {view}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <Select value={currentModality} onValueChange={setCurrentModality}>
+                          <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {comparisonImageData && Object.keys(comparisonImageData.modalities).map((modality) => (
+                              <SelectItem key={modality} value={modality}>
+                                {modality}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {comparisonImageData && currentModality && (
+                          <Select value={currentView} onValueChange={setCurrentView}>
+                            <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.keys(comparisonImageData.modalities[currentModality] || {}).map((view) => (
+                                <SelectItem key={view} value={view}>
+                                  {view}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </>
                     )}
                   </div>
                   <span className="text-sm text-gray-400">

@@ -4,13 +4,15 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/ThemeContext";
+import IntegratedViewerPage from "@/pages/integrated-viewer";
 import Dashboard from "@/pages/dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      <Route path="/" component={IntegratedViewerPage} />
+      <Route path="/constellation" component={Dashboard} />
       <Route component={NotFound} />
     </Switch>
   );

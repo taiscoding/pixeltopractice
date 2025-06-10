@@ -8,12 +8,12 @@ export interface CaseData {
 }
 
 export const availableCases: Record<string, CaseData> = {
-  'gas-bubbles-swi': {
+  'Gas Bubbles on SWI': {
     case: gasBubblesSWICase,
     nodePositions: gasBubblesPositions,
     nodeColors: gasBubblesColors
   },
-  'trauma-gas': {
+  'Trauma Gas': {
     case: traumaGasCase,
     nodePositions: traumaGasNodePositions,
     nodeColors: traumaGasNodeColors
