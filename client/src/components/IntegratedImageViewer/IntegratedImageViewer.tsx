@@ -132,10 +132,14 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   };
 
   // Get learning content based on mode and level
-  const getLearningContent = () => {
-    if (!currentCaseData?.case?.framework) return null;
+  const getLearningContent = (useComparisonCase = false) => {
+    const caseToUse = useComparisonCase && comparisonMode === 'cases' && comparisonCaseData 
+      ? comparisonCaseData 
+      : currentCaseData;
+      
+    if (!caseToUse?.case?.framework) return null;
 
-    const framework = currentCaseData.case.framework;
+    const framework = caseToUse.case.framework;
     const modeData = framework[learningMode.toUpperCase() as keyof typeof framework];
 
     if (!modeData) return null;
@@ -225,14 +229,18 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   };
 
   // Get patient context
-  const getPatientContext = () => {
-    if (currentCaseData?.case?.caseName === 'Gas Bubbles on SWI') {
+  const getPatientContext = (useComparisonCase = false) => {
+    const caseToUse = useComparisonCase && comparisonMode === 'cases' && comparisonCaseData 
+      ? comparisonCaseData 
+      : currentCaseData;
+      
+    if (caseToUse?.case?.caseName === 'Gas Bubbles on SWI') {
       return {
         patient: '65-year-old male',
         presentation: 'Immediately post-posterior fossa surgery',
         finding: 'Expected gas bubbles'
       };
-    } else if (currentCaseData?.case?.caseName === 'Trauma Gas') {
+    } else if (caseToUse?.case?.caseName === 'Trauma Gas') {
       return {
         patient: '20-year-old male',
         presentation: 'Fall from bike',
@@ -489,27 +497,41 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                           </Select>
                         )}
                       </>
-                    ) : (
+                    ) : comparisonMode === 'cases' && comparisonImageData ? (
                       <>
-                        <Select value={currentModality} onValueChange={setCurrentModality}>
+                        <Select 
+                          value={Object.keys(comparisonImageData.modalities).includes(currentModality) ? currentModality : comparisonImageData.defaultModality} 
+                          onValueChange={(value) => {
+                            setCurrentModality(value);
+                            // Reset view to default for the new modality
+                            const modalityData = comparisonImageData.modalities[value];
+                            if (modalityData) {
+                              const firstView = Object.keys(modalityData)[0];
+                              setCurrentView(firstView);
+                            }
+                          }}
+                        >
                           <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {comparisonImageData && Object.keys(comparisonImageData.modalities).map((modality) => (
+                            {Object.keys(comparisonImageData.modalities).map((modality) => (
                               <SelectItem key={modality} value={modality}>
                                 {modality}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        {comparisonImageData && currentModality && (
-                          <Select value={currentView} onValueChange={setCurrentView}>
+                        {comparisonImageData && (
+                          <Select 
+                            value={currentView || comparisonImageData.defaultView} 
+                            onValueChange={setCurrentView}
+                          >
                             <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {Object.keys(comparisonImageData.modalities[currentModality] || {}).map((view) => (
+                              {Object.keys(comparisonImageData.modalities[Object.keys(comparisonImageData.modalities).includes(currentModality) ? currentModality : comparisonImageData.defaultModality] || {}).map((view) => (
                                 <SelectItem key={view} value={view}>
                                   {view}
                                 </SelectItem>
@@ -518,7 +540,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                           </Select>
                         )}
                       </>
-                    )}
+                    ) : null}
                   </div>
                   <span className="text-sm text-gray-400">
                     {comparisonMode === 'sequences' ? 'Comparison Sequence' : 'Comparison Case'}
@@ -535,7 +557,10 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                     src={getCurrentImagePath(true)}
-                    alt={`${comparisonMode === 'sequences' ? currentModality2 : currentModality} - ${comparisonMode === 'sequences' ? currentView2 : currentView}`}
+                    alt={comparisonMode === 'sequences' 
+                      ? `${currentModality2} - ${currentView2}` 
+                      : `${comparisonCase} - ${comparisonImageData?.defaultModality} - ${comparisonImageData?.defaultView}`
+                    }
                     className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                   />
                 ) : (
@@ -551,64 +576,196 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
 
         {/* Learning Panel */}
         <div className={`${comparisonMode === 'single' ? 'w-96' : 'w-1/3'} bg-gray-900/50 backdrop-blur-xl border-l border-gray-800 flex flex-col`}>
-          {/* Panel Header */}
-          <div className="bg-gray-900/80 border-b border-gray-700 px-6 py-4">
-            <h2 className="text-lg font-semibold text-white">
-              {getLearningModeLabel(learningMode)}
-            </h2>
-            {patientContext && (
-              <div className="mt-3 space-y-2 text-sm">
-                <div className="text-gray-300">
-                  <span className="text-blue-400">Patient:</span> {patientContext.patient}
+          {comparisonMode === 'cases' ? (
+            // Split view for case comparison
+            <div className="flex flex-col h-full">
+              {/* Primary Case */}
+              <div className="flex-1 border-b border-gray-700">
+                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
+                  <h3 className="text-sm font-semibold text-white">
+                    {currentCaseData?.case?.caseName} - {getLearningModeLabel(learningMode)}
+                  </h3>
+                  {patientContext && (
+                    <div className="mt-2 space-y-1 text-xs">
+                      <div className="text-gray-300">
+                        <span className="text-blue-400">Patient:</span> {patientContext.patient}
+                      </div>
+                      <div className="text-gray-300">
+                        <span className="text-green-400">Presentation:</span> {patientContext.presentation}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="text-gray-300">
-                  <span className="text-green-400">Presentation:</span> {patientContext.presentation}
+                <div className="p-4 overflow-y-auto">
+                  {learningContent && currentLevelContent && (
+                    <motion.div
+                      key={`primary-${learningLevel}`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h4 className="text-white font-medium mb-2 text-sm">
+                        {learningContent.primaryConcept}
+                      </h4>
+                      <div className={`${currentLevelContent.bgColor} rounded-lg p-3`}>
+                        <p className={`${currentLevelContent.textColor} text-xs font-medium mb-1`}>
+                          {currentLevelContent.title}:
+                        </p>
+                        <div className="text-white/80 text-xs leading-relaxed">
+                          {formatText(currentLevelContent.content)}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Learning Content */}
-          <div className="flex-1 overflow-y-auto p-6">
-            {learningContent && currentLevelContent && (
-              <motion.div
-                key={learningLevel}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
-                {/* Primary Concept */}
-                <div>
-                  <h3 className="text-white font-medium mb-3">
-                    {learningContent.primaryConcept}
+              {/* Comparison Case */}
+              <div className="flex-1">
+                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
+                  <h3 className="text-sm font-semibold text-white">
+                    {comparisonCaseData?.case?.caseName} - {getLearningModeLabel(learningMode)}
                   </h3>
-                  <div className={`${currentLevelContent.bgColor} rounded-lg p-4`}>
-                    <p className={`${currentLevelContent.textColor} text-sm font-medium mb-2`}>
-                      {currentLevelContent.title}:
-                    </p>
-                    <div className="text-white/80 text-sm leading-relaxed">
-                      {formatText(currentLevelContent.content)}
+                  {getPatientContext(true) && (
+                    <div className="mt-2 space-y-1 text-xs">
+                      <div className="text-gray-300">
+                        <span className="text-blue-400">Patient:</span> {getPatientContext(true)?.patient}
+                      </div>
+                      <div className="text-gray-300">
+                        <span className="text-green-400">Presentation:</span> {getPatientContext(true)?.presentation}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="p-4 overflow-y-auto">
+                  {(() => {
+                    const comparisonContent = getLearningContent(true);
+                    const comparisonLevelContent = comparisonContent ? {
+                      discovery: {
+                        title: 'Discovery Insight',
+                        content: comparisonContent.discoveryInsight,
+                        bgColor: 'bg-blue-950/30',
+                        textColor: 'text-blue-200'
+                      },
+                      focused: {
+                        title: 'Focused Learning',
+                        content: comparisonContent.focusedLearning,
+                        bgColor: 'bg-green-950/30',
+                        textColor: 'text-green-200'
+                      },
+                      clinical: {
+                        title: 'Clinical Application',
+                        content: comparisonContent.clinicalApplication,
+                        bgColor: 'bg-orange-950/30',
+                        textColor: 'text-orange-200'
+                      },
+                      comprehensive: {
+                        title: 'Comprehensive Analysis',
+                        content: comparisonContent.comprehensiveAnalysis,
+                        bgColor: 'bg-purple-950/30',
+                        textColor: 'text-purple-200'
+                      }
+                    }[learningLevel] : null;
+
+                    return comparisonContent && comparisonLevelContent ? (
+                      <motion.div
+                        key={`comparison-${learningLevel}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <h4 className="text-white font-medium mb-2 text-sm">
+                          {comparisonContent.primaryConcept}
+                        </h4>
+                        <div className={`${comparisonLevelContent.bgColor} rounded-lg p-3`}>
+                          <p className={`${comparisonLevelContent.textColor} text-xs font-medium mb-1`}>
+                            {comparisonLevelContent.title}:
+                          </p>
+                          <div className="text-white/80 text-xs leading-relaxed">
+                            {formatText(comparisonLevelContent.content)}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <div className="text-gray-500 text-xs">No content available for comparison case</div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Learning Level Indicator */}
+              <div className="flex items-center justify-center py-2 bg-gray-900/50">
+                <div className="flex items-center gap-1">
+                  {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level) => (
+                    <div
+                      key={level}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
+                        learningLevel === level ? 'bg-orange-500' : 'bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            // Single case view
+            <>
+              <div className="bg-gray-900/80 border-b border-gray-700 px-6 py-4">
+                <h2 className="text-lg font-semibold text-white">
+                  {getLearningModeLabel(learningMode)}
+                </h2>
+                {patientContext && (
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="text-gray-300">
+                      <span className="text-blue-400">Patient:</span> {patientContext.patient}
+                    </div>
+                    <div className="text-gray-300">
+                      <span className="text-green-400">Presentation:</span> {patientContext.presentation}
                     </div>
                   </div>
-                </div>
+                )}
+              </div>
 
-                {/* Current Learning Level Indicator */}
-                <div className="flex items-center justify-center pt-4">
-                  <div className="flex items-center gap-2">
-                    {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level, index) => (
-                      <div
-                        key={level}
-                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                          learningLevel === level ? 'bg-orange-500' : 'bg-gray-600'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </div>
+              <div className="flex-1 overflow-y-auto p-6">
+                {learningContent && currentLevelContent && (
+                  <motion.div
+                    key={learningLevel}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                    <div>
+                      <h3 className="text-white font-medium mb-3">
+                        {learningContent.primaryConcept}
+                      </h3>
+                      <div className={`${currentLevelContent.bgColor} rounded-lg p-4`}>
+                        <p className={`${currentLevelContent.textColor} text-sm font-medium mb-2`}>
+                          {currentLevelContent.title}:
+                        </p>
+                        <div className="text-white/80 text-sm leading-relaxed">
+                          {formatText(currentLevelContent.content)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-center pt-4">
+                      <div className="flex items-center gap-2">
+                        {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level) => (
+                          <div
+                            key={level}
+                            className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                              learningLevel === level ? 'bg-orange-500' : 'bg-gray-600'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

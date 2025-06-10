@@ -12,6 +12,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={IntegratedViewerPage} />
+      <Route path="/integrated-viewer" component={IntegratedViewerPage} />
       <Route path="/constellation" component={Dashboard} />
       <Route component={NotFound} />
     </Switch>
