@@ -14,8 +14,11 @@ interface IntegratedImageViewerProps {
 type LearningMode = 'technical' | 'clinical' | 'anatomical';
 type ComparisonMode = 'single' | 'sequences' | 'cases';
 
+type LearningLevel = 'discovery' | 'focused' | 'clinical' | 'comprehensive';
+
 export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: IntegratedImageViewerProps) {
   const [learningMode, setLearningMode] = useState<LearningMode>('technical');
+  const [learningLevel, setLearningLevel] = useState<LearningLevel>('discovery');
   const [comparisonMode, setComparisonMode] = useState<ComparisonMode>('single');
   const [currentModality, setCurrentModality] = useState<string>('');
   const [currentView, setCurrentView] = useState<string>('');
@@ -24,6 +27,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   const [comparisonCase, setComparisonCase] = useState<string>('');
   const [sequenceComparison, setSequenceComparison] = useState<string>('SWI vs T2');
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [isLearningPanelHovered, setIsLearningPanelHovered] = useState(false);
 
   // Get case data
   const caseKey = getCaseKey(selectedCase);
@@ -57,6 +61,12 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   // Handle learning mode change
   const handleLearningModeChange = (mode: LearningMode) => {
     setLearningMode(mode);
+    setLearningLevel('discovery'); // Reset to discovery when switching tabs
+  };
+
+  // Handle learning level change
+  const handleLearningLevelChange = (level: LearningLevel) => {
+    setLearningLevel(level);
   };
 
   // Handle comparison mode change
@@ -88,11 +98,30 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
 
   // Get current image path
   const getCurrentImagePath = (isSecondImage = false) => {
-    const modality = isSecondImage ? currentModality2 : currentModality;
-    const view = isSecondImage ? currentView2 : currentView;
-    const imageDataToUse = isSecondImage && comparisonMode === 'cases' && comparisonImageData 
-      ? comparisonImageData 
-      : caseImageData;
+    let modality, view, imageDataToUse;
+    
+    if (isSecondImage && comparisonMode === 'cases') {
+      // For case comparison, use comparison case data
+      imageDataToUse = comparisonImageData;
+      modality = currentModality;
+      view = currentView;
+      
+      // Initialize modality and view for comparison case if not set
+      if (comparisonImageData && (!currentModality || !Object.keys(comparisonImageData.modalities).includes(currentModality))) {
+        modality = comparisonImageData.defaultModality;
+        view = comparisonImageData.defaultView;
+      }
+    } else if (isSecondImage && comparisonMode === 'sequences') {
+      // For sequence comparison, use same case data but different modality
+      modality = currentModality2;
+      view = currentView2;
+      imageDataToUse = caseImageData;
+    } else {
+      // Primary image
+      modality = currentModality;
+      view = currentView;
+      imageDataToUse = caseImageData;
+    }
 
     if (!modality || !view || !imageDataToUse) {
       return '';
@@ -102,7 +131,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
     return modalityData[view] || '';
   };
 
-  // Get learning content based on mode
+  // Get learning content based on mode and level
   const getLearningContent = () => {
     if (!currentCaseData?.case?.framework) return null;
 
@@ -118,6 +147,45 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       clinicalApplication: modeData.clinicalApplication,
       comprehensiveAnalysis: modeData.comprehensiveAnalysis
     };
+  };
+
+  // Get content for current learning level
+  const getCurrentLevelContent = () => {
+    const content = getLearningContent();
+    if (!content) return null;
+
+    switch (learningLevel) {
+      case 'discovery':
+        return {
+          title: 'Discovery Insight',
+          content: content.discoveryInsight,
+          bgColor: 'bg-blue-950/30',
+          textColor: 'text-blue-200'
+        };
+      case 'focused':
+        return {
+          title: 'Focused Learning',
+          content: content.focusedLearning,
+          bgColor: 'bg-green-950/30',
+          textColor: 'text-green-200'
+        };
+      case 'clinical':
+        return {
+          title: 'Clinical Application',
+          content: content.clinicalApplication,
+          bgColor: 'bg-orange-950/30',
+          textColor: 'text-orange-200'
+        };
+      case 'comprehensive':
+        return {
+          title: 'Comprehensive Analysis',
+          content: content.comprehensiveAnalysis,
+          bgColor: 'bg-purple-950/30',
+          textColor: 'text-purple-200'
+        };
+      default:
+        return null;
+    }
   };
 
   // Format text content
@@ -175,10 +243,50 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   };
 
   const learningContent = getLearningContent();
+  const currentLevelContent = getCurrentLevelContent();
   const patientContext = getPatientContext();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
+      {/* Learning Level Peek Panel */}
+      <div 
+        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50"
+        onMouseEnter={() => setIsLearningPanelHovered(true)}
+        onMouseLeave={() => setIsLearningPanelHovered(false)}
+      >
+        <motion.div
+          initial={{ x: -200 }}
+          animate={{ x: isLearningPanelHovered ? 0 : -175 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className="bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg shadow-2xl"
+        >
+          <div className="p-4">
+            {!isLearningPanelHovered ? (
+              <div className="text-orange-400 text-sm font-medium writing-mode-vertical transform rotate-180">
+                Learning Levels
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="text-orange-400 text-sm font-medium mb-3">Learning Levels</div>
+                {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level) => (
+                  <button
+                    key={level}
+                    onClick={() => handleLearningLevelChange(level)}
+                    className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 text-left ${
+                      learningLevel === level
+                        ? 'bg-orange-500 text-white shadow-lg'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                    }`}
+                  >
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+
       {/* Top Navigation Bar */}
       <div className="bg-black/80 backdrop-blur-xl border-b border-gray-800 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -462,45 +570,43 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
 
           {/* Learning Content */}
           <div className="flex-1 overflow-y-auto p-6">
-            {learningContent && (
-              <div className="space-y-6">
+            {learningContent && currentLevelContent && (
+              <motion.div
+                key={learningLevel}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-6"
+              >
                 {/* Primary Concept */}
                 <div>
                   <h3 className="text-white font-medium mb-3">
                     {learningContent.primaryConcept}
                   </h3>
-                  <div className="bg-blue-950/30 rounded-lg p-4 mb-4">
-                    <p className="text-blue-200 text-sm font-medium mb-2">Discovery Insight:</p>
-                    <div className="text-white/80 text-sm">
-                      {formatText(learningContent.discoveryInsight)}
+                  <div className={`${currentLevelContent.bgColor} rounded-lg p-4`}>
+                    <p className={`${currentLevelContent.textColor} text-sm font-medium mb-2`}>
+                      {currentLevelContent.title}:
+                    </p>
+                    <div className="text-white/80 text-sm leading-relaxed">
+                      {formatText(currentLevelContent.content)}
                     </div>
                   </div>
                 </div>
 
-                {/* Focused Learning */}
-                <div>
-                  <h4 className="text-white font-medium mb-3">Focused Learning</h4>
-                  <div className="text-white/70 text-sm leading-relaxed">
-                    {formatText(learningContent.focusedLearning)}
+                {/* Current Learning Level Indicator */}
+                <div className="flex items-center justify-center pt-4">
+                  <div className="flex items-center gap-2">
+                    {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level, index) => (
+                      <div
+                        key={level}
+                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                          learningLevel === level ? 'bg-orange-500' : 'bg-gray-600'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
-
-                {/* Clinical Application */}
-                <div>
-                  <h4 className="text-white font-medium mb-3">Clinical Application</h4>
-                  <div className="text-white/70 text-sm leading-relaxed">
-                    {formatText(learningContent.clinicalApplication)}
-                  </div>
-                </div>
-
-                {/* Comprehensive Analysis */}
-                <div>
-                  <h4 className="text-white font-medium mb-3">Comprehensive Analysis</h4>
-                  <div className="text-white/70 text-sm leading-relaxed">
-                    {formatText(learningContent.comprehensiveAnalysis)}
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
