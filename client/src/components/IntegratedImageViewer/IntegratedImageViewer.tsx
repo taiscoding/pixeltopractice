@@ -25,6 +25,8 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   const [currentModality2, setCurrentModality2] = useState<string>('');
   const [currentView2, setCurrentView2] = useState<string>('');
   const [comparisonCase, setComparisonCase] = useState<string>('');
+  const [comparisonModality, setComparisonModality] = useState<string>('');
+  const [comparisonView, setComparisonView] = useState<string>('');
   const [sequenceComparison, setSequenceComparison] = useState<string>('SWI vs T2');
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [isLearningPanelHovered, setIsLearningPanelHovered] = useState(false);
@@ -76,6 +78,14 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       }
     }
   }, [caseImageData, comparisonMode]);
+
+  // Initialize comparison case modality and view when comparison case changes
+  useEffect(() => {
+    if (comparisonImageData) {
+      setComparisonModality(comparisonImageData.defaultModality);
+      setComparisonView(comparisonImageData.defaultView);
+    }
+  }, [comparisonImageData]);
 
   // Handle learning mode change
   const handleLearningModeChange = (mode: LearningMode) => {
@@ -156,32 +166,30 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       currentView,
       currentModality2,
       currentView2,
-      comparisonCase
+      comparisonCase,
+      comparisonModality,
+      comparisonView
     });
     
     if (isSecondImage && comparisonMode === 'cases') {
       // For case comparison, use comparison case data
       imageDataToUse = comparisonImageData;
-      modality = currentModality;
-      view = currentView;
       
       console.log("Case comparison mode - comparison data:", comparisonImageData);
       
-      // Initialize modality and view for comparison case if not set or invalid
+      // Use separate state variables for comparison case
       if (comparisonImageData) {
         const availableModalities = Object.keys(comparisonImageData.modalities);
         console.log("Available modalities in comparison case:", availableModalities);
         
-        if (!modality || !availableModalities.includes(modality)) {
-          modality = comparisonImageData.defaultModality;
-          console.log("Using default modality:", modality);
-        }
+        // Use dedicated comparison state variables
+        modality = comparisonModality || comparisonImageData.defaultModality;
+        view = comparisonView || comparisonImageData.defaultView;
         
-        const modalityViews = Object.keys(comparisonImageData.modalities[modality] || {});
-        if (!view || !modalityViews.includes(view)) {
-          view = comparisonImageData.defaultView;
-          console.log("Using default view:", view);
-        }
+        console.log("Using comparison case modality/view:", modality, view);
+      } else {
+        modality = currentModality;
+        view = currentView;
       }
     } else if (isSecondImage && comparisonMode === 'sequences') {
       // For sequence comparison, use same case data but different modality
@@ -591,14 +599,14 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                     ) : comparisonMode === 'cases' && comparisonImageData ? (
                       <>
                         <Select 
-                          value={Object.keys(comparisonImageData.modalities).includes(currentModality) ? currentModality : comparisonImageData.defaultModality} 
+                          value={comparisonModality || comparisonImageData.defaultModality} 
                           onValueChange={(value) => {
-                            setCurrentModality(value);
+                            setComparisonModality(value);
                             // Reset view to default for the new modality
                             const modalityData = comparisonImageData.modalities[value];
                             if (modalityData) {
                               const firstView = Object.keys(modalityData)[0];
-                              setCurrentView(firstView);
+                              setComparisonView(firstView);
                             }
                           }}
                         >
@@ -613,16 +621,16 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                             ))}
                           </SelectContent>
                         </Select>
-                        {comparisonImageData && (
+                        {comparisonImageData && comparisonModality && (
                           <Select 
-                            value={currentView || comparisonImageData.defaultView} 
-                            onValueChange={setCurrentView}
+                            value={comparisonView || comparisonImageData.defaultView} 
+                            onValueChange={setComparisonView}
                           >
                             <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {Object.keys(comparisonImageData.modalities[Object.keys(comparisonImageData.modalities).includes(currentModality) ? currentModality : comparisonImageData.defaultModality] || {}).map((view) => (
+                              {Object.keys(comparisonImageData.modalities[comparisonModality] || {}).map((view) => (
                                 <SelectItem key={view} value={view}>
                                   {view}
                                 </SelectItem>
