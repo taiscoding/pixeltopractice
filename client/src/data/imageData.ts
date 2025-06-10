@@ -14,14 +14,18 @@ export interface CaseImageData {
 export const imageData: Record<string, CaseImageData> = {
   gasbubbles: {
     modalities: {
-      "MRI": {
-        "FLAIR": "/medical_images/gasbubbles_case/gasbubbles_mri_flair.jpg",
-        "T2": "/medical_images/gasbubbles_case/gasbubbles_mri_t2.jpg", 
-        "SWI": "/medical_images/gasbubbles_case/gasbubbles_mri_swi.jpg"
+      "MRI FLAIR": {
+        "Standard": "/medical_images/gasbubbles_case/gasbubbles_mri_flair.jpg"
+      },
+      "MRI T2": {
+        "Standard": "/medical_images/gasbubbles_case/gasbubbles_mri_t2.jpg"
+      },
+      "MRI SWI": {
+        "Standard": "/medical_images/gasbubbles_case/gasbubbles_mri_swi.jpg"
       }
     },
-    defaultModality: "MRI",
-    defaultView: "SWI"
+    defaultModality: "MRI SWI",
+    defaultView: "Standard"
   },
   trauma: {
     modalities: {

@@ -39,20 +39,39 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   const comparisonImageData = comparisonCase ? imageData[comparisonCaseKey as keyof typeof imageData] : null;
   const comparisonCaseData = comparisonCase ? availableCases[comparisonCase] : null;
 
+  // Debug logging
+  console.log("Image data structure:", imageData);
+  console.log("Selected case:", selectedCase, "Case key:", caseKey);
+  console.log("Case image data:", caseImageData);
+  console.log("Comparison case:", comparisonCase, "Comparison image data:", comparisonImageData);
+
   // Initialize modality and view when viewer opens
   useEffect(() => {
     if (caseImageData) {
       setCurrentModality(caseImageData.defaultModality);
       setCurrentView(caseImageData.defaultView);
       
-      // Set up default comparison sequence
+      // Set up default comparison sequence dynamically
       if (comparisonMode === 'sequences') {
         const modalities = Object.keys(caseImageData.modalities);
-        if (modalities.includes('SWI') && modalities.includes('T2')) {
-          setCurrentModality('SWI');
-          setCurrentModality2('T2');
-          setCurrentView(caseImageData.defaultView);
-          setCurrentView2(caseImageData.defaultView);
+        
+        if (modalities.length >= 2) {
+          // Use first two available modalities
+          const mod1 = modalities[0];
+          const mod2 = modalities[1];
+          
+          setCurrentModality(mod1);
+          setCurrentModality2(mod2);
+          setSequenceComparison(`${mod1} vs ${mod2}`);
+          
+          // Set default views for each modality
+          const mod1Views = Object.keys(caseImageData.modalities[mod1] || {});
+          const mod2Views = Object.keys(caseImageData.modalities[mod2] || {});
+          
+          if (mod1Views.length > 0) setCurrentView(mod1Views[0]);
+          if (mod2Views.length > 0) setCurrentView2(mod2Views[0]);
+          
+          console.log("Initialized sequence comparison:", `${mod1} vs ${mod2}`);
         }
       }
     }
@@ -81,17 +100,46 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
     }
   };
 
+  // Generate available sequence combinations dynamically
+  const getAvailableSequenceComparisons = () => {
+    if (!caseImageData) return [];
+    
+    const modalities = Object.keys(caseImageData.modalities);
+    const combinations = [];
+    
+    // Generate all possible combinations of modalities
+    for (let i = 0; i < modalities.length; i++) {
+      for (let j = i + 1; j < modalities.length; j++) {
+        combinations.push(`${modalities[i]} vs ${modalities[j]}`);
+      }
+    }
+    
+    return combinations;
+  };
+
   // Handle sequence comparison change
   const handleSequenceComparisonChange = (comparison: string) => {
     setSequenceComparison(comparison);
     if (caseImageData) {
       const [mod1, mod2] = comparison.split(' vs ');
       const modalities = Object.keys(caseImageData.modalities);
+      
+      console.log("Changing sequence comparison to:", comparison);
+      console.log("Available modalities:", modalities);
+      
       if (modalities.includes(mod1) && modalities.includes(mod2)) {
         setCurrentModality(mod1);
         setCurrentModality2(mod2);
-        setCurrentView(caseImageData.defaultView);
-        setCurrentView2(caseImageData.defaultView);
+        
+        // Set default views for each modality
+        const mod1Views = Object.keys(caseImageData.modalities[mod1] || {});
+        const mod2Views = Object.keys(caseImageData.modalities[mod2] || {});
+        
+        if (mod1Views.length > 0) setCurrentView(mod1Views[0]);
+        if (mod2Views.length > 0) setCurrentView2(mod2Views[0]);
+        
+        console.log("Set modalities:", mod1, "vs", mod2);
+        console.log("Set views:", mod1Views[0], "vs", mod2Views[0]);
       }
     }
   };
@@ -123,12 +171,28 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       imageDataToUse = caseImageData;
     }
 
+    console.log("Getting image path:", {
+      isSecondImage,
+      comparisonMode,
+      modality,
+      view,
+      imageDataAvailable: !!imageDataToUse
+    });
+
     if (!modality || !view || !imageDataToUse) {
+      console.log("Missing data for image path:", { modality, view, imageDataToUse: !!imageDataToUse });
       return '';
     }
+    
     const modalityData = imageDataToUse.modalities[modality];
-    if (!modalityData) return '';
-    return modalityData[view] || '';
+    if (!modalityData) {
+      console.log("No modality data found for:", modality, "Available modalities:", Object.keys(imageDataToUse.modalities));
+      return '';
+    }
+    
+    const imagePath = modalityData[view] || '';
+    console.log("Final image path:", imagePath);
+    return imagePath;
   };
 
   // Get learning content based on mode and level
@@ -339,13 +403,15 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
           <div className="flex items-center gap-4">
             {comparisonMode === 'sequences' && (
               <Select value={sequenceComparison} onValueChange={handleSequenceComparisonChange}>
-                <SelectTrigger className="w-32 bg-gray-800 border-gray-700 text-white">
+                <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="SWI vs T2">SWI vs T2</SelectItem>
-                  <SelectItem value="SWI vs FLAIR">SWI vs FLAIR</SelectItem>
-                  <SelectItem value="T2 vs FLAIR">T2 vs FLAIR</SelectItem>
+                  {getAvailableSequenceComparisons().map((comparison) => (
+                    <SelectItem key={comparison} value={comparison}>
+                      {comparison}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
