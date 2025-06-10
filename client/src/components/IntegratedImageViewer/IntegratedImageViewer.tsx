@@ -148,50 +148,75 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   const getCurrentImagePath = (isSecondImage = false) => {
     let modality, view, imageDataToUse;
     
+    console.log("=== DEBUG getCurrentImagePath ===");
+    console.log("isSecondImage:", isSecondImage);
+    console.log("comparisonMode:", comparisonMode);
+    console.log("States:", {
+      currentModality,
+      currentView,
+      currentModality2,
+      currentView2,
+      comparisonCase
+    });
+    
     if (isSecondImage && comparisonMode === 'cases') {
       // For case comparison, use comparison case data
       imageDataToUse = comparisonImageData;
       modality = currentModality;
       view = currentView;
       
-      // Initialize modality and view for comparison case if not set
-      if (comparisonImageData && (!currentModality || !Object.keys(comparisonImageData.modalities).includes(currentModality))) {
-        modality = comparisonImageData.defaultModality;
-        view = comparisonImageData.defaultView;
+      console.log("Case comparison mode - comparison data:", comparisonImageData);
+      
+      // Initialize modality and view for comparison case if not set or invalid
+      if (comparisonImageData) {
+        const availableModalities = Object.keys(comparisonImageData.modalities);
+        console.log("Available modalities in comparison case:", availableModalities);
+        
+        if (!modality || !availableModalities.includes(modality)) {
+          modality = comparisonImageData.defaultModality;
+          console.log("Using default modality:", modality);
+        }
+        
+        const modalityViews = Object.keys(comparisonImageData.modalities[modality] || {});
+        if (!view || !modalityViews.includes(view)) {
+          view = comparisonImageData.defaultView;
+          console.log("Using default view:", view);
+        }
       }
     } else if (isSecondImage && comparisonMode === 'sequences') {
       // For sequence comparison, use same case data but different modality
       modality = currentModality2;
       view = currentView2;
       imageDataToUse = caseImageData;
+      console.log("Sequence comparison mode - using modality2/view2:", modality, view);
     } else {
       // Primary image
       modality = currentModality;
       view = currentView;
       imageDataToUse = caseImageData;
+      console.log("Primary image mode:", modality, view);
     }
 
-    console.log("Getting image path:", {
-      isSecondImage,
-      comparisonMode,
+    console.log("Final resolved values:", {
       modality,
       view,
       imageDataAvailable: !!imageDataToUse
     });
 
     if (!modality || !view || !imageDataToUse) {
-      console.log("Missing data for image path:", { modality, view, imageDataToUse: !!imageDataToUse });
+      console.log("❌ Missing data for image path:", { modality, view, imageDataToUse: !!imageDataToUse });
       return '';
     }
     
     const modalityData = imageDataToUse.modalities[modality];
     if (!modalityData) {
-      console.log("No modality data found for:", modality, "Available modalities:", Object.keys(imageDataToUse.modalities));
+      console.log("❌ No modality data found for:", modality, "Available modalities:", Object.keys(imageDataToUse.modalities));
       return '';
     }
     
     const imagePath = modalityData[view] || '';
-    console.log("Final image path:", imagePath);
+    console.log("✅ Final image path:", imagePath);
+    console.log("=== END DEBUG ===");
     return imagePath;
   };
 
