@@ -1,0 +1,60 @@
+FIX LEARNING LEVEL NAVIGATION AND CASE COMPARISON
+
+**WHAT'S CURRENTLY WORKING (don't change these):**
+- Sequence comparison works via individual dropdowns (MRI/SWI for Primary, MRI/FLAIR for Comparison Sequence)  
+- Technical/Clinical/Anatomical tabs work perfectly
+- Image display and educational content loading works
+- Overall interface and styling is excellent
+
+**ISSUE 1 - ADD LEARNING LEVEL PEEK HOVER PANEL (HIGHEST PRIORITY):**
+
+Current Problem: All educational content shows in one long block (Discovery Insight + Focused Learning + Clinical Application + Comprehensive Analysis all visible at once).
+
+What to Add:
+- Create ONE peek hover panel on the LEFT side of the entire screen (not just the educational panel)
+- Panel should "peek" out ~20-25px from the left edge with hint text like "Learning Levels"
+- On hover: panel expands to show four level selection options: [Discovery] [Focused] [Clinical] [Comprehensive]  
+- On click on any level: show only that level's content in the main educational panel
+- Default to "Discovery" level when switching between Technical/Clinical/Anatomical
+
+Implementation Details:
+- Position panel at left edge of screen (independent of educational panel)
+- Use same orange accent styling as other UI elements
+- Panel contains all four learning level buttons when expanded
+- Show only selected level content in main educational area, hide other levels
+- Smooth transitions between levels and for panel expand/collapse
+
+Example Content Separation (use existing text exactly):
+- Discovery: "SWI makes gas bubbles 'bloom' larger than they really are"
+- Focused: The "WHY does SWI show gas best?" paragraph  
+- Clinical: The "WHY blooming matters clinically" paragraph
+- Comprehensive: The "WHY susceptibility physics work" paragraph
+
+**ISSUE 2 - FIX CASE COMPARISON FUNCTIONALITY:**
+
+Current Problem: "Compare Cases" button doesn't work - shows "No image available" when trying to load trauma case.
+
+What to Fix:
+- Make Compare Cases button functional so users can compare Gas Bubbles case vs Trauma case side-by-side
+- Ensure trauma case images load properly (trauma_ct_axial files)
+- When trauma case selected, show trauma case educational content
+- Verify image paths and case data mapping for trauma case
+
+**ISSUE 3 - OPTIONAL FIX FOR "SWI vs T2" DROPDOWN:**
+(Lower priority - the individual sequence selectors work fine, but this dropdown is non-functional)
+
+IMPLEMENTATION STRATEGY:
+- Focus on Issue 1 first (learning levels) as it's most important for usability
+- Then attempt Issue 2 (case comparison) 
+- Skip Issue 3 unless the first two are quick to implement
+
+**PRESERVE EVERYTHING WORKING:**
+- Keep existing sequence comparison via individual dropdowns
+- Keep Technical/Clinical/Anatomical tab functionality  
+- Keep all styling, colors, and professional appearance
+- Keep all educational content text exactly as written
+- Don't change overall layout or working features
+
+TESTING:
+- Learning levels: Click between Discovery/Focused/Clinical/Comprehensive and verify only selected content shows
+- Case comparison: Switch between Gas Bubbles and Trauma cases and verify both images and educational content load properly
