@@ -1,0 +1,105 @@
+# Radiology Education Platform - Image-Centric Learning
+
+## 🎯 PROJECT TRANSFORMATION
+Transform the medical image viewer into the primary interface with integrated learning modes. Medical images remain the main focus, with educational content adapting based on viewing mode.
+
+## 🤖 REPLIT AGENT PROMPT
+
+```
+TRANSFORM MEDICAL IMAGE VIEWER INTO INTEGRATED LEARNING PLATFORM
+
+**CRITICAL: PRESERVE ALL EXISTING EDUCATIONAL CONTENT EXACTLY AS WRITTEN**
+- Do not modify any existing educational text content
+- Reuse all "Discovery Insight", "Focused Learning", "Clinical Application" text verbatim  
+- Only create new interface to display existing content
+
+PHASE 1 - CORE TRANSFORMATION:
+
+1. REMOVE CONSTELLATION LANDING PAGE:
+- Make medical image viewer the primary/default interface
+- Remove constellation navigation as separate page
+- Keep constellation data structure for educational content
+
+2. ADD LEARNING MODE TABS:
+- Add tab navigation in medical image viewer toolbar: [Technical] [Clinical] [Anatomical]
+- Active tab highlighted with orange accent
+- Panel title updates: "Technical Analysis" | "Clinical Significance" | "Anatomical Context"
+- Learning panel content changes based on active tab
+
+3. EDUCATIONAL CONTENT SYSTEM:
+**REUSE EXISTING CONTENT - NO CHANGES TO TEXT**
+
+For Technical Mode - display existing Technical node content:
+- Gas Bubbles: "SWI makes gas bubbles 'bloom' larger than they really are" + all existing technical explanations
+- Trauma: "CT shows intrasinus gas = Traumatic vacuum phenomenon" + all existing technical explanations
+
+For Clinical Mode - display existing Clinical node content:
+- Gas Bubbles: "65M immediately post-posterior fossa surgery = Expected gas pattern" + all existing clinical explanations  
+- Trauma: "20M trauma + skull fracture crossing suture = Emergency thrombosis risk" + all existing clinical explanations
+
+For Anatomical Mode - display existing Anatomical node content:
+- Gas Bubbles: "Subarachnoid space + lateral ventricles = Expected post-op distribution" + all existing anatomical explanations
+- Trauma: "Lambdoid suture fracture → Transverse sinus gas → Sigmoid sinus thrombosis" + all existing anatomical explanations
+
+PHASE 2 - COMPARISON FEATURES:
+
+4. COMPARE SEQUENCES (2-image side-by-side):
+- Add "Compare Sequences" button in toolbar
+- Dropdown selector: [SWI vs T2] [SWI vs FLAIR] [T2 vs FLAIR] [Single View]
+- **Suggest starting with SWI vs T2 as it shows the most dramatic difference for gas bubbles**
+- Split image viewer into 2 panes when comparison active
+- Each pane shows existing educational content for that sequence (unchanged)
+- Educational value comes from seeing factual descriptions side-by-side
+
+5. COMPARE CASES (2-case side-by-side):
+- Add "Compare Cases" button in toolbar  
+- Side-by-side: [Gas Bubbles Case] | [Trauma Case]
+- Each pane shows existing educational content for that case (unchanged)
+- Helps understand same finding in different clinical contexts
+
+IMPLEMENTATION PRIORITIES:
+1. Learning mode tabs (highest priority)
+2. Content system using existing educational text
+3. Compare sequences feature
+4. Compare cases feature
+
+STYLING REQUIREMENTS:
+- **PRESERVE existing dark theme and Radiopaedia-style medical interface**
+- **MAINTAIN existing orange accent colors throughout**
+- Clean medical education appearance
+- Orange highlights for active modes and buttons
+- Professional radiology interface (keep current dark styling)
+- Maintain existing bullet points with medical icons
+- Smooth transitions between modes
+- Mobile-responsive design
+- **DO NOT change existing color scheme, backgrounds, or medical styling**
+
+USER EXPERIENCE:
+- User opens case → sees medical images immediately with learning mode tabs
+- Clicks tabs to change educational perspective (Technical/Clinical/Anatomical)
+- Can activate comparison mode to see sequences or cases side-by-side
+- All educational content shows existing text - never modified based on comparisons
+
+PATIENT CONTEXT (preserve exactly):
+- Gas Bubbles: "Patient: 65-year-old male | Presentation: Immediately post-posterior fossa surgery"
+- Trauma Gas: "Patient: 20-year-old male | Presentation: Fall from bike"
+
+**SUCCESS CRITERIA:**
+- Medical images are primary interface focus
+- Learning modes work smoothly with existing educational content
+- Comparison features show 2 images side-by-side effectively
+- All existing educational text preserved exactly as written
+- Professional radiology workflow feel maintained
+```
+
+## 🎯 SIMPLIFIED GOALS
+This creates an image-centric radiology learning platform that:
+- Focuses on medical images (like real radiology)
+- Provides multiple analytical perspectives using existing content
+- Enables practical sequence/case comparisons
+- Preserves all your valuable educational work
+
+## 💰 BUDGET IMPACT
+- **Estimated cost**: ~$1-2 for this transformation
+- **Risk level**: Low - builds on existing foundation
+- **Value**: Transforms into professional radiology education tool
