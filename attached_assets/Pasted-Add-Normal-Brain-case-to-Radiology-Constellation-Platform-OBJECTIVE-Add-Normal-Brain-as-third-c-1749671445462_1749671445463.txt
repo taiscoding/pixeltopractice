@@ -1,0 +1,50 @@
+Add Normal Brain case to Radiology Constellation Platform:
+
+OBJECTIVE: Add "Normal Brain" as third case option (alongside Gas Bubbles, Trauma)
+
+CASE DETAILS:
+- Case Name: "Normal Brain"
+- Patient: 20-year-old male
+- Presentation: First episode of psychosis  
+- Key Finding: Normal brain anatomy, no abnormalities
+- Sequences: SWI (adding T1, FLAIR later)
+
+FILE STRUCTURE:
+1. Create folder: public/medical_images/normal_brain_case/
+2. Image path: /medical_images/normal_brain_case/normal_brain_swi.jpg
+
+IMPLEMENTATION TASKS:
+
+1. UPDATE CASE SELECTION:
+   - Add "Normal Brain" to dropdown (alongside "Gas Bubbles on SWI", "Trauma Gas")
+   - Update case switching functionality in IntegratedImageViewer.tsx
+
+2. UPDATE imageData.ts:
+   - Add normalBrain case object following exact structure as gasBubbles/traumaGas
+   - Include SWI sequence in sequences object: 
+     sequences: { "MRI SWI": { path: "/medical_images/normal_brain_case/normal_brain_swi.jpg" } }
+   - Include patient info, presentation details
+
+3. EDUCATIONAL CONTENT (4 Learning Levels):
+
+DISCOVERY: "Normal brain MRI shows clear anatomy with no pathological changes"
+
+FOCUSED: "SWI sequence demonstrates normal brain with no susceptibility artifacts. Clear gray-white matter differentiation, normal ventricular size, no blood products or calcifications."
+
+CLINICAL: "Normal baseline for comparison learning. Key features: homogeneous signal intensity, preserved anatomical boundaries, no restricted diffusion, normal vascular structures. Essential reference for identifying pathology."
+
+COMPREHENSIVE: "Normal brain SWI serves as educational baseline. Demonstrates: intact blood-brain barrier, normal iron deposition patterns, preserved white matter integrity, normal deep gray structures. Critical comparison reference for identifying microhemorrhages, calcifications, or vascular malformations in pathological cases."
+
+4. SEQUENCE COMPARISON FUNCTIONALITY:
+   - Enable Normal Brain SWI vs Gas Bubbles SWI comparison
+   - Enable Normal Brain vs Trauma case comparison
+   - Maintain existing sequence selection interface
+
+5. EDUCATIONAL TABS:
+   - Technical: Normal SWI appearance, imaging parameters
+   - Clinical: Normal variants, comparison baseline importance
+   - Anatomical: Normal brain anatomy on SWI
+
+CRITICAL: Follow exact same structure as existing cases in imageData.ts. Ensure smooth case switching and sequence comparison functionality.
+
+Test: case dropdown, sequence selection, comparisons between Normal Brain SWI and Gas Bubbles SWI.
