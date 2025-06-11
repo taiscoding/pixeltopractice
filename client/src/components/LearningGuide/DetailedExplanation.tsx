@@ -61,9 +61,9 @@ const enhanceTextFormatting = (text: string) => {
           content.includes('magnetic') || content.includes('susceptibility') || content.includes('field')) {
         // Physics/technical terms - orange
         return `<span class="text-orange-400 font-medium">${content}</span>`;
-      } else if (content.includes('mass effect') || content.includes('blooming') || content.includes('echo') ||
-                 content.includes('signal') || content.includes('contrast') || content.includes('sequence')) {
-        // Imaging terminology - orange
+      } else if (content === 'blooming' || content === 'mass effect' || content === 'echo' ||
+                 content === 'signal' || content === 'contrast' || content === 'sequence') {
+        // Imaging terminology - orange (exact match only)
         return `<span class="text-orange-400 font-semibold">'${content}'</span>`;
       } else if (content.includes('days') || content.includes('weeks') || content.includes('minutes') ||
                  content.includes('hours') || content.includes('CO₂') || content.includes('N₂')) {
