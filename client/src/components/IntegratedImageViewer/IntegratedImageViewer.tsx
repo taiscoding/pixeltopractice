@@ -360,15 +360,22 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
         onMouseLeave={() => setIsLearningPanelHovered(false)}
       >
         <motion.div
-          initial={{ x: -200 }}
-          animate={{ x: isLearningPanelHovered ? 0 : -175 }}
+          initial={{ x: -185 }}
+          animate={{ x: isLearningPanelHovered ? 0 : -185 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg shadow-2xl"
+          className="bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg shadow-2xl relative"
         >
-          <div className="p-4">
+          {/* Visible hint tab - always shows 15px from left edge */}
+          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-20 bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg flex items-center justify-center">
+            <div className="text-orange-400 text-xs font-medium transform -rotate-90 whitespace-nowrap">
+              LEVELS
+            </div>
+          </div>
+          
+          <div className="p-4 pl-6">
             {!isLearningPanelHovered ? (
-              <div className="text-orange-400 text-sm font-medium writing-mode-vertical transform rotate-180">
-                Learning Levels
+              <div className="w-0 h-0 opacity-0">
+                {/* Hidden when collapsed */}
               </div>
             ) : (
               <div className="space-y-2">
