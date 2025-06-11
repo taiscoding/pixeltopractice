@@ -8,6 +8,8 @@ const getCentralLabel = (caseName: string) => {
       return 'Gas Bubbles\nSWI';
     case 'Trauma Gas':
       return 'Trauma Gas\nEmergency';
+    case 'Normal Brain':
+      return 'Normal Brain\nBaseline';
     default:
       return 'Case\nStudy';
   }
@@ -19,6 +21,8 @@ const getTechnicalLabel = (caseName: string) => {
       return 'TECHNICAL\nSusceptibility-Weighted Imaging';
     case 'Trauma Gas':
       return 'TECHNICAL\nVacuum Phenomenon';
+    case 'Normal Brain':
+      return 'TECHNICAL\nBaseline SWI Reference';
     default:
       return 'TECHNICAL\nImaging Method';
   }
@@ -30,6 +34,8 @@ const getClinicalLabel = (caseName: string) => {
       return 'CLINICAL\nTimeline-Dependent Significance';
     case 'Trauma Gas':
       return 'CLINICAL\nEmergency Management';
+    case 'Normal Brain':
+      return 'CLINICAL\nPsychiatric Workup Baseline';
     default:
       return 'CLINICAL\nPatient Impact';
   }
@@ -41,6 +47,8 @@ const getAnatomicalLabel = (caseName: string) => {
       return 'ANATOMICAL\nLocation Suggests Etiology';
     case 'Trauma Gas':
       return 'ANATOMICAL\nVenous Drainage System';
+    case 'Normal Brain':
+      return 'ANATOMICAL\nNormal Reference Standard';
     default:
       return 'ANATOMICAL\nStructural Context';
   }

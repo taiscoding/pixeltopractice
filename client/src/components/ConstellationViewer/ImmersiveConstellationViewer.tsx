@@ -681,8 +681,22 @@ export default function ImmersiveConstellationViewer({
 
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
+  // Map case IDs to case names
+  const getCaseName = (caseId: string) => {
+    switch (caseId) {
+      case 'gas-bubbles-swi':
+        return 'Gas Bubbles on SWI';
+      case 'trauma-gas':
+        return 'Trauma Gas';
+      case 'normal-brain':
+        return 'Normal Brain';
+      default:
+        return 'Gas Bubbles on SWI';
+    }
+  };
+
   // Get current case data
-  const currentCaseData = availableCases[selectedCase];
+  const currentCaseData = availableCases[getCaseName(selectedCase)];
   const caseInfo = currentCaseData?.case;
   const nodePositions = currentCaseData?.nodePositions;
   const nodeColors = currentCaseData?.nodeColors;
