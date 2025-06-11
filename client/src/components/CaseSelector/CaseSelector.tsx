@@ -14,6 +14,8 @@ const getCaseIcon = (caseId: string) => {
       return Brain;
     case 'trauma-gas':
       return AlertTriangle;
+    case 'normal-brain':
+      return Eye;
     default:
       return Brain;
   }
@@ -25,6 +27,8 @@ const getCaseColor = (caseId: string) => {
       return "bg-orange-500/20 text-orange-300";
     case 'trauma-gas':
       return "bg-red-500/20 text-red-300";
+    case 'normal-brain':
+      return "bg-green-500/20 text-green-300";
     default:
       return "bg-gray-500/20 text-gray-300";
   }

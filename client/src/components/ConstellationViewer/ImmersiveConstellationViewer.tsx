@@ -443,6 +443,28 @@ function ConstellationFlow({
                     <p className="text-white text-sm"><span className="font-semibold text-green-400">EXPECTED</span> finding, routine follow-up</p>
                   </div>
                 </div>
+              ) : caseInfo?.caseName === 'Normal Brain' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-blue-950/30 rounded-lg p-4">
+                    <h3 className="text-blue-200 font-medium mb-2">Patient</h3>
+                    <p className="text-white text-lg font-semibold">20-year-old male</p>
+                  </div>
+                  
+                  <div className="bg-green-950/30 rounded-lg p-4">
+                    <h3 className="text-green-200 font-medium mb-2">Presentation</h3>
+                    <p className="text-white/80 text-sm">First episode of psychosis</p>
+                  </div>
+                  
+                  <div className="bg-amber-950/30 rounded-lg p-4">
+                    <h3 className="text-amber-200 font-medium mb-2">Key Finding</h3>
+                    <p className="text-white/80 text-sm">Normal brain anatomy, no structural abnormalities</p>
+                  </div>
+                  
+                  <div className="bg-green-950/30 rounded-lg p-4">
+                    <h3 className="text-green-200 font-medium mb-2">Clinical Significance</h3>
+                    <p className="text-white text-sm"><span className="font-semibold text-green-400">BASELINE</span> reference for comparison learning</p>
+                  </div>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div className="bg-blue-950/30 rounded-lg p-4">
@@ -674,6 +696,8 @@ export default function ImmersiveConstellationViewer({
         return 'Gas Bubbles\nSWI';
       case 'Trauma Gas':
         return 'Trauma Gas\nEmergency';
+      case 'Normal Brain':
+        return 'Normal Brain\nBaseline';
       default:
         return 'Case\nStudy';
     }
@@ -702,6 +726,17 @@ export default function ImmersiveConstellationViewer({
         default:
           return '';
       }
+    } else if (caseName === 'Normal Brain') {
+      switch (nodeType) {
+        case 'technical':
+          return 'Normal SWI appearance, no artifacts';
+        case 'clinical':
+          return 'Baseline reference for comparison';
+        case 'anatomical':
+          return 'Normal brain anatomy landmarks';
+        default:
+          return '';
+      }
     }
     return '';
   };
@@ -712,6 +747,8 @@ export default function ImmersiveConstellationViewer({
         return 'TECHNICAL\nSusceptibility-Weighted Imaging';
       case 'Trauma Gas':
         return 'TECHNICAL\nIntrasinus Gas Detection';
+      case 'Normal Brain':
+        return 'TECHNICAL\nBaseline SWI Reference';
       default:
         return 'TECHNICAL\nImaging Method';
     }
@@ -723,6 +760,8 @@ export default function ImmersiveConstellationViewer({
         return 'CLINICAL\nTimeline-Dependent Significance';
       case 'Trauma Gas':
         return 'CLINICAL\nEmergency Risk Stratification';
+      case 'Normal Brain':
+        return 'CLINICAL\nPsychiatric Workup Baseline';
       default:
         return 'CLINICAL\nPatient Impact';
     }
@@ -734,6 +773,8 @@ export default function ImmersiveConstellationViewer({
         return 'ANATOMICAL\nLocation Suggests Etiology';
       case 'Trauma Gas':
         return 'ANATOMICAL\nVenous Thrombosis Pathway';
+      case 'Normal Brain':
+        return 'ANATOMICAL\nNormal Reference Standard';
       default:
         return 'ANATOMICAL\nStructural Context';
     }
