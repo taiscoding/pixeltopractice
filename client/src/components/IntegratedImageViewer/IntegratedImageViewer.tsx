@@ -398,7 +398,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
   const patientContext = getPatientContext();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
+    <div className="h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
       {/* Learning Levels - Hint only with hover reveal */}
       <div className="fixed left-0 top-1/2 transform -translate-y-1/2 w-5 h-20 bg-gray-900/95 backdrop-blur-xl border-r border-gray-700 rounded-r-lg flex items-center justify-center z-50 shadow-lg group">
         <span className="text-orange-400 text-xs font-medium transform -rotate-90 whitespace-nowrap">LEVELS</span>
@@ -531,9 +531,9 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       {/* Main Content */}
       <div className="flex h-[calc(100vh-80px)]">
         {/* Image Area */}
-        <div className={`${comparisonMode === 'single' ? 'flex-1' : 'w-2/3'} flex`}>
+        <div className={`${comparisonMode === 'single' ? 'flex-1' : 'w-2/3'} flex overflow-hidden`}>
           {/* Primary Image */}
-          <div className={`${comparisonMode === 'single' ? 'w-full' : 'w-1/2'} bg-black/30 backdrop-blur-xl border-r border-gray-800 flex flex-col`}>
+          <div className={`${comparisonMode === 'single' ? 'w-full' : 'w-1/2'} bg-black/30 backdrop-blur-xl border-r border-gray-800 flex flex-col overflow-hidden`}>
             {/* Image Controls */}
             <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
               <div className="flex items-center justify-between">
@@ -706,13 +706,13 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
         </div>
 
         {/* Learning Panel */}
-        <div className={`${comparisonMode === 'single' ? 'w-96' : 'w-1/3'} bg-gray-900/50 backdrop-blur-xl border-l border-gray-800 flex flex-col`}>
+        <div className={`${comparisonMode === 'single' ? 'w-96' : 'w-1/3'} bg-gray-900/50 backdrop-blur-xl border-l border-gray-800 flex flex-col h-full overflow-hidden`}>
           {comparisonMode === 'cases' ? (
             // Split view for case comparison
             <div className="flex flex-col h-full">
               {/* Primary Case */}
-              <div className="flex-1 border-b border-gray-700">
-                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
+              <div className="flex-1 border-b border-gray-700 flex flex-col overflow-hidden">
+                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3 flex-shrink-0">
                   <h3 className="text-sm font-semibold text-white">
                     {currentCaseData?.case?.caseName} - {getLearningModeLabel(learningMode)}
                   </h3>
@@ -727,7 +727,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                     </div>
                   )}
                 </div>
-                <div className="p-4 overflow-y-auto">
+                <div className="flex-1 p-4 overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500">
                   {learningContent && currentLevelContent && (
                     <motion.div
                       key={`primary-${learningLevel}`}
@@ -752,8 +752,8 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
               </div>
 
               {/* Comparison Case */}
-              <div className="flex-1">
-                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3 flex-shrink-0">
                   <h3 className="text-sm font-semibold text-white">
                     {comparisonCaseData?.case?.caseName} - {getLearningModeLabel(learningMode)}
                   </h3>
@@ -768,7 +768,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                     </div>
                   )}
                 </div>
-                <div className="p-4 overflow-y-auto">
+                <div className="flex-1 p-4 overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500">
                   {(() => {
                     const comparisonContent = getLearningContent(true);
                     const comparisonLevelContent = comparisonContent ? {
@@ -841,7 +841,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
           ) : (
             // Single case view
             <>
-              <div className="bg-gray-900/80 border-b border-gray-700 px-6 py-4">
+              <div className="bg-gray-900/80 border-b border-gray-700 px-6 py-4 flex-shrink-0">
                 <h2 className="text-lg font-semibold text-white">
                   {getLearningModeLabel(learningMode)}
                 </h2>
@@ -857,7 +857,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
                 )}
               </div>
 
-              <div className="flex-1 overflow-y-auto p-6">
+              <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500">
                 {learningContent && currentLevelContent && (
                   <motion.div
                     key={learningLevel}
