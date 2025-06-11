@@ -15,7 +15,21 @@ export default function Dashboard() {
   const [isImmersiveMode, setIsImmersiveMode] = useState(false);
   const [selectedCase, setSelectedCase] = useState<string>("gas-bubbles-swi");
 
-  const currentCaseData = availableCases[selectedCase];
+  // Map case IDs to case names
+  const getCaseName = (caseId: string) => {
+    switch (caseId) {
+      case 'gas-bubbles-swi':
+        return 'Gas Bubbles on SWI';
+      case 'trauma-gas':
+        return 'Trauma Gas';
+      case 'normal-brain':
+        return 'Normal Brain';
+      default:
+        return 'Gas Bubbles on SWI';
+    }
+  };
+
+  const currentCaseData = availableCases[getCaseName(selectedCase)];
   const currentCaseName = currentCaseData?.case?.caseName || "Unknown Case";
 
   const handleStartLearning = () => {

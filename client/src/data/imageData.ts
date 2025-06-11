@@ -43,6 +43,15 @@ export const imageData: Record<string, CaseImageData> = {
     },
     defaultModality: "CT Head",
     defaultView: "Axial non-contrast"
+  },
+  normalbrain: {
+    modalities: {
+      "MRI SWI": {
+        "Standard": "/medical_images/normal_brain_case/normal_brain_swi.jpg"
+      }
+    },
+    defaultModality: "MRI SWI",
+    defaultView: "Standard"
   }
 };
 
@@ -52,6 +61,9 @@ export const getCaseKey = (caseName: string): string => {
   }
   if (caseName.toLowerCase().includes('trauma')) {
     return 'trauma';
+  }
+  if (caseName.toLowerCase().includes('normal brain')) {
+    return 'normalbrain';
   }
   return 'gasbubbles'; // fallback
 };
