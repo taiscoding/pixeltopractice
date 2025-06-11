@@ -594,7 +594,7 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
 
           {/* Secondary Image (for comparisons) */}
           {comparisonMode !== 'single' && (
-            <div className="w-1/2 bg-black/30 backdrop-blur-xl flex flex-col">
+            <div className="w-1/2 bg-black/30 backdrop-blur-xl flex flex-col overflow-hidden">
               {/* Image Controls */}
               <div className="bg-gray-900/80 border-b border-gray-700 px-4 py-3">
                 <div className="flex items-center justify-between">
