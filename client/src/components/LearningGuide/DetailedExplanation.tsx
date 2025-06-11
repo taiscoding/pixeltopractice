@@ -6,16 +6,22 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Settings, Stethoscope, Search, AlertCircle, Clock, MapPin } from 'lucide-react';
 import { CaseData } from '@/data/curated-cases';
 
-// Helper function to format text with markdown-like syntax
+// Enhanced text formatting with improved readability and color coding
 const formatText = (text: string) => {
-  return text.split('\n').map((line, lineIndex) => {
+  if (!text) return null;
+  
+  return text.split('\n').map((line, index) => {
+    if (line.trim() === '') return <br key={index} />;
+    
     // Handle bullet points
-    if (line.trim().startsWith('•')) {
-      const content = line.trim().substring(1).trim();
+    if (line.startsWith('•') || line.startsWith('-')) {
+      const bulletContent = line.substring(1).trim();
+      const formattedContent = enhanceTextFormatting(bulletContent);
+      
       return (
-        <div key={lineIndex} className="flex items-start gap-2 mb-1">
-          <span className="text-gray-400 mt-1">•</span>
-          <span dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        <div key={index} className="flex items-start gap-2 mb-2">
+          <span className="text-orange-400 mt-1">•</span>
+          <span dangerouslySetInnerHTML={{ __html: formattedContent }} />
         </div>
       );
     }
@@ -23,35 +29,67 @@ const formatText = (text: string) => {
     // Handle navigation arrows
     if (line.trim().startsWith('→')) {
       const content = line.trim().substring(1).trim();
+      const formattedContent = enhanceTextFormatting(content);
       return (
-        <div key={lineIndex} className="mt-3 pt-3 border-t border-gray-700">
-          <span className="text-orange-400 text-sm italic" dangerouslySetInnerHTML={{ __html: formatInlineText(content) }} />
+        <div key={index} className="mt-3 pt-3 border-t border-gray-700">
+          <span className="text-gray-400 text-sm" dangerouslySetInnerHTML={{ __html: `→ ${formattedContent}` }} />
         </div>
       );
     }
     
-    // Regular paragraphs
-    if (line.trim()) {
-      return (
-        <p key={lineIndex} className="mb-2" dangerouslySetInnerHTML={{ __html: formatInlineText(line) }} />
-      );
-    }
-    
-    // Empty lines
-    return <div key={lineIndex} className="mb-2" />;
+    // Handle regular paragraphs with enhanced formatting
+    const formattedContent = enhanceTextFormatting(line);
+    return (
+      <p key={index} className="mb-3" dangerouslySetInnerHTML={{ __html: formattedContent }} />
+    );
   });
 };
 
-// Helper function to format inline text (bold, italic, etc.)
-const formatInlineText = (text: string) => {
+// Enhanced text formatting function with color coding
+const enhanceTextFormatting = (text: string) => {
   return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em class="italic text-gray-300">$1</em>')
-    .replace(/CO₂/g, '<span class="font-medium text-orange-400">CO₂</span>')
-    .replace(/N₂/g, '<span class="font-medium text-orange-400">N₂</span>')
-    .replace(/T2\*/g, '<span class="font-medium text-purple-400">T2*</span>')
-    .replace(/SWI/g, '<span class="font-medium text-green-400">SWI</span>')
-    .replace(/CSF/g, '<span class="font-medium text-amber-400">CSF</span>');
+    // Handle bold text with ** markdown
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+    
+    // Handle navigation hints (text starting with → followed by *text*)
+    .replace(/→\s*\*([^*]+)\*/g, '→ <span class="text-gray-400 italic">$1</span>')
+    
+    // Handle key medical/technical terms in parentheses with *text*
+    .replace(/\*([^*]+)\*/g, (match, content) => {
+      // Determine color based on content type
+      if (content.includes('vs') || content.includes('diamagnetic') || content.includes('paramagnetic') || 
+          content.includes('magnetic') || content.includes('susceptibility') || content.includes('field')) {
+        // Physics/technical terms - orange
+        return `<span class="text-orange-400 font-medium">${content}</span>`;
+      } else if (content.includes('mass effect') || content.includes('blooming') || content.includes('echo') ||
+                 content.includes('signal') || content.includes('contrast') || content.includes('sequence')) {
+        // Imaging terminology - orange
+        return `<span class="text-orange-400 font-semibold">'${content}'</span>`;
+      } else if (content.includes('days') || content.includes('weeks') || content.includes('minutes') ||
+                 content.includes('hours') || content.includes('CO₂') || content.includes('N₂')) {
+        // Medical timeline/chemistry terms - cyan
+        return `<span class="text-cyan-400 font-medium">${content}</span>`;
+      } else if (content.includes('View') || content.includes('see') || content.includes('understand')) {
+        // Navigation hints - gray
+        return `<span class="text-gray-400 italic">${content}</span>`;
+      } else {
+        // Default medical terms - cyan
+        return `<span class="text-cyan-400 font-medium">${content}</span>`;
+      }
+    })
+    
+    // Handle quoted terms that should be emphasized
+    .replace(/'([^']+)'/g, '<span class="text-orange-400 font-semibold">\'$1\'</span>')
+    
+    // Handle specific medical abbreviations with consistent colors
+    .replace(/CO₂/g, '<span class="text-cyan-400 font-medium">CO₂</span>')
+    .replace(/N₂/g, '<span class="text-cyan-400 font-medium">N₂</span>')
+    .replace(/T2\*/g, '<span class="text-orange-400 font-medium">T2*</span>')
+    .replace(/SWI/g, '<span class="text-green-400 font-medium">SWI</span>')
+    .replace(/CSF/g, '<span class="text-amber-400 font-medium">CSF</span>')
+    .replace(/CT/g, '<span class="text-blue-400 font-medium">CT</span>')
+    .replace(/MRI/g, '<span class="text-purple-400 font-medium">MRI</span>')
+    .replace(/FLAIR/g, '<span class="text-indigo-400 font-medium">FLAIR</span>');
 };
 
 interface DetailedExplanationProps {
