@@ -353,48 +353,40 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
-      {/* Learning Level Peek Panel */}
+      {/* Always visible hint tab */}
+      <div className="fixed left-0 top-1/2 transform -translate-y-1/2 w-4 h-20 bg-gray-900/95 backdrop-blur-xl border-r border-gray-700 rounded-r-lg flex items-center justify-center z-50 shadow-lg">
+        <span className="text-orange-400 text-xs font-medium transform -rotate-90 whitespace-nowrap">LEVELS</span>
+      </div>
+
+      {/* Expandable learning levels panel */}
       <div 
-        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50"
+        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 group"
         onMouseEnter={() => setIsLearningPanelHovered(true)}
         onMouseLeave={() => setIsLearningPanelHovered(false)}
       >
         <motion.div
-          initial={{ x: -185 }}
-          animate={{ x: isLearningPanelHovered ? 0 : -185 }}
+          initial={{ x: -200 }}
+          animate={{ x: isLearningPanelHovered ? 16 : -200 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg shadow-2xl relative"
+          className="bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg shadow-2xl"
         >
-          {/* Visible hint tab - always shows 15px from left edge */}
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-20 bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-r-lg flex items-center justify-center">
-            <div className="text-orange-400 text-xs font-medium transform -rotate-90 whitespace-nowrap">
-              LEVELS
+          <div className="p-4">
+            <div className="space-y-2">
+              <div className="text-orange-400 text-sm font-medium mb-3">Learning Levels</div>
+              {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level) => (
+                <button
+                  key={level}
+                  onClick={() => handleLearningLevelChange(level)}
+                  className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 text-left ${
+                    learningLevel === level
+                      ? 'bg-orange-500 text-white shadow-lg'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                  }`}
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </button>
+              ))}
             </div>
-          </div>
-          
-          <div className="p-4 pl-6">
-            {!isLearningPanelHovered ? (
-              <div className="w-0 h-0 opacity-0">
-                {/* Hidden when collapsed */}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <div className="text-orange-400 text-sm font-medium mb-3">Learning Levels</div>
-                {(['discovery', 'focused', 'clinical', 'comprehensive'] as const).map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => handleLearningLevelChange(level)}
-                    className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 text-left ${
-                      learningLevel === level
-                        ? 'bg-orange-500 text-white shadow-lg'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                    }`}
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </motion.div>
       </div>
