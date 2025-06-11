@@ -326,14 +326,22 @@ export default function IntegratedImageViewer({ selectedCase, onCaseSelect }: In
       // Handle navigation hints (text starting with → followed by *text*)
       .replace(/→\s*\*([^*]+)\*/g, '→ <span class="text-gray-400 italic">$1</span>')
       
-      // Handle key medical/technical terms in parentheses with *text*
+      // Handle specific blooming term only
+      .replace(/\*blooming\*/g, '<span class="text-orange-400 font-semibold">\'blooming\'</span>')
+      
+      // Handle other key medical/technical terms in parentheses with *text*
       .replace(/\*([^*]+)\*/g, (match, content) => {
+        // Skip blooming since it's already handled above
+        if (content === 'blooming') {
+          return match; // Return original if somehow blooming gets here
+        }
+        
         // Determine color based on content type
         if (content.includes('vs') || content.includes('diamagnetic') || content.includes('paramagnetic') || 
             content.includes('magnetic') || content.includes('susceptibility') || content.includes('field')) {
           // Physics/technical terms - orange
           return `<span class="text-orange-400 font-medium">${content}</span>`;
-        } else if (content.includes('mass effect') || content.includes('blooming') || content.includes('echo') ||
+        } else if (content.includes('mass effect') || content.includes('echo') ||
                    content.includes('signal') || content.includes('contrast') || content.includes('sequence')) {
           // Imaging terminology - orange
           return `<span class="text-orange-400 font-semibold">'${content}'</span>`;
