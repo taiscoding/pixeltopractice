@@ -224,7 +224,6 @@ MIT License - see LICENSE file for details.
 
 ## 🔗 Links
 
-- **Live Demo**: [Your Replit URL]
 - **Documentation**: [Additional docs if available]
 - **Issues**: [GitHub Issues]
 - **Discussions**: [GitHub Discussions]
