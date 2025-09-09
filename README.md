@@ -1,5 +1,5 @@
 
-# Radiology Constellation 🧠
+# Pixel to Practice 🧠
 
 An advanced educational platform for radiology pattern recognition using interactive constellation visualization. Master radiology through evidence-based **TECHNICAL → CLINICAL → ANATOMICAL** learning framework.
 
