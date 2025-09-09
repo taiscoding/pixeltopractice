@@ -3,7 +3,7 @@
 
 An advanced educational platform for radiology pattern recognition using interactive constellation visualization. Master radiology through evidence-based **TECHNICAL → CLINICAL → ANATOMICAL** learning framework.
 
-![Radiology Constellation](https://img.shields.io/badge/Status-Active-brightgreen) ![React](https://img.shields.io/badge/React-18.3.1-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-blue) ![Tailwind](https://img.shields.io/badge/Tailwind-3.4.17-06B6D4)
+![Pixel to Practice](https://img.shields.io/badge/Status-Active-brightgreen) ![React](https://img.shields.io/badge/React-18.3.1-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-blue) ![Tailwind](https://img.shields.io/badge/Tailwind-3.4.17-06B6D4)
 
 ## 🌟 Features
 
